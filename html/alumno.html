@@ -1,0 +1,89 @@
+<article class="img form">
+  <div class="jumbotron jumbotron-fluid rounded form2">
+    <div class="container justifu+y-content-center">
+      <h1 class="display-4">Alumno</h1>
+      <hr>
+  <form id="form">
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Documento</strong>
+        <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+      </div>
+    </div>
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Apellido</strong>
+        <input id="inputApellido" placeholder="Apellido" type="text" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
+      </div>
+    </div>
+
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Nombre</strong>
+        <input id="inputNombre" placeholder="Apellido" type="text" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
+      </div>
+    </div>
+  
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Fecha Nacimiento</strong>
+        <input type="text" class="form-control" id="inputFechaNacimiento" placeholder="dd/mm/aaaa" required autocomplete="off">
+      </div>
+    </div>
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Domicilio</strong>
+        <input id="inputDomicilio" placeholder="Domicilio" type="text" class="form-control" minlength="5" maxlength="50" required autocomplete="off">
+        <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" >
+      </div>
+    </div>
+
+    <div class="form-group row">  
+      <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <strong>Tel.Numero (Sin el 0)</strong>
+          <input id="inputTelefonoCaracteristica" inputmode="tel" placeholder="Caracteristica" type="text" class="form-control" minlength="2" maxlength="4" onkeypress="return valideKeySoloNumerosSinPrimerCero(event,this.value);" required autocomplete="off">
+      
+        </div>
+
+        <div class="form-group col-md-3">
+          <strong>Tel.Numero (Sin el 15)</strong>
+          <input id="inputTelefonoNumero" inputmode="tel" placeholder="Numero" type="text" class="form-control" minlength="6" maxlength="9" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
+        </div>
+    </div>      
+
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Email</strong>
+        <input id="inputEmail" inputmode="email" placeholder="Email" type="email" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
+        <input id="inputAccion" type="hidden" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6"> 
+              <strong>Localidad</strong>
+              <select id="inputLocalidad" class="form-control select2 select2-localidad select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            </select> 
+        </div>
+    </div>
+
+    <div class="form-row">
+       <div class="form-group col-md-6">
+         <button id="btnVerEditar" type="button" class="btn btn-primary btn-block" onclick="entidadGuardar()">Guardar</button>
+       </div>
+     </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <button type="button" class="btn btn-primary btn-block" onclick="load(1)">Volver</button>
+      </div>
+    </div>
+  
+  </form>
+  
+  </div>
+  </div>
+</article>

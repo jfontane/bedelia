@@ -1,0 +1,26 @@
+<form>
+    <div class="form-group">
+      <label for="inputAltaAnio">Año</label>
+      <input type="text" class="form-control input-form" id="inputAltaAnio" aria-describedby="emailHelp" placeholder="aaaa" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="inputAltaEvento">Evento</label><br>
+      <select class="form-control" id="inputAltaEvento" required>
+        <option value="">-- Seleccione Evento --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="inputAltaFechaInicio">Fecha Inicio</label>
+        <input type="text" class="form-control input-form" id="inputAltaFechaInicio" aria-describedby="emailHelp" placeholder="aaaa/mm/dd" required>
+    </div>
+
+    <div class="form-group">
+      <label for="inputAltaFechaFinalizacion">Fecha Finalizacion</label>
+      <input type="text" class="form-control input-form" id="inputAltaFechaFinalizacion" aria-describedby="emailHelp" placeholder="aaaa/mm/dd" required>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="calendarioAltaGuardar()">Guardar</button>
+    <div>&nbsp;</div>
+  </form>

@@ -1,0 +1,21 @@
+.i:hover:hover{
+   color:rgb(255, 255, 255) !important;
+    font-size: 130%!important;
+    transition-duration:0.4s!important;
+    border: 1px, !important;
+    
+}
+
+.bg1{
+    background-color: #164B60 !important;
+}
+
+.col1{
+    color: rgb(255, 255, 255) !important;
+    padding-left: 2%;
+    
+}
+
+.nav-link{
+    color: rgb(0, 0, 0) !important;
+}
