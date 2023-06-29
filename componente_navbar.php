@@ -58,7 +58,7 @@
           Gestión Docentes
         </a>
         <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
-           <a class="dropdown-item" href="menuProfesor.php">Listar<span class="sr-only">(current)</span></a>
+           <a class="dropdown-item" href="menuProfesor.php">Listado de Docentes<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -67,7 +67,7 @@
           Gestión Alumnos
         </a>
         <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
-           <a class="dropdown-item" href="menuAlumno.php">Listar<span class="sr-only">(current)</span></a>
+           <a class="dropdown-item" href="menuAlumno.php">Listado de Alumnos<span class="sr-only">(current)</span></a>
         </div>
   </li>
 

@@ -4,6 +4,18 @@ set_include_path('../../conexion'.PATH_SEPARATOR.'../../lib');
 include_once 'conexion.php';
 include_once 'Sanitize.class.php';
 
+function existePersonaCreada($conex,$dni){
+    $sql = "SELECT * FROM persona WHERE dni='$dni'";
+    $resultado = mysqli_query($conex,$sql);
+    //die($sql);
+    if (mysqli_num_rows($resultado)>0) {
+        return true;
+    } else {
+         return false;
+    };
+}
+
+
 $entidad = "Profesor";
 $accion = (isset($_POST['accion']) && $_POST['accion']!=NULL)?SanitizeVars::STRING($_POST['accion']):false;
 $apellido = (isset($_POST['apellido']) && $_POST['apellido']!=NULL)?SanitizeVars::STRING($_POST['apellido']):false;
@@ -50,9 +62,23 @@ if ($accion=='editar') {
          $array_resultados['mensaje'] = "Hubo un Error en la Actualizacion de los datos del $entidad. ";
       }
 } else if ($accion=='nuevo') {
-      $sql_persona = "INSERT persona(dni,apellido,nombre,fechaNacimiento,nacionalidad,idLocalidad,domicilio,email,telefono_caracteristica,telefono_numero) VALUES
+      $sql_persona = "";
+      if (existePersonaCreada($conex,$dni)) {
+            $sql_persona = "UPDATE persona
+                            SET apellido ='$apellido', 
+                                nombre = '$nombres',
+                                fechaNacimiento = '$fecha_nacimiento',
+                                idLocalidad = '$localidad_id',
+                                domicilio = '$domicilio',
+                                email = '$email',
+                                telefono_caracteristica = '$telefono_caracteristica',
+                                telefono_numero = '$telefono_numero'
+                            WHERE dni = $dni";
+                            //die($sql_persona);
+      } else {
+            $sql_persona = "INSERT persona(dni,apellido,nombre,fechaNacimiento,nacionalidad,idLocalidad,domicilio,email,telefono_caracteristica,telefono_numero) VALUES
                        ('$dni','$apellido','$nombres','$fecha_nacimiento','Argentina',$localidad_id,'$domicilio','$email','$telefono_caracteristica','$telefono_numero')";
-      
+      };
       $resultado_1 = mysqli_query($conex,$sql_persona);
       $filas_afectadas_1 = mysqli_affected_rows($conex);
       $sql_profesor = "INSERT profesor(dni,apellido,nombre) VALUES('$dni','$apellido','$nombres')";

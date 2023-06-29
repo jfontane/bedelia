@@ -1,143 +1,96 @@
-<section class="img form text-center">
-<div class="jumbotron jumbotron-fluid rounded form2">
-  <div class="container justifu+y-content-center">
-    <h1 class="display-4">Registro del Profesor</h1>
-    <hr>
-    <p class="lead">Estos datos son estrictamente confidenciales.</p>
+<article class="img form">
+  <div class="jumbotron jumbotron-fluid rounded form2">
+    <div class="container justifu+y-content-center">
+      <h1 class="display-4">Información del Profesor</h1>
+      <hr>
+  <form id="form">
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Documento</strong>
+        <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+      </div>
+    </div>
 
-<form id="form">
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>CUIT</strong>
+        <input id="inputCuit" inputmode="numeric" placeholder="" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+      </div>
+    </div>
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Apellido</strong>
         <input id="inputApellido" placeholder="Apellido" type="text" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
       </div>
     </div>
-  </div>
+
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Nombre</strong>
+        <input id="inputNombre" placeholder="Nombre" type="text" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
+      </div>
+    </div>
   
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
-        <input id="inputNombre" placeholder="Nombres" type="text" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Fecha Nacimiento</strong>
+        <input type="text" class="form-control" id="inputFechaNacimiento" placeholder="dd/mm/aaaa" required autocomplete="off">
       </div>
     </div>
-  </div>
-
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
-        <input type="text" class="form-control" id="inputFechaNacimiento" placeholder="dd/mm/aaaa (Fecha Nacimiento)" required autocomplete="off">
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
-        <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKey(event);" required autocomplete="off">
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
+    
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Domicilio</strong>
         <input id="inputDomicilio" placeholder="Domicilio" type="text" class="form-control" minlength="5" maxlength="50" required autocomplete="off">
         <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" >
       </div>
     </div>
-  </div>
 
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <strong>&nbsp;0&nbsp;</strong>
-          </div>
-        </div> 
-        
-        <input id="inputCaracteristicaTelefono" inputmode="tel" placeholder="Caracteristica" type="text" class="form-control" minlength="2" maxlength="4"  onkeypress="return valideKey(event);" required autocomplete="off">
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
-        &nbsp;
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <strong>15</strong>
-          </div>
-        </div> 
-        <input id="inputNumeroTelefono" inputmode="tel" placeholder="Numero" type="text" class="form-control" minlength="6" maxlength="9"  onkeypress="return valideKey(event);" required autocomplete="off">
-      </div>
-    </div>
-  </div>
+    <div class="form-group row">  
+      <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <strong>Tel.Numero (Sin el 0)</strong>
+          <input id="inputTelefonoCaracteristica" inputmode="tel" placeholder="Caracteristica" type="text" class="form-control" minlength="2" maxlength="4" onkeypress="return valideKeySoloNumerosSinPrimerCero(event,this.value);" required autocomplete="off">
+      
+        </div>
 
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
+        <div class="form-group col-md-3">
+          <strong>Tel.Numero (Sin el 15)</strong>
+          <input id="inputTelefonoNumero" inputmode="tel" placeholder="Numero" type="text" class="form-control" minlength="6" maxlength="9" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
+        </div>
+    </div>      
+
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Email</strong>
         <input id="inputEmail" inputmode="email" placeholder="Email" type="email" class="form-control" minlength="8" maxlength="35" required autocomplete="off">
         <input id="inputAccion" type="hidden" class="form-control" required>
       </div>
     </div>
-  </div>
 
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-address-card"></i>
-          </div>
-        </div> 
-        <select id="inputLocalidad" class="form-control select2" placeholder="Localidad" required autocomplete="off">
-          <option value="">Ingrese Localidad</option>
-        </select>
+    <div class="form-row">
+        <div class="form-group col-md-6"> 
+              <strong>Localidad</strong>
+              <select id="inputLocalidad" class="form-control select2 select2-localidad select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            </select> 
+        </div>
+    </div>
+
+    <div class="form-row">
+       <div class="form-group col-md-6">
+         <button id="btnVerEditar" type="button" class="btn btn-primary btn-block" onclick="entidadGuardar()">Guardar</button>
+       </div>
+     </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <button type="button" class="btn btn-secondary btn-block" onclick="load(1)">Volver</button>
       </div>
     </div>
-  </div>
-
-  <div class="form-group row justify-content-center">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
-       <button id="btnAceptar" type="button" class="btn btn-primary btn-block" onclick="entidadGuardar()">Guardar</button><br>
-       <button id="btnVolver" type="button" class="btn btn-secondary btn-block" onclick="load(1)">Volver a la Página Anterior</button>
-    </div>
-  </div>
-
   
-</form>
-
-</div>
-</div>
-</section>
+  </form>
+  
+  </div>
+  </div>
+</article>

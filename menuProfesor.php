@@ -107,7 +107,7 @@ require_once('seguridad.php');
     <?php include("componente_navbar.php"); ?>
   </header>
 
-  <article>
+<article>
     <div id="breadcrumb">
       <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
@@ -116,19 +116,19 @@ require_once('seguridad.php');
           </ol>
       </nav>
     </div>
-  </article>
+</article>
 
-  <article class="container">
+
+<article class="container-fluid">
     <div id="titulo"></div>
-  </article>
-
-  <article class="container">
-       <section>
-            <div class="row" id="filtro"></div><!-- Cierra Row-->
-            <div class="row" id="resultado"></div><!-- Cierra Row-->
-            <div class="row" id="resultado_accion"></div><!-- Cierra Row-->
-        </section>
-  </article>
+</article>
+  
+<article  class="container">
+    <section id="principal">
+    </section>  
+    <section id="resultado_accion">
+    </section>         
+</article>
 
   
 
@@ -142,8 +142,27 @@ require_once('seguridad.php');
 <script src="./js/funciones.js"></script>
 <script>
 
-function valideKey(evt){
+function valideKeySoloNumerosSinPrimerCero(evt,val){
+    var inputValue = val;
+    //alert(val);
+    // Verificar si el primer carácter es cero
+    if (inputValue.length === 0 && evt.which === 48) {
+        evt.preventDefault();
+        return false;
+    }
+    // code is the decimal ASCII representation of the pressed key.
+    var code = (evt.which) ? evt.which : evt.keyCode;
     
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57 && inputValue.charAt(0)!== '0') { // is a number.
+      return true;
+    } else{ // other keys.
+      return false;
+    }
+}
+
+function valideKeySoloNumeros(evt){
     // code is the decimal ASCII representation of the pressed key.
     var code = (evt.which) ? evt.which : evt.keyCode;
     
@@ -173,6 +192,14 @@ let campo5 = "Telefono";
 let campo6 = "Email";
 
 $(function () {
+    $("#inputCuit").mask("99-99999999-9");
+    /*
+    $("input").blur(function() {
+                                $("#info").html("Unmasked value: " + $(this).mask());
+                            }).dblclick(function() {
+                                $(this).unmask();
+                            });
+                            */
     load(1);
 });
   
@@ -205,7 +232,7 @@ function load(page) {
               //$("#resultado").html("<img src='../assets/img/load_icon.gif' width='50' >");  
             },
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
     });
 };
@@ -237,7 +264,7 @@ function load(page) {
             data: parametros,
             method: 'POST',
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
         });
   };
@@ -261,7 +288,7 @@ function load(page) {
             data: parametros,
             method: 'POST',
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
         });
   };
@@ -330,7 +357,8 @@ function entidadCrear(){
       $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
       
       $.get(url,function(data) {
-            $("#resultado").slideDown("slow").html(data);
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
             $("#inputFechaNacimiento").datepicker({
                 dateFormat: 'dd/mm/yy',
                 maxDate: new Date()
@@ -371,15 +399,13 @@ function entidadCrear(){
     let nombres = $("#inputNombre").val();
     let dni = $("#inputDocumento").val();
     let domicilio = $("#inputDomicilio").val();
-    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
-    let telefono_numero = $("#inputNumeroTelefono").val();
+    let telefono_caracteristica = $("#inputTelefonoCaracteristica").val();
+    let telefono_numero = $("#inputTelefonoNumero").val();
     let email = $("#inputEmail").val();
     let localidad_id = $("#inputLocalidad").val();
     let fecha_nacimiento = $("#inputFechaNacimiento").val();
     
     let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
-
-    console.info(parametros);
     
     let url = "funciones/"+entidad_nombre+"Guardar.php";
     if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
@@ -407,8 +433,8 @@ function entidadCrear(){
                                                     </span>    
                                                 </div>`);
                 }
-                load(1);
             },"json"); 
+            load(1);
     } else {
         $("#resultado_accion").html(`
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
@@ -445,7 +471,8 @@ function entidadVer(entidad_id){
     $("#breadcrumb").slideDown("slow").html(breadcrumb);   
     datos_entidad = entidadObtenerPorId(entidad_id);
     $.get(url,function(data) {
-          $("#resultado").slideDown("slow").html(data);
+          $("#resultado_accion").html("");
+          $("#principal").slideDown("slow").html(data);
           //******************************************************************** 
           //**************************** CAMBIAR ******************************* 
           //$("#inputIdProfesor").val(entidad_id)
@@ -456,9 +483,6 @@ function entidadVer(entidad_id){
           $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
           $("#spn_email").html(datos_entidad.datos[0].email);
           $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $("#spn_asistio").html(datos_entidad.datos[0].asistio);
-          $("#spn_pago").html(datos_entidad.datos[0].pago);
-          $('#imgInteresado').attr('src','../fotos/' + datos_entidad.datos[0].foto);
           $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
           
            //******************************************************************** 
@@ -489,7 +513,8 @@ function entidadEditar(entidad_id){
       $("#breadcrumb").slideDown("slow").html(breadcrumb);   
       datos_entidad = entidadObtenerPorId(entidad_id);
       $.get(url,function(data) {
-            $("#resultado").slideDown("slow").html(data);
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
@@ -500,8 +525,8 @@ function entidadEditar(entidad_id){
             $("#inputDomicilio").val(datos_entidad.datos[0].domicilioCalle+' '+datos_entidad.datos[0].domicilioDpto);
             $("#inputTelefono").val(datos_entidad.datos[0].telefono);
             $("#inputTelefono").attr('type','text');
-            $("#inputCaracteristicaTelefono").val(datos_entidad.datos[0].telefono_caracteristica);
-            $("#inputNumeroTelefono").val(datos_entidad.datos[0].telefono_numero);
+            $("#inputTelefonoCaracteristica").val(datos_entidad.datos[0].telefono_caracteristica);
+            $("#inputTelefonoNumero").val(datos_entidad.datos[0].telefono_numero);
             $("#inputEmail").val(datos_entidad.datos[0].email);
             $("#inputFechaNacimiento").datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -558,8 +583,8 @@ function entidadGuardarEditado(){
     let nombres = $("#inputNombre").val();
     let dni = $("#inputDocumento").val();
     let domicilio = $("#inputDomicilio").val();
-    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
-    let telefono_numero = $("#inputNumeroTelefono").val();
+    let telefono_caracteristica = $("#inputTelefonoCaracteristica").val();
+    let telefono_numero = $("#inputTelefonoNumero").val();
     let email = $("#inputEmail").val();
     let localidad_id = $("#inputLocalidad").val();
     let fecha_nacimiento = $("#inputFechaNacimiento").val();
@@ -595,16 +620,16 @@ function entidadGuardarEditado(){
             $("#inputDocumento").val("");
             $("#inputDomicilio").val("");
             $("#inputTelefono").val("");
-            $("#inputCaracteristicaTelefono").val("");
-            $("#inputNumeroTelefono").val("");
+            $("#inputTelefonoCaracteristica").val("");
+            $("#inputTelefonoNumero").val("");
             $("#inputEmail").val("");
             $("#inputLocalidad").val("");
             $("#inputAccion").val("");
             let hoy = new Date();  
             let fecha_hoy = hoy.getDate() + '/' + ( hoy.getMonth() + 1 ) + '/' + hoy.getFullYear();
             $("#inputFechaNacimiento").datepicker('setDate',fecha_hoy);
-            load(1);
         },"json"); 
+        load(1);
     } else {
         $("#resultado_accion").html(`
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
