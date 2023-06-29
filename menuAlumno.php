@@ -462,17 +462,14 @@ function entidadVer(entidad_id){
           $("#principal").slideDown("slow").html(data);
           //******************************************************************** 
           //**************************** CAMBIAR ******************************* 
-          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombres);
+          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
           $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
           $("#spn_documento").html(datos_entidad.datos[0].dni);
           $("#spn_domicilio").html(datos_entidad.datos[0].direccion);
           $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
           $("#spn_email").html(datos_entidad.datos[0].email);
           $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $("#spn_asistio").html(datos_entidad.datos[0].asistio);
-          $("#spn_pago").html(datos_entidad.datos[0].pago);
-          $('#imgInteresado').attr('src','../fotos/' + datos_entidad.datos[0].foto);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+datos_entidad.datos[0].id+')');
+          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
           
            //******************************************************************** 
            //******************************************************************** 
