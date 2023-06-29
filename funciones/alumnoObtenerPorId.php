@@ -8,7 +8,7 @@ $id = ( isset($_POST['id']) )?SanitizeVars::INT($_POST['id']):false;
 
 $array_resultados = array();
 if ($id) {
-    $sql = "SELECT per.*, l.id as 'localidad_id', l.nombre as 'localidad_nombre', p.nombre as 'provincia_nombre' 
+    $sql = "SELECT per.*, l.id as 'localidad_id', l.nombre as 'localidad_nombre', l.cp as 'codigo_postal', p.nombre as 'provincia_nombre' 
             FROM alumno a, persona per, localidad l, provincia p 
             WHERE a.id = $id AND a.dni = per.dni AND per.idLocalidad = l.id AND l.provincia_id = p.id";
     //die($sql);
