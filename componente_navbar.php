@@ -19,9 +19,9 @@
         <a class="nav-link i dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Eventos 
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="nav-link" href="menuEvento.php">Eventos Academicos<span class="sr-only">(current)</span></a>
-          <a class="nav-link" href="menuCalendario.php">Calendario de Eventos<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="menuEvento.php">Eventos Academicos<span class="sr-only">(current)</span></a>
+          <a class="dropdown-item" href="menuCalendario.php">Calendario de Eventos<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -29,8 +29,8 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Carreras
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="nav-link" href="menuCarrera.php">Carreras<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="menuCarrera.php">Carreras<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -38,9 +38,9 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Homologación
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="nav-link" href="menuHomologacionMateriaRegularizada.php">Regularidad<span class="sr-only">(current)</span></a>
-           <a class="nav-link" href="menuHomologacionMateriaAprobada.php">Aprobación<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="menuHomologacionMateriaRegularizada.php">Regularidad<span class="sr-only">(current)</span></a>
+           <a class="dropdown-item" href="menuHomologacionMateriaAprobada.php">Aprobación<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -48,8 +48,8 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Promociones
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="nav-link" href="menuPromociones.php">Listas de promocionados<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="menuPromociones.php">Listas de promocionados<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -57,8 +57,8 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Gestión Docentes
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="nav-link" href="menuProfesor.php">Listar<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="menuProfesor.php">Listar<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -66,8 +66,8 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Gestión Alumnos
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="nav-link" href="menuAlumno.php">Listar<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="menuAlumno.php">Listar<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -75,9 +75,9 @@
         <a class="nav-link i dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Reportes
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-           <a class="nav-link" href="menuActasPromociones.php">Actas Promociones<span class="sr-only">(current)</span></a>
-           <a class="nav-link" href="menuActasExamenes.php">Actas Exámenes<span class="sr-only">(current)</span></a>
+        <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdownMenuLink">
+           <a class="dropdown-item" href="menuActasPromociones.php">Actas Promociones<span class="sr-only">(current)</span></a>
+           <a class="dropdown-item" href="menuActasExamenes.php">Actas Exámenes<span class="sr-only">(current)</span></a>
         </div>
   </li>
 
@@ -85,7 +85,7 @@
 </ul>
 
 <ul class="navbar-nav ml-auto">
-  <li class="nav-item px-4 dropdown">
+  <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="servicesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <img src="../public/assets/img/icons/user_icon.png" width="22">
         </a>
