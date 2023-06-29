@@ -446,7 +446,7 @@ function entidadCrear(){
 //************************************************* 
 function entidadVer(entidad_id){
     let datos_entidad = "";
-    let url = "html/"+entidad_nombre+".html";
+    let url = "html/"+entidad_nombre+"Ver.html";
     let url_obtener_entidad = "funciones/localidadObtener.php";
     let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
