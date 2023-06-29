@@ -83,9 +83,13 @@ if ($accion=='editar') {
       $filas_afectadas_1 = mysqli_affected_rows($conex);
       $sql_profesor = "INSERT profesor(dni,apellido,nombre) VALUES('$dni','$apellido','$nombres')";
       $resultado_2 = mysqli_query($conex,$sql_profesor);
-      $filas_afectadas_2 = mysqli_affected_rows($conex);    
+      $filas_afectadas_2 = mysqli_affected_rows($conex);  
+      $sql_usuario = "INSERT usuario(dni,idtipo,pass) VALUES('$dni',2,'".md5($dni)."')";
+      $resultado_3 = mysqli_query($conex,$sql_usuario);
+      $filas_afectadas_3 = mysqli_affected_rows($conex);   
+
       //die( $sql_persona.'**'.$sql_profesor);
-      if ($filas_afectadas_1>0 && $filas_afectadas_2>0) {
+      if ($filas_afectadas_1>0 && $filas_afectadas_2>0 && $filas_afectadas_3>0) {
             $array_resultados['codigo'] = 100;
             $array_resultados['mensaje'] = "El $entidad <strong>$apellido, $nombres</strong> fueron creado Exitosamente.";
       } else {

@@ -12,12 +12,12 @@
       </div>
     </div>
 
-    <div class="form-row">  
+    <!-- <div class="form-row">  
       <div class="form-group col-md-6">
         <strong>CUIT</strong>
         <input id="inputCuit" inputmode="numeric" placeholder="" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
       </div>
-    </div>
+    </div> -->
     
     <div class="form-row">  
       <div class="form-group col-md-6">
@@ -44,19 +44,19 @@
       <div class="form-group col-md-6">
         <strong>Domicilio</strong>
         <input id="inputDomicilio" placeholder="Domicilio" type="text" class="form-control" minlength="5" maxlength="50" required autocomplete="off">
-        <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" >
+        <!-- <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" > -->
       </div>
     </div>
 
     <div class="form-group row">  
       <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
-          <strong>Tel.Numero (Sin el 0)</strong>
+          <strong>Cel.Numero (Sin el 0)</strong>
           <input id="inputTelefonoCaracteristica" inputmode="tel" placeholder="Caracteristica" type="text" class="form-control" minlength="2" maxlength="4" onkeypress="return valideKeySoloNumerosSinPrimerCero(event,this.value);" required autocomplete="off">
       
         </div>
 
         <div class="form-group col-md-3">
-          <strong>Tel.Numero (Sin el 15)</strong>
+          <strong>Cel.Numero (Sin el 15)</strong>
           <input id="inputTelefonoNumero" inputmode="tel" placeholder="Numero" type="text" class="form-control" minlength="6" maxlength="9" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
         </div>
     </div>      

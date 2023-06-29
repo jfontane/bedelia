@@ -192,8 +192,9 @@ let campo5 = "Telefono";
 let campo6 = "Email";
 
 $(function () {
-    $("#inputCuit").mask("99-99999999-9");
+   
     /*
+     $("#inputCuit").mask("99-99999999-9");
     $("input").blur(function() {
                                 $("#info").html("Unmasked value: " + $(this).mask());
                             }).dblclick(function() {
@@ -522,8 +523,8 @@ function entidadEditar(entidad_id){
             $("#inputNombre").val(datos_entidad.datos[0].nombre);
             $("#inputDocumento").attr('disabled',true)
             $("#inputDocumento").val(datos_entidad.datos[0].dni);
-            $("#inputDomicilio").val(datos_entidad.datos[0].domicilioCalle+' '+datos_entidad.datos[0].domicilioDpto);
-            $("#inputTelefono").val(datos_entidad.datos[0].telefono);
+            $("#inputDomicilio").val(datos_entidad.datos[0].domicilio);
+            //$("#inputTelefono").val(datos_entidad.datos[0].telefono);
             $("#inputTelefono").attr('type','text');
             $("#inputTelefonoCaracteristica").val(datos_entidad.datos[0].telefono_caracteristica);
             $("#inputTelefonoNumero").val(datos_entidad.datos[0].telefono_numero);
