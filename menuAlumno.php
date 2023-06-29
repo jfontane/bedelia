@@ -121,27 +121,17 @@ require_once('seguridad.php');
 <article class="container-fluid">
     <div id="titulo"></div>
 </article>
-
-
   
 <article  class="container">
     <section id="principal">
-            <div class="row" id="resultado"></div><!-- Cierra Row-->
-    </section>        
-</article>
-  
-<article  class="container">
-    <section>
-            <div class="row" id="resultado_accion"></div><!-- Cierra Row-->
-    </section>        
+    </section>  
+    <section id="resultado_accion">
+    </section>         
 </article>
   
 
 <!-- FOOTER -->
 <?php include("componente_footer.html"); ?>
-
-
-
 
 <!-- JAVASCRIPT CUSTOM -->
 <script src="./js/funciones.js"></script>
@@ -199,7 +189,6 @@ let campo5 = "Telefono";
 let campo6 = "Email";
 
 $(function () {
-    //alert('asdasdasd');
     load(1);
 });
   
@@ -207,11 +196,6 @@ $(function () {
 // CARGA EL LISTADO DE TODOS LAS ENTIDADES   */
 //****************************************** */
 function load(page) {
-    let contenido_section = `<div class="row" id="filtro"></div>
-            <div class="row" id="resultado"></div>
-            <div class="row" id="resultado_accion"></div>`;
-    $("#principal").html(contenido_section);
-
     let nombre = $("#inputFiltroNombres").val();
     let dni = $("#inputFiltroDni").val();
     let telefono = $("#inputFiltroTelefono").val();
@@ -237,7 +221,7 @@ function load(page) {
               //$("#resultado").html("<img src='../assets/img/load_icon.gif' width='50' >");  
             },
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
     });
 };
@@ -262,14 +246,13 @@ function load(page) {
     let per_page = 10;
     let parametros = {"action": "listar","page": 1,"per_page": per_page, "nombre":nombre, "dni":dni, "telefono":telefono, "email":email,"busqueda_rapida":busqueda};
     let titulo = "<h1><i><u>"+entidad_titulo1+"</u></i></h1>";
-    console.info(parametros);
-        $("#titulo").html(titulo);
+    $("#titulo").html(titulo);
         $.ajax({
             url: 'funciones/'+entidad_nombre+'Listar.php',
             data: parametros,
             method: 'POST',
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
         });
   };
@@ -293,7 +276,7 @@ function load(page) {
             data: parametros,
             method: 'POST',
             success: function (data) {
-                $("#resultado").slideDown("slow").html(data);
+                $("#principal").slideDown("slow").html(data);
             }
         });
   };
@@ -359,6 +342,7 @@ function entidadCrear(){
       $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
       
       $.get(url,function(data) {
+            $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
             $("#inputFechaNacimiento").datepicker({
                 dateFormat: 'dd/mm/yy',
@@ -432,8 +416,8 @@ function entidadCrear(){
                                                     </span>    
                                                 </div>`);
                 }
-                load(1);
             },"json"); 
+            load(1);
     } else {
         $("#resultado_accion").html(`
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
@@ -474,6 +458,7 @@ function entidadVer(entidad_id){
     $("#breadcrumb").slideDown("slow").html(breadcrumb);   
     datos_entidad = entidadObtenerPorId(entidad_id);
     $.get(url,function(data) {
+          $("#resultado_accion").html("");
           $("#principal").slideDown("slow").html(data);
           //******************************************************************** 
           //**************************** CAMBIAR ******************************* 
@@ -518,6 +503,7 @@ function entidadEditar(entidad_id){
       $("#breadcrumb").slideDown("slow").html(breadcrumb);   
       datos_entidad = entidadObtenerPorId(entidad_id);
       $.get(url,function(data) {
+            $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
@@ -632,8 +618,8 @@ function entidadGuardarEditado(){
             let hoy = new Date();  
             let fecha_hoy = hoy.getDate() + '/' + ( hoy.getMonth() + 1 ) + '/' + hoy.getFullYear();
             $("#inputFechaNacimiento").datepicker('setDate',fecha_hoy);
-            load(1);
         },"json"); 
+        load(1);
     } else {
         $("#resultado_accion").html(`
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
