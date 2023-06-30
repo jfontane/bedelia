@@ -9,8 +9,15 @@
      <!-- Bootstrap CSS -->
      <link rel="stylesheet" href="../../public/assets/css/bootstrap.min.css">
      <link rel="stylesheet" href="../../public/assets/css/jquery-ui.css">
-     <link rel="stylesheet" href="../../public/assets/css/select2.min.css"  />
-     <link rel="stylesheet" href="../css/select2.css"  />
+     <link rel="stylesheet" href="../../public/css/select2.min.css">
+     <link rel="stylesheet" href="../../public/css/select2-bootstrap.css">
+
+     <link rel="shortcut icon" href="../public/assets/img/favicon.png">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+      <link rel="stylesheet" href="../../public/assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="../../css/style.css">
+      <link rel="stylesheet" href="../../public/css/custom.css" type="text/css">
     <title>Document</title>
 </head>
 <body>
@@ -69,7 +76,7 @@
           <div class="form-row">  
             <div class="form-group col-md-6">
               <strong>CUIT</strong>
-              <input id="inputCuit" value="00-00000000-0" inputmode="numeric" placeholder="" type="text" class="form-control" minlength="11" maxlength="11" required autocomplete="off">
+              <input id="inputCuit" name="inputCuit" value="00-00000000-0" inputmode="numeric" placeholder="" type="text" class="form-control" minlength="11" maxlength="11" required autocomplete="off">
             </div>
           </div>
 
@@ -137,6 +144,12 @@
 <script src="../../public/assets/js/jquery-ui.js"></script>
 <script src="../../public/assets/js/select2.min.js"></script>
 <script src="../../public/assets/jquery/jquery.maskedinput.js"></script>
+<script src="../../public/assets/jquery-3.4.1.min.js"></script>
+<script src="../../public/assets/jquery-ui.js"></script>
+<script src="../../public/assets/popper.js/1.12.3/umd/popper.min.js"></script>
+<script src="../../public/assets/bootstrap/bootstrap-4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script src="../../public/assets/jquery/jquery.maskedinput.js"></script>
+<script src="../../public/assets/select2.min.js"></script>
 
 <!-- Option 2: Separate Popper and Bootstrap JS -->
 <!--
@@ -149,6 +162,8 @@
 
   $(document).ready(function() {
     $("#inputCuit").mask("99-99999999-9");
+    $("#inputCuit").val("20249128342");
+		$("#inputCuit").mask("99-99999999-9");
     /*$("input").blur(function() {
                                 $("#info").html("Unmasked value: " + $(this).mask());
                             }).dblclick(function() {
