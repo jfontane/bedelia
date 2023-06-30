@@ -106,8 +106,8 @@ if($action == 'listar'){
 							   <table width="100%">
 							 	   <tr class="table-light">
 										<th class="text-left" colspan="5">
-											<button class="btn btn-secondary '.$rol_admin.'" onclick="entidadCrear()">Agregar</button>&nbsp;
-											<button class="btn btn-secondary '.$rol_admin.'" onclick="entidadEliminarSeleccionados()">Borrar Seleccionados</button>&nbsp;
+											<button class="btn btn-primary '.$rol_admin.'" onclick="entidadCrear()">Agregar</button>&nbsp;
+											<button class="btn btn-primary '.$rol_admin.'" onclick="entidadEliminarSeleccionados()">Borrar Seleccionados</button>&nbsp;
 										</th>
 										<th class="text-right" colspan="7">
 												<div class="col-7">

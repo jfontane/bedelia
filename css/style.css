@@ -10,6 +10,8 @@
     background-color: #164B60 !important;
 }
 
+
+
 .col1{
     color: rgb(255, 255, 255) !important;
     padding-left: 2%;
@@ -19,3 +21,21 @@
 .nav-link{
     color: rgb(0, 0, 0) !important;
 }
+
+
+/* desde aca custom  */
+
+.btn-primary {
+    color: #fff !important;
+    background-color: #108A97 !important;
+    border-color: #108A97 !important; }
+    .btn-primary:hover {
+      color: #fff !important;
+      background-color: #0c6a74 !important;
+      border-color: #0b6069 !important; }
+    .btn-primary:focus, .btn-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(16, 138, 151, 0.5) !important; }
+    .btn-primary.disabled, .btn-primary:disabled {
+      color: #fff !important;
+      background-color: #108A97 !important;
+      border-color: #108A97 !important; }
