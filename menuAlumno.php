@@ -129,6 +129,7 @@ require_once('seguridad.php');
     </section>         
 </article>
   
+<span id="modalEliminar"></span>
 
 <!-- FOOTER -->
 <?php include("componente_footer.html"); ?>
@@ -189,6 +190,9 @@ let campo5 = "Telefono";
 let campo6 = "Email";
 
 $(function () {
+    $.get("./html/modalEliminar.html",function(data){
+      $("#modalEliminar").html(data);
+   })
     load(1);
 });
   
@@ -320,6 +324,42 @@ function entidadGuardar() {
 
 //************************************************************************************************ 
 //************************************************************************************************ 
+//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+function entidadVer(entidad_id){
+    let datos_entidad = "";
+    let url = "html/"+entidad_nombre+"Ver.html";
+    let url_obtener_entidad = "funciones/localidadObtener.php";
+    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
+                            </ol>
+                        </nav>`;
+    $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+    datos_entidad = entidadObtenerPorId(entidad_id);
+    $.get(url,function(data) {
+          $("#resultado_accion").html("");
+          $("#principal").slideDown("slow").html(data);
+          //******************************************************************** 
+          //**************************** CAMBIAR ******************************* 
+          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
+          $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
+          $("#spn_documento").html(datos_entidad.datos[0].dni);
+          $("#spn_domicilio").html(datos_entidad.datos[0].direccion);
+          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          $("#spn_email").html(datos_entidad.datos[0].email);
+          $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
+          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
+          
+           //******************************************************************** 
+           //******************************************************************** 
+    });
+}
+//************************************************************************************************ 
+//************************************************************************************************ 
 //*********************************** CREACION DE UNA ENTIDAD ************************************ 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -433,48 +473,7 @@ function entidadCrear(){
 }
 
 
-//************************************************************************************************ 
-//************************************************************************************************ 
-//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
-//************************************************************************************************ 
-//************************************************************************************************ 
 
-
-
-//************************************************* 
-// NOS PERMITE VER UNA ENTIDAD                   
-//************************************************* 
-function entidadVer(entidad_id){
-    let datos_entidad = "";
-    let url = "html/"+entidad_nombre+"Ver.html";
-    let url_obtener_entidad = "funciones/localidadObtener.php";
-    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
-                            </ol>
-                        </nav>`;
-    $("#breadcrumb").slideDown("slow").html(breadcrumb);   
-    datos_entidad = entidadObtenerPorId(entidad_id);
-    $.get(url,function(data) {
-          $("#resultado_accion").html("");
-          $("#principal").slideDown("slow").html(data);
-          //******************************************************************** 
-          //**************************** CAMBIAR ******************************* 
-          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
-          $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
-          $("#spn_documento").html(datos_entidad.datos[0].dni);
-          $("#spn_domicilio").html(datos_entidad.datos[0].direccion);
-          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
-          $("#spn_email").html(datos_entidad.datos[0].email);
-          $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
-          
-           //******************************************************************** 
-           //******************************************************************** 
-    });
-}
 
 
 //************************************************************************************************ 
@@ -652,7 +651,7 @@ $("body").on("click","#seleccionar_todos", function() {
       }
   });
   
-/*  
+ 
   //******************************************************************************************** 
   // VERFICICA SI HAY ENTIDADES SELECCIONADOS/CHECKBOX Y PIDE CONFIRMACION PARA SU ELIMINACION   
   //******************************************************************************************** 
@@ -687,6 +686,7 @@ $("body").on("click","#seleccionar_todos", function() {
   //*************************************************************************** 
   // ELIMINA TODOS LAS ENTIDADES CUYOS CHECKBOX ESTAN SELECCIONADOS             
   //*************************************************************************** 
+  
   function entidadEliminarSeleccionadosConfirmar(){
       let arreglo="";
       let parametros = "";
@@ -718,7 +718,8 @@ $("body").on("click","#seleccionar_todos", function() {
   //******************************************************* 
   // CONFIRMA LA ELIMINACION DE LA ENTIDAD DESDE EL MODAL   
   //******************************************************* 
-  $('#confirmarModal').on('shown.bs.modal', function (e) {
+  $("body").on("shown.bs.modal","#confirmarModal", function(e) {
+       
        let button = $(e.relatedTarget); // BUTTON QUE DISPARO EL MODAL
        let id=button.data("id");
       $("#inputEliminarId").val(id);
@@ -748,6 +749,7 @@ $("body").on("click","#seleccionar_todos", function() {
                 },"json");
   };
 
+  /*
 
   //************************************************ 
   // NOS PERMITE ENVIAR UN EMAIL A UNA INTERESADO    

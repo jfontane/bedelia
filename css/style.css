@@ -9,8 +9,20 @@
 .bg1{
     background-color: #164B60 !important;
 }
+/***** Javier ******/ 
 
+.bg2{
+  background-color: #5f8b94a8 !important;
+}
 
+.borderless table {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
+/***** Fin Javier ******/ 
 
 .col1{
     color: rgb(255, 255, 255) !important;

@@ -130,7 +130,9 @@ require_once('seguridad.php');
     </section>         
 </article>
 
-  
+<span id="modalEliminar">
+
+</span>  
 
 <!-- FOOTER -->
 <?php include("componente_footer.html"); ?>
@@ -192,7 +194,9 @@ let campo5 = "Telefono";
 let campo6 = "Email";
 
 $(function () {
-   
+   $.get("./html/modalEliminar.html",function(data){
+      $("#modalEliminar").html(data);
+   })
     /*
      $("#inputCuit").mask("99-99999999-9");
     $("input").blur(function() {
@@ -356,7 +360,8 @@ function entidadCrear(){
                               </ol>
                           </nav>`;
       $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
-      
+      $("#profesor_ver").addClass("d-none");
+      $("#profesor_editar").removeClass("d-none");
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
@@ -460,7 +465,7 @@ function entidadCrear(){
 //************************************************* 
 function entidadVer(entidad_id){
     let datos_entidad = "";
-    let url = "html/profesorVer.html";
+    let url = "html/profesor.html";
     let url_obtener_entidad = "funciones/localidadObtener.php";
     let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
@@ -470,6 +475,8 @@ function entidadVer(entidad_id){
                             </ol>
                         </nav>`;
     $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+   // $("#profesor_ver").removeClass("d-none");
+    $("#profesor_editar").addClass("d-none");
     datos_entidad = entidadObtenerPorId(entidad_id);
     $.get(url,function(data) {
           $("#resultado_accion").html("");
@@ -512,6 +519,8 @@ function entidadEditar(entidad_id){
                               </ol>
                           </nav>`;
       $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+      $("#profesor_ver").addClass("d-none");
+      $("#profesor_editar").removeClass("d-none");
       datos_entidad = entidadObtenerPorId(entidad_id);
       $.get(url,function(data) {
             $("#resultado_accion").html("");
@@ -645,7 +654,7 @@ function entidadGuardarEditado(){
     }    
 }
 
-/*
+
 //************************************************************************************************ 
 //************************************************************************************************ 
 //************************************* ELIMINACION DEL ALUMNO   ********************************* 
@@ -665,7 +674,7 @@ $("body").on("click","#seleccionar_todos", function() {
           $('.check').prop('checked',false);
       }
   });
-  
+  /*
   
   //******************************************************************************************** 
   // VERFICICA SI HAY ENTIDADES SELECCIONADOS/CHECKBOX Y PIDE CONFIRMACION PARA SU ELIMINACION   
