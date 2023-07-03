@@ -581,13 +581,12 @@ function entidadGuardarEditado(){
             if (data.codigo==100) {
                     $("#resultado_accion").html(`
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
-                                                <span style="color: #000000;">
+                                                
                                                 <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                                                     &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>   
-                                                </span>    
                                             </div>`);
             } else {
                     $("#resultado_accion").html(`

@@ -47,12 +47,11 @@ if ($entidades_a_eliminar) {
                     WHERE dni=".$fila['dni']."";
             //die($sql_persona);
             /** SE INICIA LA TRANSACCION **/
-            
-            $ok_alumno = mysqli_query($conex,$sql_alumno);
             mysqli_query($conex,$sql_rinde_materias);
             mysqli_query($conex,$sql_cursa_materias);
             mysqli_query($conex,$sql_pertenece_carrera);
             mysqli_query($conex,$sql_usuario);
+            $ok_alumno = mysqli_query($conex,$sql_alumno);
             mysqli_query($conex,$sql_persona);
             //PRENGUNTAMOS SI HUBO ERROR
             $errorNro =  mysqli_errno($conex);
