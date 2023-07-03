@@ -31,39 +31,66 @@ if ($entidades_a_eliminar) {
                   
             $sql_pertenece_carrera = "DELETE FROM alumno_estudia_carrera
             WHERE idAlumno = $idEntidad";     
-            mysqli_query($conex,$sql_pertenece_carrera);
+            $ok1 = mysqli_query($conex,$sql_pertenece_carrera);
             //die($sql_pertenece_carrera);   
+            if(!$ok1){
+                  die('alumno_estudia_carrera');
+            }; 
+
             $sql_rinde_materias = "DELETE FROM alumno_rinde_materia
                                    WHERE idAlumno = $idEntidad";      
-            mysqli_query($conex,$sql_rinde_materias);                       
-            die($sql_rinde_materias);                                                               
+            $ok2 = mysqli_query($conex,$sql_rinde_materias);                       
+            //die($sql_rinde_materias);                
+            if(!$ok2){
+                  die('alumno_rinde_materia');
+            }; 
+
             $sql_cursa_materias = "DELETE FROM alumno_cursa_materia
                                    WHERE idAlumno = $idEntidad";
-            mysqli_query($conex,$sql_cursa_materias);                       
+            $ok3 = mysqli_query($conex,$sql_cursa_materias);                      
             //die($sql_cursa_materias);    
+            if(!$ok3){
+                  die('alumno_cursa_materia');
+            }; 
+
             $sql_usuario = "DELETE FROM usuario
-                            WHERE dni =".$fila['dni']."";                       
+                            WHERE dni =".$fila['dni']."";   
+            $ok4 = mysqli_query($conex,$sql_usuario);                                    
             //die($sql_usuario); 
+            if(!$ok4){
+                  die('usuario');
+            }; 
+
             $sql_alumno = "DELETE FROM alumno
             WHERE id = $idEntidad";
-            //die($sql_alumno);        
+            $ok5 = mysqli_query($conex,$sql_alumno);
+            //die($sql_alumno);     
+            if(!$ok5){
+                  die('alumno');
+            }; 
+
             $sql_persona = "DELETE FROM persona
                     WHERE dni=".$fila['dni']."";
+            $ok6 = mysqli_query($conex,$sql_persona);     
+            if(!$ok6){
+                  die('persona');
+            }; 
+            
             //die($sql_persona);
             /** SE INICIA LA TRANSACCION **/
            
 
-            mysqli_query($conex,$sql_cursa_materias);
+            
            
-            mysqli_query($conex,$sql_usuario);
-            $ok_alumno = mysqli_query($conex,$sql_alumno);
-            mysqli_query($conex,$sql_persona);
+            
+            
             //PRENGUNTAMOS SI HUBO ERROR
             $errorNro =  mysqli_errno($conex);
-            if(!$ok_alumno){
+            if(!$ok5){
                   db_rollback($conex);
                   break;
             }; 
+
       } // END FOR
 
       if ($errorNro) {
