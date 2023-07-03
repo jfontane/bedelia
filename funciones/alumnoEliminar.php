@@ -31,13 +31,15 @@ if ($entidades_a_eliminar) {
                   
             $sql_pertenece_carrera = "DELETE FROM alumno_estudia_carrera
             WHERE idAlumno = $idEntidad";     
-            mysqli_query($conex,$sql_rinde_materias);
-            die($sql_pertenece_carrera);   
+            mysqli_query($conex,$sql_pertenece_carrera);
+            //die($sql_pertenece_carrera);   
             $sql_rinde_materias = "DELETE FROM alumno_rinde_materia
                                    WHERE idAlumno = $idEntidad";      
-            //die($sql_rinde_materias);                                                               
+            mysqli_query($conex,$sql_rinde_materias);                       
+            die($sql_rinde_materias);                                                               
             $sql_cursa_materias = "DELETE FROM alumno_cursa_materia
                                    WHERE idAlumno = $idEntidad";
+            mysqli_query($conex,$sql_cursa_materias);                       
             //die($sql_cursa_materias);    
             $sql_usuario = "DELETE FROM usuario
                             WHERE dni =".$fila['dni']."";                       
@@ -52,7 +54,7 @@ if ($entidades_a_eliminar) {
            
 
             mysqli_query($conex,$sql_cursa_materias);
-            mysqli_query($conex,$sql_pertenece_carrera);
+           
             mysqli_query($conex,$sql_usuario);
             $ok_alumno = mysqli_query($conex,$sql_alumno);
             mysqli_query($conex,$sql_persona);
