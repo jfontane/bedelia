@@ -28,26 +28,29 @@ if ($entidades_a_eliminar) {
             $sql = "select dni FROM alumno WHERE id=$idEntidad";
             $res_dni = @mysqli_query($conex,$sql);
             $fila = mysqli_fetch_assoc($res_dni);
-            $sql_alumno = "DELETE FROM alumno
-                    WHERE id = $idEntidad";
-            //die($sql_alumno);        
+                  
+            $sql_pertenece_carrera = "DELETE FROM alumno_estudia_carrera
+            WHERE idAlumno = $idEntidad";     
+            mysqli_query($conex,$sql_rinde_materias);
+            die($sql_pertenece_carrera);   
             $sql_rinde_materias = "DELETE FROM alumno_rinde_materia
                                    WHERE idAlumno = $idEntidad";      
             //die($sql_rinde_materias);                                                               
             $sql_cursa_materias = "DELETE FROM alumno_cursa_materia
                                    WHERE idAlumno = $idEntidad";
             //die($sql_cursa_materias);    
-            $sql_pertenece_carrera = "DELETE FROM alumno_estudia_carrera
-                                      WHERE idAlumno = $idEntidad";     
-            //die($sql_pertenece_carrera);                                                      
             $sql_usuario = "DELETE FROM usuario
                             WHERE dni =".$fila['dni']."";                       
-            //die($sql_usuario);        
+            //die($sql_usuario); 
+            $sql_alumno = "DELETE FROM alumno
+            WHERE id = $idEntidad";
+            //die($sql_alumno);        
             $sql_persona = "DELETE FROM persona
                     WHERE dni=".$fila['dni']."";
             //die($sql_persona);
             /** SE INICIA LA TRANSACCION **/
-            mysqli_query($conex,$sql_rinde_materias);
+           
+
             mysqli_query($conex,$sql_cursa_materias);
             mysqli_query($conex,$sql_pertenece_carrera);
             mysqli_query($conex,$sql_usuario);
