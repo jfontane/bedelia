@@ -103,32 +103,36 @@ require_once('seguridad.php');
 
  
  <!-- NAVBAR -->
- <header>
+<header>
     <?php include("componente_navbar.php"); ?>
-  </header>
+</header>
 
-  <article>
+<article>
     <div id="breadcrumb">
       <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
               <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Calendario</li>
+              <li class="breadcrumb-item active" aria-current="page">Calendario Académico</li>
           </ol>
       </nav>
     </div>
-  </article>
+</article>
 
-  <article class="container">
+
+<article class="container-fluid">
     <div id="titulo"></div>
-  </article>
+</article>
+  
+<article  class="container">
+    <section id="principal">
+    </section>  
+    <section id="resultado_accion">
+    </section>         
+</article>
 
-  <article class="container">
-       <section>
-            <div class="row" id="filtro"></div><!-- Cierra Row-->
-            <div class="row" id="resultado"></div><!-- Cierra Row-->
-            <div class="row" id="resultado_accion"></div><!-- Cierra Row-->
-        </section>
-  </article>
+<span id="modalEliminar">
+
+</span>  
 
   
 
@@ -147,7 +151,6 @@ $(function () {
 });
 
 function cargarModulos() {
-    loadFiltros();
   	load(1);
 };
 
@@ -164,10 +167,10 @@ function load(page) {
           data: parametros,
           method: 'POST',
           beforeSend: function () {
-            $("#resultado").html("<img src='../public/assets/img/load_icon.gif' width='50' >");  
+            $("#principal").html("<img src='../public/assets/img/load_icon.gif' width='50' >");  
           },
           success: function (data) {
-              $("#resultado").fadeIn(100).html(data);
+              $("#principal").fadeIn(100).html(data);
               $("#tabla_calendario>tfoot").prepend(`<tr>
                                                       <td colspan="7">
                                                           <button class="btn btn-primary" onclick="calendarioAgregar()">Nuevo</button>
@@ -190,7 +193,7 @@ $("body").on("click","#botonFiltro",function(e) {
           data: parametros,
           method: 'POST',
           success: function (data) {
-              $("#resultado").html(data);
+              $("#principal").html(data);
               $("#tabla_calendario>tfoot").prepend(`<tr>
                                                       <td colspan="5">
                                                           <button class="btn btn-primary" onclick="calendarioAgregar()">Nuevo</button>
@@ -201,27 +204,6 @@ $("body").on("click","#botonFiltro",function(e) {
 
 }) 
 
-
-function loadFiltros() {
-    $.get("./html/calendarioFiltro.html",function(datos) {
-        $("#filtro").html(datos);
-        $.post("./funciones/getAllEvento.php",function(datos_evento){
-            if (datos_evento.codigo == 100) {
-                datos_evento.data.forEach(evento => {
-                      $("#inputFiltroEvento").append($('<option/>', {
-                            text: '('+evento.codigo+') '+evento.descripcion,
-                            value: evento.codigo,
-                      }));
-                });
-                $('#inputFiltroEvento').select2({
-                    theme: "bootstrap4",
-                });
-            } else {
-                console.log("error codigo");
-            }
-        },"json");
-    });
-}    
 
 
 
@@ -238,7 +220,7 @@ function calendarioAgregar() {
     $("#breadcrumb").html(bread);
     $("#titulo").html(titulo);
     $.get("./html/calendarioAlta.html",function(datos) {
-         $("#resultado").html(datos);
+         $("#principal").html(datos);
          $("#inputAltaFechaInicio").datepicker({dateFormat: "yy-mm-dd"});
          $("#inputAltaFechaFinalizacion").datepicker({dateFormat: "yy-mm-dd"});
          $.post("./funciones/getAllEvento.php",function(datosEventos) {
@@ -284,7 +266,7 @@ function calendarioEditar(idCalendario) {
         evento_id = datos_calendario.data[0].idEvento;
     };
     $.get("./html/calendarioEditar.html",function(datos) {
-         $("#resultado").html(datos);
+         $("#principal").html(datos);
          $("#inputEditarAnio").val(anio_lectivo);
          $("#inputEditarFechaInicio").val(fecha_inicio);
          $("#inputEditarFechaFinalizacion").val(fecha_finalizacion);

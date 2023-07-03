@@ -156,7 +156,7 @@ if ($numrows>0){
 				$rowIdCampo1 = $row['id'];
 				$rowCampo2 = $row['apellido'].', '.$row['nombre'].' ('.$row['id'].')';
 				$rowCampo3 = $row['dni'];
-				$wsp = ($row['telefono_caracteristica']!=NULL && $row['telefono_numero']!=null)?'<a href="https://api.whatsapp.com/send/?phone=549'.$row['telefono_caracteristica'].$row['telefono_numero'].'&text=Hola&type=phone_number&app_absent=0" target="_blank"><img src="../public/img/icons/wsp_icon.png" width="25"></a>':'';
+				$wsp = ($row['telefono_caracteristica']!=NULL && $row['telefono_numero']!=null)?'<a href="https://api.whatsapp.com/send/?phone=549'.$row['telefono_caracteristica'].$row['telefono_numero'].'&text=Hola&type=phone_number&app_absent=0" target="_blank"><img src="../public/img/icons/whatsapp.png" width="20"></a>&nbsp;':'';
 				$rowCampo4 = ($row['telefono_caracteristica']!=NULL && $row['telefono_numero']!=null)?$wsp.' ('.$row['telefono_caracteristica'].') '.$row['telefono_numero']:'';
 				$rowCampo5 = $row['email'];
 				
@@ -173,14 +173,14 @@ if ($numrows>0){
                           <a class=" dropdown-item small" href="#" onclick="entidadVer('<?=$rowIdCampo1?>')"><i class="fa fa-address-card-o"></i>&nbsp;Ver</a>
                           <a class=" dropdown-item small" href="#" onclick="entidadEditar('<?=$rowIdCampo1?>')"><i class="fa fa-edit"></i>&nbsp;Editar</a>
                           <a class=" dropdown-item small" href="#" data-toggle="modal" data-target="#confirmarModal" data-id="<?=$rowIdCampo1?>"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
-                          <a class=" dropdown-item small" href="#" onclick="enviarEmail('<?=$rowIdCampo1?>')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>
+                          <a class=" dropdown-item small disabledbutton" href="#" onclick="enviarEmail('<?=$rowIdCampo1?>')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>
                         </div>
                                     </div>
                   </td>
                   <td align="left"><small><?=$rowCampo2;?><small></td>
                   <td align="left"><small><?=$rowCampo3;?></small></td>
                   <td align="left"><small><?=$rowCampo4;?></small></td>
-                  <td align="left"><small><?=$rowCampo5;?></small></td>
+                  <td align="left"><small><a href="mailto:<?=$rowCampo5?>"><?=$rowCampo5;?></a></small></td>
               </tr>
 		<?php 
 				$finales++;

@@ -192,7 +192,7 @@ let campo6 = "Email";
 $(function () {
     $.get("./html/modalEliminar.html",function(data){
       $("#modalEliminar").html(data);
-   })
+    })
     load(1);
 });
   
@@ -329,7 +329,7 @@ function entidadGuardar() {
 //************************************************************************************************ 
 function entidadVer(entidad_id){
     let datos_entidad = "";
-    let url = "html/"+entidad_nombre+"Ver.html";
+    let url = "html/"+entidad_nombre+".html";
     let url_obtener_entidad = "funciones/localidadObtener.php";
     let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
@@ -338,11 +338,18 @@ function entidadVer(entidad_id){
                                 <li class="breadcrumb-item active" aria-current="page">Ver</li>
                             </ol>
                         </nav>`;
-    $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+    $("#breadcrumb").slideDown("slow").html(breadcrumb);  
+
+    //$('#alumno_ver').css('display', '');
+    //$('#alumno_editar').css('display', 'none !important');
+    
+     
     datos_entidad = entidadObtenerPorId(entidad_id);
     $.get(url,function(data) {
           $("#resultado_accion").html("");
           $("#principal").slideDown("slow").html(data);
+          $('#alumno_ver').removeClass('d-none');
+          $('#alumno_editar').addClass('d-none');
           //******************************************************************** 
           //**************************** CAMBIAR ******************************* 
           $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
@@ -384,6 +391,11 @@ function entidadCrear(){
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
+            $('#alumno_editar').removeClass('d-none');
+            $('#alumno_ver').addClass('d-none');
+            $('#telefono_viejo').addClass('d-none');
+            //******************************************************************** 
+            //******************************************************************** 
             $("#inputFechaNacimiento").datepicker({
                 dateFormat: 'dd/mm/yy',
                 maxDate: new Date()
@@ -501,6 +513,9 @@ function entidadEditar(entidad_id){
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
+            $('#alumno_editar').removeClass('d-none');
+            $('#alumno_ver').addClass('d-none');
+            $('#telefono_viejo').removeClass('d-none');
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
@@ -718,7 +733,6 @@ function entidadEliminarSeleccionadosConfirmar(){
   // CONFIRMA LA ELIMINACION DE LA ENTIDAD DESDE EL MODAL   
   //******************************************************* 
   $("body").on("shown.bs.modal","#confirmarModal", function(e) {
-       
        let button = $(e.relatedTarget); // BUTTON QUE DISPARO EL MODAL
        let id=button.data("id");
       $("#inputEliminarId").val(id);

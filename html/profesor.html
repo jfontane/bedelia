@@ -1,7 +1,7 @@
-<section class="img form" id="profesor_editar">
+<div class="img form visible" id="profesor_editar">
   <div class="jumbotron jumbotron-fluid rounded form2">
     <div class="container justifu+y-content-center">
-      <h1 class="display-4">Información del Profesor</h1>
+      <h1 class="display-4">Profesor</h1>
       <hr>
   <form id="form">
     
@@ -11,13 +11,6 @@
         <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
       </div>
     </div>
-
-    <!-- <div class="form-row">  
-      <div class="form-group col-md-6">
-        <strong>CUIT</strong>
-        <input id="inputCuit" inputmode="numeric" placeholder="" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
-      </div>
-    </div> -->
     
     <div class="form-row">  
       <div class="form-group col-md-6">
@@ -44,11 +37,17 @@
       <div class="form-group col-md-6">
         <strong>Domicilio</strong>
         <input id="inputDomicilio" placeholder="Domicilio" type="text" class="form-control" minlength="5" maxlength="50" required autocomplete="off">
-        <!-- <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" > -->
       </div>
     </div>
 
-    <div class="form-group row">  
+    <div class="form-row" id="telefono_viejo">  
+      <div class="form-group col-md-6">
+        <strong>Telefono Fomato Viejo</strong>
+        <input id="inputTelefono" placeholder="telefono" type="text" class="form-control" maxlength="20" >
+      </div>
+    </div>
+
+    <div class="form-row">  
       <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
           <strong>Cel.Numero (Sin el 0)</strong>
           <input id="inputTelefonoCaracteristica" inputmode="tel" placeholder="Caracteristica" type="text" class="form-control" minlength="2" maxlength="4" onkeypress="return valideKeySoloNumerosSinPrimerCero(event,this.value);" required autocomplete="off">
@@ -72,7 +71,7 @@
     <div class="form-row">
         <div class="form-group col-md-6"> 
               <strong>Localidad</strong>
-              <select id="inputLocalidad" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+              <select id="inputLocalidad" class="form-control select2 select2-localidad select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
             </select> 
         </div>
     </div>
@@ -90,12 +89,11 @@
     </div>
   
   </form>
-  
   </div>
   </div>
-</section>
+</div>
 
-<section class="img form d-none" id="profesor_ver">
+<div class="img form" id="profesor_ver" >
   <div class="jumbotron jumbotron-fluid rounded form2">
     <div class="container justifu+y-content-center">
       <h1 class="display-4">Ver Registro del Profesor</h1>
@@ -164,4 +162,4 @@
   
   </div>
   </div>
-</section>
+</div>

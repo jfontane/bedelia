@@ -1,26 +1,76 @@
 <?php
 set_include_path('../../lib/'.PATH_SEPARATOR.'../../conexion/');
-//require_once 'seguridadNivel1.php';
+
+//require_once 'controlAcceso.php';
 include_once 'conexion.php';
 include_once 'Sanitize.class.php';
 include_once 'pagination.php';
 //include_once 'ArrayHash.class.php';
 
+//die(unserialize('a:1:{i:0;s:8:"empleado";}')[0]);
+
+$rol_usuario = '';
+//$rol_admin = ($_SESSION['user_rol']=='admin' || $_SESSION['user_rol']=='SYSTEM')?'':'disabledbutton';
+
+$rol_admin = '';
+
+
+/**********************************************************************************************************************************************************************/
+/**************************************************************** RECIBIR PARAMETROS Y SANITIZARLOS *******************************************************************/
+/**********************************************************************************************************************************************************************/
+
 $action = (isset($_POST['action'])&& $_POST['action'] !=NULL)?$_POST['action']:'';
-$sWhere = "";
-$where = array();
-$where[] = " c.idEvento = e.id ";
+$busqueda = isset($_POST['busqueda_rapida'])?$_POST['busqueda_rapida']:false;
+
+$codigo = ( isset($_POST['codigo']) && ($_POST['codigo']) )?($_POST['codigo']):false;
+$anioLectivo = ( isset($_POST['anio']) && ($_POST['anio']) )?($_POST['anio']):false;
+
+
+/**********************************************************************************************************************************************************************/
+/**********************************************************************************************************************************************************************/
+/**********************************************************************************************************************************************************************/
+
+$andX = array();
+$orX = array();
+
+$andX[] = " c.idEvento = e.id ";
+
+$sql = $sqlCantidadFilas = "";
+
 if($action == 'listar'){
 	$tables = " calendarioacademico c, evento e ";
 	$campos = " c.id, c.AnioLectivo, e.descripcion, c.fechaInicioEvento, c.fechaFinalEvento, e.codigo ";
-	$codigo = ( isset($_POST['codigo']) && ($_POST['codigo']) )?($_POST['codigo']):false;
-	$anioLectivo = ( isset($_POST['anio']) && ($_POST['anio']) )?($_POST['anio']):false;
-    //die('DFDFDFDFjavier'.$anioLectivo.'-'.$codigo);
-	if ($codigo) $where[] = 'e.codigo = ' . $codigo;
-	if ($anioLectivo) $where[] = 'c.AnioLectivo = ' . $anioLectivo;
+	if ($codigo) $andX[] = 'e.codigo = ' . $codigo;
+	if ($anioLectivo) $andX[] = 'c.AnioLectivo = ' . $anioLectivo;
 
-    if (count($where)>0) $sWhere =' WHERE ' . implode(" and ",$where);
- 	$sWhere .= " ORDER BY c.AnioLectivo desc, c.fechaInicioEvento desc ";
+	if (count($andX)>0) $where = ' WHERE (' . implode(" and ",$andX) . ') ';
+	else $where = '';
+    
+	$where = $where . " ORDER BY c.AnioLectivo desc, c.fechaInicioEvento desc ";
+    $sql = "";
+
+	if ($busqueda) 
+	{
+		/*$campos_nuevos = "  x.id, x.dni, x.apellido, x.nombre, x.telefono, x.telefono_caracteristica, x.telefono_numero, x.email ";
+		$subConsultaFiltros = "SELECT $campos FROM  $tables $where";
+		//die($subConsultaFiltros);
+		$sqlCantidadFilas =  "SELECT count(*) AS numrows FROM  ($subConsultaFiltros) x
+							  WHERE (x.apellido like '%$busqueda%' or 
+									 x.nombre like '%$busqueda%' or 
+									 x.dni like '%$busqueda%' or
+									 x.email like '%$busqueda%')";
+		$sqlFinal =  "SELECT $campos_nuevos FROM  ($subConsultaFiltros) x 
+		              WHERE (x.apellido like '%$busqueda%' or 
+							 x.nombre like '%$busqueda%' or 
+							 x.dni like '%$busqueda%' or
+							 x.email like '%$busqueda%')";*/
+		//die($sqlFinal);
+	} else {
+		$sqlCantidadFilas = "SELECT count(*) AS numrows FROM $tables $where "; 
+		$sqlFinal = "SELECT $campos FROM  $tables $where";
+		//die("".$sqlFinal);
+	}
+
 
 	//PAGINATION VARIABLES
 	$page = ( isset($_REQUEST['page']) && !empty($_REQUEST['page']) )?$_REQUEST['page']:1;
@@ -28,77 +78,146 @@ if($action == 'listar'){
 	$adjacents  = 4; //gap between pages after number of adjacents
 	$offset = ($page - 1) * $per_page;
 	//Count the total number of row in your table*/
-    $sql = "SELECT count(*) AS numrows FROM $tables $sWhere "; 
-	//die($sql);
-	$count_query = mysqli_query($conex,$sql);
+   
+	//die($sqlCantidadFilas);
+	$count_query = mysqli_query($conex,$sqlCantidadFilas);
 	if ($row = mysqli_fetch_array($count_query)){$numrows = $row['numrows'];}
 	$total_pages = ceil($numrows/$per_page);
 	//main query to fetch the data
-	$sql_2 = "SELECT $campos FROM  $tables $sWhere LIMIT $offset,$per_page";
-	//die($sql_2);
-	$query = mysqli_query($conex,$sql_2);
+	$sqlFinal .=  " LIMIT $offset,$per_page ";
+	//die($sqlFinal);
+	$query = mysqli_query($conex,$sqlFinal);
 
-	//loop through fetched data
-	if ($numrows>0){
-		
-		$c=0;
-			echo '<div class="table-responsive" ">
-				<table class="table table-striped table-bordered table-hover" id="tabla_calendario">
-					<thead class="thead-dark">
-						<tr>
-							<th class="text-center" width="12%">#</th>
-							<th class="text-center" width="10%">ID</th>
-							<th class="text-center" width="10%"><small><b>AÑO</b></small></th>
-							<th class="text-center" width="50%"><small><b>EVENTO</b></small></th>
-							<th class="text-center" width="9%"><small><b>F.INICIO</b></small></th>
-							<th class="text-center" width="9%"><small><b>F.FINALIZACION</b></small></th>
-							<th width="10%"><small><b>ACCIONES</b></small></th>
-						</tr>
-					</thead>';
-		echo '<tbody>';
-		$finales=0;
-		$c=0;
+	//*********************************************************** */
+	//****************  PONER LOS NOMBRES DE LOS CAMPOS ********* */
+	//*********************************************************** */
+	$labelCampo1 = "Id";$labelCampo2 = "Anio"; $labelCampo3 = "Evento"; $labelCampo4 = "F.Inicio"; $labelCampo5 = "F.Finalizacion";
+	$campo1 = "Id";$campo2 = "Anio"; $campo3 = "Evento"; $campo4 = "FechaInicio"; $campo5 = "FechaFinalizacion";
+	//*********************************************************** */
+	//*****
+?>	
 
-		$pagina = (($page-1)*$per_page);
-
-	    //$tipo_organismo = substr($_SESSION['organismo_codigo'],0,1);
-    while ($row=mysqli_fetch_assoc($query)) {
-        	$c++;
-			$indice = $pagina + $c;
-			$espacio = "&nbsp;";
-			$accion_editar = '<a href="#" onclick="calendarioEditar('.$row['id'].')" ><img src="../public/assets/img/icons/edit_icon.png" width="20"></a>';
-			$accion_eliminar = '<a href="#" onclick="calendarioEliminar('.$row['id'].')" ><img src="../public/assets/img/icons/delete_icon.png" width="17"></a>';
-			
-			/*$hash = ArrayHash::encode(array($secreto=>$row['id']));*/
-        	echo '<tr>';
-			echo '   <td align="center">'.$espacio.$accion_eliminar.$espacio.'<b>'.$indice.'</b></td>'.'<td align="center">'.$row['id'].'</td>'.
-			     '   <td align="center"><small>'.$row['AnioLectivo'].'</small></td>'.
-				 '   <td align="left"><small>'.$row['descripcion'].'&nbsp;<b>('.$row['codigo'].')</b></small></td>'.
-				 '   <td align="right"><small>'.$row['fechaInicioEvento'].'</small></td>'.
-				 '   <td align="right"><small>'.$row['fechaFinalEvento'].'</small></td>'.
-				 '   <td align="left" class="text-left"><small>'.$accion_editar.'</small></td>';
-			echo '</tr>';
-        $finales++;
-    };
-		echo "</tbody><tfoot><tr><td colspan='7'>";
-		$inicios=$offset+1;
-		$finales+=$inicios-1;
-		echo "<br>";
-		echo "Mostrando <strong>$inicios</strong> al <strong>$finales</strong> de <strong>$numrows</strong> registros";
-		echo "<br><p>";
-		echo paginate($page, $total_pages, $adjacents);
-		echo "</td></tr>";
-    echo '</tfoot>';
-	echo '</table>';
-} else {
-	echo '<table class="table">';
-	echo '<tbody>';
-	echo '<tr><td><div class="alert alert-danger" role="alert">
-				 <b>Atenci&oacute;n:</b> No existen Eventos en el calendario.
-			 </div></td></tr>';
-	echo '</tbody>';
-	echo '</table>';
-};
-};
-
-?>
+<div class="table-responsive" >
+      <table class="table table-striped table-bordered table-hover bg2" id="tabla_calendario">
+        <thead>
+          <tr>
+            <th class="text-left" colspan="13">
+               <table class="table borderless" width="100%">
+                  <tr>
+                  <th class="text-left" colspan="5">
+                    <button class="btn btn-primary rol_admin" onclick="entidadCrear()">Agregar</button>&nbsp;
+                    <button class="btn btn-primary rol_admin" onclick="entidadEliminarSeleccionados()">Borrar Seleccionados</button>&nbsp;
+                  </th>
+                  <th class="text-right" colspan="7">
+                      <div class="col-7">
+                      <div class="input-group">
+                        <input id="inputBusquedaRapida" placeholder="Busqueda Rapida" type="text" class="form-control" value="<?=$busqueda?>"> 
+                        <div class="input-group-append">
+                        <div class="input-group-text">
+                          <a href="#" onclick="aplicarBusquedaRapida()"><i class="fa fa-search"></i></a>
+                        </div>
+                        </div>
+                      </div>
+                      </div>
+                    </th>
+                </tr>  
+               </table>
+            </th>
+              </tr>
+          <tr>
+            <th class="text-center" width="5%"><small><b><input type="checkbox" class="" id="seleccionar_todos"></b></small></th>
+            <th width="5%" class="text-center text-primary" colspan=3><small><b>ACCIONES</b><small></th>
+			<th class="text-center text-primary" width="5%"><small><b><?=$labelCampo1?></b></small></th>
+            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo2?></b></small></th>
+            <th class="text-center text-primary" width="35%"><small><b><?=$labelCampo3?></b></small></th>
+            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo4?></b></small></th>
+            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo5?></b></small></th>
+          </tr>
+          <tr>
+            <th class="text-right" colspan=4>
+                <button class="btn btn-primary" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
+                <button class="btn btn-primary" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
+              </th>
+            <th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo1?>" value=""></b></small></th>
+			<th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo2?>" value=""></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo3?>" value=""></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo4?>" value=""></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo5?>" value=""></b></small></th>
+          </tr>
+        </thead>
+		<tbody>
+<?php
+if ($numrows>0){
+	$finales = $c = 0;
+	$pagina = (($page-1)*$per_page);
+	while ($row=mysqli_fetch_assoc($query)) {
+				$c++;
+				$indice = $pagina + $c;
+				$rowIdCampo1 = $row['id'];
+				$rowCampo2 = $row['AnioLectivo'];
+				$rowCampo3 = $row['descripcion'].'('.$row['codigo'].')';
+				$rowCampo4 = $row['fechaInicioEvento'];
+				$rowCampo5 = $row['fechaFinalEvento'];
+?>						
+       
+            <tr>
+                  <td align="center"><small><b><input type="checkbox" class=" check" id="check_<?=$rowIdCampo1?>" name="check_usu[]" value="<?=$rowIdCampo1?>"></b></small></td>
+                      <td align="center" colspan="3">
+                      <div class="btn-group pull-right" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Acciones
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                          <a class=" dropdown-item small" href="#" onclick="entidadVer('<?=$rowIdCampo1?>')"><i class="fa fa-address-card-o"></i>&nbsp;Ver</a>
+                          <a class=" dropdown-item small" href="#" onclick="entidadEditar('<?=$rowIdCampo1?>')"><i class="fa fa-edit"></i>&nbsp;Editar</a>
+                          <a class=" dropdown-item small" href="#" data-toggle="modal" data-target="#confirmarModal" data-id="<?=$rowIdCampo1?>"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
+                          <a class=" dropdown-item small disabledbutton" href="#" onclick="enviarEmail('<?=$rowIdCampo1?>')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>
+                        </div>
+                                    </div>
+                  </td>
+				  <td align="left"><small><?=$rowIdCampo1;?><small></td>
+                  <td align="left"><small><?=$rowCampo2;?><small></td>
+                  <td align="left"><small><?=$rowCampo3;?></small></td>
+                  <td align="left"><small><?=$rowCampo4;?></small></td>
+				  <td align="left"><small><?=$rowCampo4;?></small></td>
+                  
+              </tr>
+		<?php 
+				$finales++;
+			};
+		?>	  
+        </tbody>
+         <tfoot>
+             <tr>
+				<td colspan='8'>
+					<?php
+						$inicios=$offset+1;
+						$finales+=$inicios-1;
+						echo "<br>";
+						echo "Mostrando <strong>$inicios</strong> al <strong>$finales</strong> de <strong>$numrows</strong> registros";
+						echo "<br><p>";
+						echo paginate($page, $total_pages, $adjacents);
+					?>
+			    </td>
+			</tr>
+        </tfoot>
+        </table>
+		<?php
+			} else {
+		?>
+				<tbody>
+				<tr><td colspan="6">
+							  <div class="alert alert-exclamation" role="alert">
+									<span style="color: #000000;">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+										&nbsp;<strong>Atención:</strong> No existen Resultados.
+									</span>
+							   </div>
+						  </td></tr>
+				</tbody>
+				</table>
+		<?php		
+			};
+		};
+		?>
+    </div>

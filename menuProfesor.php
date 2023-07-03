@@ -338,6 +338,51 @@ function entidadGuardar() {
     }
 }
 
+
+//************************************************************************************************ 
+//************************************************************************************************ 
+//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************************************* 
+// NOS PERMITE VER UNA ENTIDAD                   
+//************************************************* 
+function entidadVer(entidad_id){
+    let datos_entidad = "";
+    let url = "html/profesor.html";
+    let url_obtener_entidad = "funciones/localidadObtener.php";
+    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
+                            </ol>
+                        </nav>`;
+    $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+    datos_entidad = entidadObtenerPorId(entidad_id);
+    $.get(url,function(data) {
+          $("#resultado_accion").html("");
+          $("#principal").slideDown("slow").html(data);
+          $('#profesor_editar').addClass('d-none');
+          $('#profesor_ver').removeClass('d-none');
+          //******************************************************************** 
+          //**************************** CAMBIAR ******************************* 
+          //$("#inputIdProfesor").val(entidad_id)
+          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
+          $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
+          $("#spn_documento").html(datos_entidad.datos[0].dni);
+          $("#spn_domicilio").html(datos_entidad.datos[0].domicilio);
+          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          $("#spn_email").html(datos_entidad.datos[0].email);
+          $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
+          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
+          
+           //******************************************************************** 
+           //******************************************************************** 
+    });
+}
+
+
 //************************************************************************************************ 
 //************************************************************************************************ 
 //*********************************** CREACION DE UNA ENTIDAD ************************************ 
@@ -360,11 +405,14 @@ function entidadCrear(){
                               </ol>
                           </nav>`;
       $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
-      $("#profesor_ver").addClass("d-none");
-      $("#profesor_editar").removeClass("d-none");
+      
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
+            $('#profesor_editar').removeClass('d-none');
+            $('#profesor_ver').addClass('d-none');
+            $('#telefono_viejo').addClass('d-none');
+            //*************************************************
             $("#inputFechaNacimiento").datepicker({
                 dateFormat: 'dd/mm/yy',
                 maxDate: new Date()
@@ -457,49 +505,6 @@ function entidadCrear(){
 
 //************************************************************************************************ 
 //************************************************************************************************ 
-//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
-//************************************************************************************************ 
-//************************************************************************************************ 
-//************************************************* 
-// NOS PERMITE VER UNA ENTIDAD                   
-//************************************************* 
-function entidadVer(entidad_id){
-    let datos_entidad = "";
-    let url = "html/profesor.html";
-    let url_obtener_entidad = "funciones/localidadObtener.php";
-    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
-                            </ol>
-                        </nav>`;
-    $("#breadcrumb").slideDown("slow").html(breadcrumb);   
-   // $("#profesor_ver").removeClass("d-none");
-    $("#profesor_editar").addClass("d-none");
-    datos_entidad = entidadObtenerPorId(entidad_id);
-    $.get(url,function(data) {
-          $("#resultado_accion").html("");
-          $("#principal").slideDown("slow").html(data);
-          //******************************************************************** 
-          //**************************** CAMBIAR ******************************* 
-          //$("#inputIdProfesor").val(entidad_id)
-          $("#spn_nombres").html(datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre);
-          $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
-          $("#spn_documento").html(datos_entidad.datos[0].dni);
-          $("#spn_domicilio").html(datos_entidad.datos[0].domicilio);
-          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
-          $("#spn_email").html(datos_entidad.datos[0].email);
-          $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
-          
-           //******************************************************************** 
-           //******************************************************************** 
-    });
-}
-
-//************************************************************************************************ 
-//************************************************************************************************ 
 //************************************* EDICION DE LA ENTIDAD ************************************ 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -525,6 +530,9 @@ function entidadEditar(entidad_id){
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
+            $('#profesor_editar').removeClass('d-none');
+            $('#profesor_ver').addClass('d-none');
+            $('#telefono_viejo').removeClass('d-none');
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
@@ -674,11 +682,11 @@ $("body").on("click","#seleccionar_todos", function() {
           $('.check').prop('checked',false);
       }
   });
-  /*
   
-  //******************************************************************************************** 
-  // VERFICICA SI HAY ENTIDADES SELECCIONADOS/CHECKBOX Y PIDE CONFIRMACION PARA SU ELIMINACION   
-  //******************************************************************************************** 
+
+//******************************************************************************************** 
+// VERFICICA SI HAY ENTIDADES SELECCIONADOS/CHECKBOX Y PIDE CONFIRMACION PARA SU ELIMINACION   
+//******************************************************************************************** 
   function entidadEliminarSeleccionados(){
       let arreglo="";
       let cantidad_seleccionados = 0;
@@ -741,10 +749,10 @@ $("body").on("click","#seleccionar_todos", function() {
   //******************************************************* 
   // CONFIRMA LA ELIMINACION DE LA ENTIDAD DESDE EL MODAL   
   //******************************************************* 
-  $('#confirmarModal').on('shown.bs.modal', function (e) {
+  $("body").on("shown.bs.modal","#confirmarModal", function(e) {
        let button = $(e.relatedTarget); // BUTTON QUE DISPARO EL MODAL
        let id=button.data("id");
-      $("#inputEliminarId").val(id);
+       $("#inputEliminarId").val(id);
   })
   
   //************************************************
@@ -771,7 +779,7 @@ $("body").on("click","#seleccionar_todos", function() {
                 },"json");
   };
 
-
+/*
   //************************************************ 
   // NOS PERMITE ENVIAR UN EMAIL A UNA INTERESADO    
   //************************************************ 

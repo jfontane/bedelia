@@ -99,119 +99,128 @@ if($action == 'listar'){
 	$campo1 = "Id";$campo2 = "Nombres"; $campo3 = "Dni"; $campo4 = "Telefono"; $campo5 = "Email"; 
 	//*********************************************************** */
 	//*********************************************************** */
-	
-	echo '<div class="table-responsive" ">
-				<table class="table table-striped table-bordered table-hover" id="tabla_calendario">
-					<thead>
-						<tr>
-							<th class="text-left" colspan="13">
-							   <table width="100%">
-							 	   <tr>
-										<th class="text-left" colspan="5">
-											<button class="btn btn-primary '.$rol_admin.'" onclick="entidadCrear()">Agregar</button>&nbsp;
-											<button class="btn btn-primary '.$rol_admin.'" onclick="entidadEliminarSeleccionados()">Borrar Seleccionados</button>&nbsp;
-										</th>
-										<th class="text-right" colspan="7">
-												<div class="col-7">
-												<div class="input-group">
-													<input id="inputBusquedaRapida" placeholder="Busqueda Rapida" type="text" class="form-control" value="'.$busqueda.'"> 
-													<div class="input-group-append">
-													<div class="input-group-text">
-														<a href="#" onclick="aplicarBusquedaRapida()"><i class="fa fa-search"></i></a>
-													</div>
-													</div>
-												</div>
-												</div>
-									    </th>
-									</tr>  
-							   </table>
-							</th>
-        				</tr>
-						<tr>
-							<th class="text-center" width="5%"><small><b><input type="checkbox" class="'.$rol_admin.'" id="seleccionar_todos"></b></small></th>
-							<th width="5%" class="text-center text-primary" colspan=3><small><b>ACCIONES</b><small></th>
-							<th class="text-center text-primary" width="30%"><small><b>'.strtoupper($campo2).'</b></small></th>
-							<th class="text-center text-primary" width="5%"><small><b>'.strtoupper($campo3).'</b></small></th>
-							<th class="text-center text-primary" width="25%"><small><b>'.strtoupper($campo4).'</b></small></th>
-							<th class="text-center text-primary" width="30%"><small><b>'.strtoupper($campo5).'</b></small></th>
-						</tr>';
-	//-- FILTROS --
-	echo '<tr>
-							<th class="text-right" colspan=4>
-							        <button class="btn btn-primary" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
-									<button class="btn btn-primary" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
-						    </th>
-							<th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro'.$campo2.'" value="'.$nombre.'"></b></small></th>
-							<th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro'.$campo3.'" value="'.$dni.'"></b></small></th>
-							<th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro'.$campo4.'" value="'.$telefono.'"></b></small></th>
-							<th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro'.$campo5.'" value="'.$email.'"></b></small></th>
-						</tr>';
-	echo '</thead>';
-			
-	if ($numrows>0){
-			$finales = $c = 0;
-			$pagina = (($page-1)*$per_page);
 
-			//$tipo_organismo = substr($_SESSION['organismo_codigo'],0,1);
-			echo '<tbody>';
-			while ($row=mysqli_fetch_assoc($query)) {
-						$c++;
-						$indice = $pagina + $c;
-						$rowIdCampo1 = $row['id'];
-						$rowCampo2 = $row['apellido'].', '.$row['nombre'];
-						$rowCampo3 = $row['dni'];
-						$rowCampo4 = $row['telefono'];
-						$rowCampo5 = $row['email'];
-						$wsp = '';
-						if ($row['telefono_caracteristica']!="" && $row['telefono_numero']!="") {
-							$wsp = '<a href="https://api.whatsapp.com/send/?phone=549'.$row['telefono_caracteristica'].$row['telefono_numero'].'&text=Hola&type=phone_number&app_absent=0" target="_blank"><img src="../public/img/icons/wsp_icon.png" width="25"></a>';
-						}
+?>	
 
-						echo '<tr>';
-						echo '   <td align="center"><small><b><input type="checkbox" class="'.$rol_admin.' check" id="check_'.$rowIdCampo1.'" name="check_usu[]" value="'.$rowIdCampo1.'"></b></small></td>'.
-							 '   <td align="center" colspan="3">
-							 		<div class="btn-group pull-right" role="group">
-										<button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Acciones
-										</button>
-										<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-											<a class="'.$rol_usuario.'dropdown-item small" href="#" onclick="entidadVer('.$rowIdCampo1.')"><i class="fa fa-address-card-o"></i>&nbsp;Ver</a>
-											<a class="'.$rol_usuario.' dropdown-item small" href="#" onclick="entidadEditar('.$rowIdCampo1.')"><i class="fa fa-edit"></i>&nbsp;Editar</a>
-											<a class="'.$rol_admin.' dropdown-item small" href="#" data-toggle="modal" data-target="#confirmarModal" data-id="'.$rowIdCampo1.'"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
-											<a class="'.$rol_admin.' dropdown-item small" href="#" onclick="enviarEmail(\''.$rowIdCampo1.'\')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>
-										</div>
-                             		</div>
-							 </td>'.
-							 '   <td align="left"><small>'.$rowCampo2.'<small></td>'.
-							 '   <td align="left"><small>'.$rowCampo3.'</small></td>'.
-							 '   <td align="left"><small>'.$wsp.'&nbsp;('.$row['telefono_caracteristica'].') '.$row['telefono_numero'].'</small></td>'.
-							 '   <td align="left"><small><a href="mailto:'.$rowCampo5.'">'.$rowCampo5.'</a></small></td>';
-						echo '</tr>';
-					$finales++;
+<div class="table-responsive" >
+      <table class="table table-striped table-bordered table-hover bg2" id="tabla_calendario">
+        <thead>
+          <tr>
+            <th class="text-left" colspan="13">
+               <table class="table borderless" width="100%">
+                  <tr>
+                  <th class="text-left" colspan="5">
+                    <button class="btn btn-primary rol_admin" onclick="entidadCrear()">Agregar</button>&nbsp;
+                    <button class="btn btn-primary rol_admin" onclick="entidadEliminarSeleccionados()">Borrar Seleccionados</button>&nbsp;
+                  </th>
+                  <th class="text-right" colspan="7">
+                      <div class="col-7">
+                      <div class="input-group">
+                        <input id="inputBusquedaRapida" placeholder="Busqueda Rapida" type="text" class="form-control" value="<?=$busqueda?>"> 
+                        <div class="input-group-append">
+                        <div class="input-group-text">
+                          <a href="#" onclick="aplicarBusquedaRapida()"><i class="fa fa-search"></i></a>
+                        </div>
+                        </div>
+                      </div>
+                      </div>
+                    </th>
+                </tr>  
+               </table>
+            </th>
+              </tr>
+          <tr>
+            <th class="text-center" width="5%"><small><b><input type="checkbox" class="" id="seleccionar_todos"></b></small></th>
+            <th width="5%" class="text-center text-primary" colspan=3><small><b>ACCIONES</b><small></th>
+            <th class="text-center text-primary" width="30%"><small><b><?=$campo2?></b></small></th>
+            <th class="text-center text-primary" width="5%"><small><b><?=$campo3?></b></small></th>
+            <th class="text-center text-primary" width="25%"><small><b><?=$campo4?></b></small></th>
+            <th class="text-center text-primary" width="30%"><small><b><?=$campo5?></b></small></th>
+          </tr>
+          <tr>
+            <th class="text-right" colspan=4>
+                <button class="btn btn-primary" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
+                <button class="btn btn-primary" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
+              </th>
+            <th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo2?>" value="<?=$nombre?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo3?>" value="<?=$dni?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo4?>" value="<?=$telefono?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo5?>" value="<?=$email?>"></b></small></th>
+          </tr>
+        </thead>
+		<tbody>
+<?php
+if ($numrows>0){
+	$finales = $c = 0;
+	$pagina = (($page-1)*$per_page);
+	while ($row=mysqli_fetch_assoc($query)) {
+				$c++;
+				$indice = $pagina + $c;
+				$rowIdCampo1 = $row['id'];
+				$rowCampo2 = $row['apellido'].', '.$row['nombre'].' ('.$row['id'].')';
+				$rowCampo3 = $row['dni'];
+				$wsp = ($row['telefono_caracteristica']!=NULL && $row['telefono_numero']!=null)?'<a href="https://api.whatsapp.com/send/?phone=549'.$row['telefono_caracteristica'].$row['telefono_numero'].'&text=Hola&type=phone_number&app_absent=0" target="_blank"><img src="../public/img/icons/whatsapp.png" width="20"></a>&nbsp;':'';
+				$rowCampo4 = ($row['telefono_caracteristica']!=NULL && $row['telefono_numero']!=null)?$wsp.' ('.$row['telefono_caracteristica'].') '.$row['telefono_numero']:'';
+				$rowCampo5 = $row['email'];
+				
+?>						
+       
+            <tr>
+                  <td align="center"><small><b><input type="checkbox" class=" check" id="check_<?=$rowIdCampo1?>" name="check_usu[]" value="<?=$rowIdCampo1?>"></b></small></td>
+                      <td align="center" colspan="3">
+                      <div class="btn-group pull-right" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Acciones
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                          <a class=" dropdown-item small" href="#" onclick="entidadVer('<?=$rowIdCampo1?>')"><i class="fa fa-address-card-o"></i>&nbsp;Ver</a>
+                          <a class=" dropdown-item small" href="#" onclick="entidadEditar('<?=$rowIdCampo1?>')"><i class="fa fa-edit"></i>&nbsp;Editar</a>
+                          <a class=" dropdown-item small" href="#" data-toggle="modal" data-target="#confirmarModal" data-id="<?=$rowIdCampo1?>"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
+                          <a class=" dropdown-item small disabledbutton" href="#" onclick="enviarEmail('<?=$rowIdCampo1?>')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>
+                        </div>
+                                    </div>
+                  </td>
+                  <td align="left"><small><?=$rowCampo2;?><small></td>
+                  <td align="left"><small><?=$rowCampo3;?></small></td>
+                  <td align="left"><small><?=$rowCampo4;?></small></td>
+                  <td align="left"><small><a href="mailto:<?=$rowCampo5?>"><?=$rowCampo5;?></a></small></td>
+              </tr>
+		<?php 
+				$finales++;
 			};
-			echo "</tbody><tfoot><tr><td colspan='13'>";
-			$inicios=$offset+1;
-			$finales+=$inicios-1;
-			echo "<br>";
-			echo "Mostrando <strong>$inicios</strong> al <strong>$finales</strong> de <strong>$numrows</strong> registros";
-			echo "<br><p>";
-			echo paginate($page, $total_pages, $adjacents);
-			echo "</td></tr>";
-			echo '</tfoot>';
-			echo '</table>';
-} else {
-	echo '<tbody>';
-	echo '<tr><td colspan="13">
-	              <div class="alert alert-exclamation" role="alert">
-				        <span style="color: #000000;">
-				            <i class="fa fa-info-circle" aria-hidden="true"></i>
-						    &nbsp;<strong>Atención:</strong> No existen Resultados.
-					    </span>
-			       </div>
-			  </td></tr>';
-	echo '</tbody>';
-	echo '</table>';
-};
-};
-
-?>
+		?>	  
+        </tbody>
+         <tfoot>
+             <tr>
+				<td colspan='8'>
+					<?php
+						$inicios=$offset+1;
+						$finales+=$inicios-1;
+						echo "<br>";
+						echo "Mostrando <strong>$inicios</strong> al <strong>$finales</strong> de <strong>$numrows</strong> registros";
+						echo "<br><p>";
+						echo paginate($page, $total_pages, $adjacents);
+					?>
+			    </td>
+			</tr>
+        </tfoot>
+        </table>
+		<?php
+			} else {
+		?>
+				<tbody>
+				<tr><td colspan="6">
+							  <div class="alert alert-exclamation" role="alert">
+									<span style="color: #000000;">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+										&nbsp;<strong>Atención:</strong> No existen Resultados.
+									</span>
+							   </div>
+						  </td></tr>
+				</tbody>
+				</table>
+		<?php		
+			};
+		};
+		?>
+    </div>

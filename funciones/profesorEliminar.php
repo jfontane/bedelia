@@ -25,68 +25,55 @@ if ($entidades_a_eliminar) {
       $msg = "";
       db_start_trans($conex);     
       foreach($arreglo_entidades as $idEntidad) {
-            $sql = "select dni FROM alumno WHERE id=$idEntidad";
+            $sql = "select dni FROM profesor WHERE id=$idEntidad";
             $res_dni = @mysqli_query($conex,$sql);
             $fila = mysqli_fetch_assoc($res_dni);
                   
-            $sql_pertenece_carrera = "DELETE FROM alumno_estudia_carrera
-            WHERE idAlumno = $idEntidad";     
+            $sql_pertenece_carrera = "DELETE FROM profesor_pertenece_carrera
+                                      WHERE idProfesor = $idEntidad";     
             $ok1 = mysqli_query($conex,$sql_pertenece_carrera);
             //die($sql_pertenece_carrera);   
             if(!$ok1){
-                  die('alumno_estudia_carrera');
+                  die('profesor_pertenece_carrera');
             }; 
 
-            $sql_rinde_materias = "DELETE FROM alumno_rinde_materia
-                                   WHERE idAlumno = $idEntidad";      
+            $sql_rinde_materias = "DELETE FROM profesor_dicta_materia
+                                   WHERE idProfesor = $idEntidad";      
             $ok2 = mysqli_query($conex,$sql_rinde_materias);                       
             //die($sql_rinde_materias);                
             if(!$ok2){
-                  die('alumno_rinde_materia');
-            }; 
-
-            $sql_cursa_materias = "DELETE FROM alumno_cursa_materia
-                                   WHERE idAlumno = $idEntidad";
-            $ok3 = mysqli_query($conex,$sql_cursa_materias);                      
-            //die($sql_cursa_materias);    
-            if(!$ok3){
-                  die('alumno_cursa_materia');
+                  die('profesor_dicta_materia');
             }; 
 
             $sql_usuario = "DELETE FROM usuario
-                            WHERE dni =".$fila['dni']." and idtipo=1";   
-            $ok4 = mysqli_query($conex,$sql_usuario);                                    
+                            WHERE dni =".$fila['dni']." and idtipo=2";   
+            $ok3 = mysqli_query($conex,$sql_usuario);                                    
             //die($sql_usuario); 
-            if(!$ok4){
+            if(!$ok3){
                   die('usuario');
             }; 
 
-            $sql_alumno = "DELETE FROM alumno
+            $sql_alumno = "DELETE FROM profesor
             WHERE id = $idEntidad";
-            $ok5 = mysqli_query($conex,$sql_alumno);
+            $ok4 = mysqli_query($conex,$sql_alumno);
             //die($sql_alumno);     
-            if(!$ok5){
+            if(!$ok4){
                   die('alumno');
             }; 
 
             $sql_persona = "DELETE FROM persona
                     WHERE dni=".$fila['dni']."";
-            $ok6 = mysqli_query($conex,$sql_persona);     
-            /*if(!$ok6){
+            $ok5 = mysqli_query($conex,$sql_persona);     
+           /* if(!$ok5){
                   die('persona');
             };*/ 
             
             //die($sql_persona);
             /** SE INICIA LA TRANSACCION **/
-           
-
-            
-           
-            
             
             //PRENGUNTAMOS SI HUBO ERROR
             $errorNro =  mysqli_errno($conex);
-            if(!$ok5){
+            if(!$ok4){
                   db_rollback($conex);
                   break;
             }; 
@@ -95,18 +82,18 @@ if ($entidades_a_eliminar) {
 
       if ($errorNro) {
             if ($cantidad_entidades>1) {
-                  $msg = "Hubo un Error en la Eliminación de los Alumnos. ";
+                  $msg = "Hubo un Error en la Eliminación de los Profesores. ";
             } else {
-                  $msg = "Hubo un Error en la Eliminaciòn del Alumno. Tiene Registros Vinculados.";
+                  $msg = "Hubo un Error en la Eliminaciòn del Profesor. Tiene Registros Vinculados.";
             }
             $array_resultados['codigo'] = 10;
             $array_resultados['mensaje'] = $msg;  
       } else {
             db_commit($conex);
             if ($cantidad_entidades>1) {
-                  $msg = "La Eliminación de los Alumnos fue exitosa.";
+                  $msg = "La Eliminación de los Profesores fue exitosa.";
             } else {
-                  $msg = "La Eliminación del Alumno fue exitosa.";
+                  $msg = "La Eliminación del Profesor fue exitosa.";
             }
             $array_resultados['codigo'] = 100;
             $array_resultados['mensaje'] = $msg;
