@@ -685,8 +685,7 @@ $("body").on("click","#seleccionar_todos", function() {
   //*************************************************************************** 
   // ELIMINA TODOS LAS ENTIDADES CUYOS CHECKBOX ESTAN SELECCIONADOS             
   //*************************************************************************** 
-  
-  function entidadEliminarSeleccionadosConfirmar(){
+function entidadEliminarSeleccionadosConfirmar(){
       let arreglo="";
       let parametros = "";
       let url = "funciones/"+entidad_nombre+"Eliminar.php";
@@ -697,6 +696,7 @@ $("body").on("click","#seleccionar_todos", function() {
                   }
       );
       arreglo = arreglo.substr(1,arreglo.length-1);
+      console.log(arreglo)
       parametros = {"id":arreglo};
       $.post(url, parametros, function (data) {
               $("#resultado_accion").html(`

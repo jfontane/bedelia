@@ -163,7 +163,7 @@ if ($numrows>0){
 ?>						
        
             <tr>
-                  <td align="center"><small><b><input type="checkbox" class=" check" id="check_campo1" name="check_usu[]" value="Campo1"></b></small></td>
+                  <td align="center"><small><b><input type="checkbox" class=" check" id="check_<?=$rowIdCampo1?>" name="check_usu[]" value="<?=$rowIdCampo1?>"></b></small></td>
                       <td align="center" colspan="3">
                       <div class="btn-group pull-right" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
