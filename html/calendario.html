@@ -15,9 +15,8 @@
       <div class="form-row">  
         <div class="form-group col-md-6">
           <strong>Evento</strong>
-          <select class="form-control select2 select2-localidad select2-hidden-accessible" id="inputAltaEvento" required>
-            <option value="">-- Seleccione Evento --</option>
-          </select>
+          <select id="inputAltaEvento" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+          </select> 
         </div>
       </div>
       
@@ -46,7 +45,6 @@
           <button type="button" class="btn btn-secondary btn-block" onclick="load(1)">Volver</button>
         </div>
       </div>
-    
     </form>
     </div>
     </div>
@@ -55,7 +53,7 @@
   <div class="img form" id="calendario_ver" >
     <div class="jumbotron jumbotron-fluid rounded form2">
       <div class="container justifu+y-content-center">
-        <h1 class="display-4">Ver Registro del Alumno</h1>
+        <h1 class="display-4">Ver Registro del Calendario</h1>
         <hr>
         <p class="lead">Estos datos son estrictamente confidenciales.</p>
     
@@ -63,45 +61,32 @@
         
       <div class="form-row">  
         <div class="form-group col-md-6">
-          <strong>Apellido y Nombre: </strong> <span id="spn_nombres">Fontanellaz, Javier</span>
+          <strong>ID: </strong> <span id="spn_id"></span>
         </div>
       </div>
     
       <div class="form-row">  
         <div class="form-group col-md-6">
-          <strong>Fecha Nacimiento: </strong><span id="spn_fecha_nacimiento">01/02/1976</span>
+          <strong>AÑO: </strong><span id="spn_anio">01/02/1976</span>
         </div>
       </div>
     
       <div class="form-row">  
         <div class="form-group col-md-6">
-          <strong>Documento: </strong><span id="spn_documento">24912834</span>
-        </div>
-      </div>
-    
-    
-      <div class="form-row">  
-        <div class="form-group col-md-6">
-          <strong>Domicilio: </strong><span id="spn_domicilio">Espora 2278</span>
-        </div>
-      </div>
-    
-      <div class="form-row">  
-        <div class="form-group col-md-6">
-          <strong>Celular: </strong><span id="spn_celular">(342) 5163923</span>
-        </div>
-      </div>
-    
-      <div class="form-row">  
-        <div class="form-group col-md-6">
-          <strong>Email: </strong><span id="spn_email">jfontanellaz@gmail.com</span>
+          <strong>Evento: </strong><span id="spn_evento">24912834</span>
         </div>
       </div>
     
     
       <div class="form-row">  
         <div class="form-group col-md-6">
-          <strong>Localidad: </strong><span id="spn_localidad">San Cristobal | Pcia. Santa Fe | CP: 3000</span>
+          <strong>Fecha Inicio: </strong><span id="spn_fecha_inicio">Espora 2278</span>
+        </div>
+      </div>
+    
+      <div class="form-row">  
+        <div class="form-group col-md-6">
+          <strong>Fecha Finalizacion: </strong><span id="spn_fecha_finalizacion">(342) 5163923</span>
         </div>
       </div>
     

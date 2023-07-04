@@ -262,42 +262,61 @@ function quitarFiltro() {
         load(1);  
 };
 
+//************************************************** 
+// NOS PERMITE BUSCAR UNA ENTIDAD POR ID       
+//************************************************** 
+function entidadObtenerPorId(entidad_id){
+    let url = "funciones/"+entidad_nombre+"ObtenerPorId.php";
+    let resultado;
+    
+    $.ajaxSetup({
+        async: false
+      });
+    $.post(url, {"id":entidad_id}, function (data) {
+          resultado = data;
+    },"json")
+    return resultado;
+};
 
 
-/*
-function calendarioAgregar() {
-    let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Agregar Evento al Calendario</h2>`;
-    let bread = `<nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#" onclick="">Home</a></li>
-                      <li class="breadcrumb-item"><a href="#" onclick="cargarModulos()">Calendario</a></li>
-                      <li class="breadcrumb-item">Agregar Evento </li>
-                    </ol>
-                  </nav>`;
-    $("#filtro").html("");
-    $("#breadcrumb").html(bread);
-    $("#titulo").html(titulo);
-    $.get("./html/calendarioAlta.html",function(datos) {
-         $("#principal").html(datos);
-         $("#inputAltaFechaInicio").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputAltaFechaFinalizacion").datepicker({dateFormat: "yy-mm-dd"});
-         $.post("./funciones/getAllEvento.php",function(datosEventos) {
-              if (datosEventos.codigo == 100) {
-                  let obj = datosEventos.data; 
-                  obj.forEach(evento => {
-                        $("#inputAltaEvento").append($('<option/>', {
-                              text: ' ('+evento.codigo+') '+evento.descripcion,
-                              value: evento.id,
-                        }));
-                  });
-                  $('#inputAltaEvento').select2({
-                        theme: "bootstrap4",
-                  });
-              }
-         },"json")
+//************************************************************************************************ 
+//************************************************************************************************ 
+//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+function entidadVer(entidad_id){
+    let datos_entidad = "";
+    let url = "html/"+entidad_nombre+".html";
+    let url_obtener_entidad = "funciones/eventoObtener.php";
+    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
+                            </ol>
+                        </nav>`;
+    $("#breadcrumb").slideDown("slow").html(breadcrumb);  
+
+    datos_entidad = entidadObtenerPorId(entidad_id);
+    $.get(url,function(data) {
+          $("#resultado_accion").html("");
+          $("#principal").slideDown("slow").html(data);
+          $('#calendario_ver').removeClass('d-none');
+          $('#calendario_editar').addClass('d-none');
+          //******************************************************************** 
+          //**************************** CAMBIAR ******************************* 
+          $("#spn_id").html(datos_entidad.datos[0].id);
+          $("#spn_anio").html(datos_entidad.datos[0].AnioLectivo);
+          $("#spn_evento").html(datos_entidad.datos[0].descripcion+' ('+datos_entidad.datos[0].codigo+')');
+          $("#spn_fecha_inicio").html(datos_entidad.datos[0].fechaInicioEvento);
+          $("#spn_fecha_finalizacion").html(datos_entidad.datos[0].fechaFinalEvento);
+          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
+          
+           //******************************************************************** 
+           //******************************************************************** 
     });
 }
-*/
+
 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -312,7 +331,7 @@ function entidadCrear(){
       let arreglo="";
       let parametros = "";
       let url = "html/calendario.html";
-      let url_select2_obtener = "funciones/getAllEvento.php";// Esto puede cambiar
+      let url_select2_obtener_eventos = "funciones/eventoObtener.php";// Esto puede cambiar
       let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                               <ol class="breadcrumb">
                                   <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
@@ -345,7 +364,7 @@ function entidadCrear(){
                     theme: "bootstrap",
                     placeholder: "Buscar",
                     ajax: {
-                        url: url_select2_obtener,
+                        url: url_select2_obtener_eventos,
                         dataType: 'json',
                         delay: 250,
                         data: function (data) {
@@ -366,7 +385,7 @@ function entidadCrear(){
 }
   
 //************************************************* 
-// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
+// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS  falta     
 //************************************************* 
   function entidadGuardarNuevo(){
     let accion = $("#inputAccion").val();
@@ -423,9 +442,93 @@ function entidadCrear(){
 }
 
 
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************************* EDICION DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+
+//************************************************* 
+// NOS PERMITE EDITAR UNA ENTIDAD                   
+//************************************************* 
+function entidadEditar(entidad_id){
+      let datos_entidad = "";
+      let url = "html/"+entidad_nombre+".html";
+      let url_select2_obtener_eventos = "funciones/eventoObtener.php";
+      let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                              <ol class="breadcrumb">
+                                  <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                  <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                  <li class="breadcrumb-item active" aria-current="page">Editar</li>
+                              </ol>
+                          </nav>`;
+      $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+      datos_entidad = entidadObtenerPorId(entidad_id);
 
 
+      $.get(url,function(data) {
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
+            $('#calendario_editar').removeClass('d-none');
+            $('#calendario_ver').addClass('d-none');
+            //******************************************************************** 
+            //**************************** CAMBIAR ******************************* 
+            $("#inputAccion").val('editar');
+            $("#inputAltaAnio").val(datos_entidad.datos[0].AnioLectivo);
+            //$("#inputAltaEvento").val(datos_entidad.datos[0].evento);
+            //$("#inputAltaFechaInicio").val(datos_entidad.datos[0].fechaInicioEvento);
+            //$("#inputAltaFechaFinalizacion").val(datos_entidad.datos[0].fechaFinalEvento);
 
+            $("#inputAltaFechaInicio").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            if (datos_entidad.datos[0].fechaInicioEvento!=null) {
+                let anio = (datos_entidad.datos[0].fechaInicioEvento).substr(0,4);
+                let mes = (datos_entidad.datos[0].fechaInicioEvento).substr(5,2);
+                let dia = (datos_entidad.datos[0].fechaInicioEvento).substr(8,2);
+                $("#inputAltaFechaInicio").datepicker('setDate',dia+'/'+mes+'/'+anio);
+            }
+
+            $("#inputAltaFechaFinalizacion").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            if (datos_entidad.datos[0].fechaFinalEvento!=null) {
+                let anio = (datos_entidad.datos[0].fechaFinalEvento).substr(0,4);
+                let mes = (datos_entidad.datos[0].fechaFinalEvento).substr(5,2);
+                let dia = (datos_entidad.datos[0].fechaFinalEvento).substr(8,2);
+                $("#inputAltaFechaFinalizacion").datepicker('setDate',dia+'/'+mes+'/'+anio);
+            }
+
+            $('#inputAltaEvento').select2({
+                    theme: "bootstrap",
+                    placeholder: "Buscar",
+                    ajax: {
+                        url: url_select2_obtener_eventos,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (data) {
+                            return {
+                                searchTerm: data.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results:response
+                            };
+                        },
+                        cache: true
+                    }
+            });
+
+            var data = {
+                id: datos_entidad.datos[0].id,
+                text: datos_entidad.datos[0].descripcion + ' (' + datos_entidad.datos[0].codigo + ')'
+            };
+            var newOption = new Option(data.text, data.id, false, false);
+            $('#inputAltaEvento').append(newOption).trigger('change');
+            $("#inputAltaEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
+      });
+}
 
 
 

@@ -8,13 +8,10 @@ $array_resultados = array();
 $search = (isset($_GET['searchTerm']))?$_GET['searchTerm']:false;
 $json = [];
 if($search) {
-        
-        $sql = "SELECT l.id, l.nombre, p.nombre as provincia_nombre
-                FROM localidad l, provincia p
-                WHERE l.provincia_id=p.id and (l.nombre like '%$search%')";
         $sql = "SELECT e.id, e.descripcion, e.codigo
                 FROM evento e
-                WHERE (e.codigo=$search or e.descripcion like '%$search%')";        
+                WHERE (e.codigo like '%$search%' or e.descripcion like '%$search%')";       
+        //die($sql);         
         $resultado = mysqli_query($conex,$sql);
         if (mysqli_num_rows($resultado)>0) {
                 while($row = mysqli_fetch_assoc($resultado)){
