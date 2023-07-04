@@ -146,24 +146,43 @@ require_once('seguridad.php');
 <script src="./js/funciones.js"></script>
 <script>
 
+//************************************************************************************************ */
+//************************************************************************************************ */
+//*********************************** LISTADO DE ENTIDADES *************************************** */
+//************************************************************************************************ */
+//************************************************************************************************ */
+let entidad_nombre = "calendario";
+let entidad_titulo1 = "CALENDARIO";
+let entidad_titulo2 = "Calendario";
+let campo1 = "Id";
+let campo2 = "Anio";
+let campo3 = "Evento";
+let campo4 = "FechaInicio";
+let campo5 = "FechaFinalizacion";
+
 $(function () {
-    cargarModulos();
+    $.get("./html/modalEliminar.html",function(data){
+      $("#modalEliminar").html(data);
+    })
+    load(1);
 });
-
-function cargarModulos() {
-  	load(1);
-};
-
-// CARGA EL LISTADO DE EVENTOS
+  
+//****************************************** */
+// CARGA EL LISTADO DE TODOS LAS ENTIDADES   */
+//****************************************** */
 function load(page) {
-      let anio_lectivo = $("#inputFiltroAnioLectivo").val();
+      let id = $("#inputFiltroId").val();
+      let anio = $("#inputFiltroAnio").val();
       let evento = $("#inputFiltroEvento").val();
+      let fechaInicio = $("#inputFiltroFechaInicio").val();
+      let fechaFinalizacion = $("#inputFiltroFechaFinalizacion").val();
+      let busqueda = $("#inputBusquedaRapida").val();
       let per_page = 10;
-      let parametros = {"action": "listar","page": page,"per_page": per_page,"anio":anio_lectivo,"codigo":evento};
+      let parametros = {"action": "listar","page": page,"per_page": per_page, "id":id, "anio":anio, "evento":evento, "fechaInicio":fechaInicio, "fechaFinalizacion":fechaFinalizacion,"busqueda_rapida":busqueda};
       let titulo = "<h1><i><u>Calendario de Eventos</u></i></h1><h2>Listado</h2>";
       $("#titulo").html(titulo);
       $.ajax({
-          url: 'funciones/calendarioListar.php',
+          url: 'funciones/'+entidad_nombre+'Listar.php',
           data: parametros,
           method: 'POST',
           beforeSend: function () {
@@ -171,42 +190,81 @@ function load(page) {
           },
           success: function (data) {
               $("#principal").fadeIn(100).html(data);
-              $("#tabla_calendario>tfoot").prepend(`<tr>
-                                                      <td colspan="7">
-                                                          <button class="btn btn-primary" onclick="calendarioAgregar()">Nuevo</button>
-                                                      </td>
-                                                  </tr>`);
           }
       });
 };
 
-$("body").on("click","#botonFiltro",function(e) {
-      e.preventDefault();
-      let anio_lectivo = $("#inputFiltroAnioLectivo").val();
-      let evento = $("#inputFiltroEvento").val();
-      console.info(anio_lectivo+'-'+evento);
-      let per_page = 10;
-      let parametros = {"action": "listar","page": 1,"per_page": per_page,"anio":anio_lectivo,"codigo":evento};
-      $("#titulo").html(titulo);
-      $.ajax({
-          url: 'funciones/calendarioListar.php',
-          data: parametros,
-          method: 'POST',
-          success: function (data) {
-              $("#principal").html(data);
-              $("#tabla_calendario>tfoot").prepend(`<tr>
-                                                      <td colspan="5">
-                                                          <button class="btn btn-primary" onclick="calendarioAgregar()">Nuevo</button>
-                                                      </td>
-                                                  </tr>`);
-          }
-      });
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************************* GESTION DE  FILTROS  ************************************* 
+//************************************************************************************************ 
+//************************************************************************************************ 
 
-}) 
+//********************************************* 
+// APLICA EL FILTRO AL LISTADO DE ENTIDADES     
+//********************************************* 
+
+function aplicarFiltro() {
+    let id = $("#inputFiltroId").val();
+    let anio = $("#inputFiltroAnio").val();
+    let evento = $("#inputFiltroEvento").val();
+    let fechaInicio = $("#inputFiltroFechaInicio").val();
+    let fechaFinalizacion = $("#inputFiltroFechaFinalizacion").val();
+    let busqueda = $("#inputBusquedaRapida").val();
+    let per_page = 10;
+    let parametros = {"action": "listar","page": 1,"per_page": per_page, "id":id, "anio":anio, "evento":evento, "fechaInicio":fechaInicio, "fechaFinalizacion":fechaFinalizacion,"busqueda_rapida":busqueda};
+    let titulo = "<h1><i><u>"+entidad_titulo1+"</u></i></h1>";
+    $("#titulo").html(titulo);
+        $.ajax({
+            url: 'funciones/'+entidad_nombre+'Listar.php',
+            data: parametros,
+            method: 'POST',
+            success: function (data) {
+                $("#principal").slideDown("slow").html(data);
+            }
+        });
+  };
+
+//******************************************* 
+// APLICA EL FILTRO AL LISTADO DE ENTIDADES   
+//******************************************* 
+function aplicarBusquedaRapida() {
+    let id = $("#inputFiltroId").val();
+    let anio = $("#inputFiltroAnio").val();
+    let evento = $("#inputFiltroEvento").val();
+    let fechaInicio = $("#inputFiltroFechaInicio").val();
+    let fechaFinalizacion = $("#inputFiltroFechaFinalizacion").val();
+    let busqueda = $("#inputBusquedaRapida").val();
+    let per_page = 10;
+    let parametros = {"action": "listar","page": 1,"per_page": per_page, "id":id, "anio":anio, "evento":evento, "fechaInicio":fechaInicio, "fechaFinalizacion":fechaFinalizacion,"busqueda_rapida":busqueda};
+    let titulo = "<h1><i><u>"+entidad_titulo1+"</u></i></h1>";
+    $("#titulo").html(titulo);
+        $.ajax({
+            url: 'funciones/'+entidad_nombre+'Listar.php',
+            data: parametros,
+            method: 'POST',
+            success: function (data) {
+                $("#principal").slideDown("slow").html(data);
+            }
+        });       
+  };
+ 
+//******************************************* 
+// QUITA EL FILTRO DEL LISTADO DE ENTIDADES   
+//******************************************* 
+function quitarFiltro() {
+        $("#inputBusquedaRapida").val(""); 
+        $("#inputFiltroId").val("");
+        $("#inputFiltroAnio").val("");
+        $("#inputFiltroEvento").val("");
+        $("#inputFiltroFechaInicio").val("");
+        $("#inputFiltroFechaFinalizacion").val("");
+        load(1);  
+};
 
 
 
-
+/*
 function calendarioAgregar() {
     let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Agregar Evento al Calendario</h2>`;
     let bread = `<nav aria-label="breadcrumb" role="navigation">
@@ -239,6 +297,137 @@ function calendarioAgregar() {
          },"json")
     });
 }
+*/
+
+//************************************************************************************************ 
+//************************************************************************************************ 
+//*********************************** CREACION DE UNA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+
+//************************************************ 
+// NOS PERMITE CREAR UNA ENTIDAD                   
+//************************************************ 
+function entidadCrear(){
+      let arreglo="";
+      let parametros = "";
+      let url = "html/calendario.html";
+      let url_select2_obtener = "funciones/getAllEvento.php";// Esto puede cambiar
+      let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                              <ol class="breadcrumb">
+                                  <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                  <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                  <li class="breadcrumb-item active" aria-current="page">Nuevo</li>
+                              </ol>
+                          </nav>`;
+      $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
+      
+      $.get(url,function(data) {
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
+            $('#calendario_editar').removeClass('d-none');
+            $('#calendario_ver').addClass('d-none');
+            //******************************************************************** 
+            //******************************************************************** 
+            $("#inputAltaFechaInicio").datepicker({
+                dateFormat: 'dd/mm/yy',
+                maxDate: new Date()
+                //startDate: '-3d'
+            });
+            $("#inputAltaFechaFinalizacion").datepicker({
+                dateFormat: 'dd/mm/yy',
+                maxDate: new Date()
+                //startDate: '-3d'
+            });
+            $("#inputAccion").val('nuevo');
+            
+            $('#inputAltaEvento').select2({
+                    theme: "bootstrap",
+                    placeholder: "Buscar",
+                    ajax: {
+                        url: url_select2_obtener,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (data) {
+                            return {
+                                searchTerm: data.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results:response
+                            };
+                        },
+                        cache: true
+                    }
+            });
+
+      });
+}
+  
+//************************************************* 
+// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
+//************************************************* 
+  function entidadGuardarNuevo(){
+    let accion = $("#inputAccion").val();
+    let apellido = $("#inputApellido").val();
+    let nombres = $("#inputNombre").val();
+    let dni = $("#inputDocumento").val();
+    let domicilio = $("#inputDomicilio").val();
+    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
+    let telefono_numero = $("#inputNumeroTelefono").val();
+    let email = $("#inputEmail").val();
+    let localidad_id = $("#inputLocalidad").val();
+    let fecha_nacimiento = $("#inputFechaNacimiento").val();
+    let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
+    let url = "funciones/"+entidad_nombre+"Guardar.php";
+    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
+            $.post(url,parametros, function(data) {
+                if (data.codigo==100) {
+                        $("#resultado_accion").html(`
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
+                                                    <span style="color: #000000;">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>   
+                                                    </span>    
+                                                </div>`);
+                } else {
+                        $("#resultado_accion").html(`
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+                                                    <span style="color: #000000;">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>   
+                                                    </span>    
+                                                </div>`);
+                }
+            },"json"); 
+            load(1);
+    } else {
+        $("#resultado_accion").html(`
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+            <span style="color: #000000;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>   
+            </span>    
+        </div>`);
+    };
+}
+
+
+
+
+
+
+
 
 function calendarioEditar(idCalendario) {
     let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Editar Evento del Calendario</h2>`;

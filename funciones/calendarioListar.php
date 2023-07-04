@@ -22,9 +22,13 @@ $rol_admin = '';
 $action = (isset($_POST['action'])&& $_POST['action'] !=NULL)?$_POST['action']:'';
 $busqueda = isset($_POST['busqueda_rapida'])?$_POST['busqueda_rapida']:false;
 
-$codigo = ( isset($_POST['codigo']) && ($_POST['codigo']) )?($_POST['codigo']):false;
-$anioLectivo = ( isset($_POST['anio']) && ($_POST['anio']) )?($_POST['anio']):false;
+$id = isset($_POST['id'])?$_POST['id']:"";
+$anioLectivo = isset($_POST['anio']) ? $_POST['anio']:"";
+$evento = isset($_POST['evento'])?SanitizeVars::STRING($_POST['evento']):false;
+$fechaInicio = isset($_POST['fechaInicio'])?SanitizeVars::DATE($_POST['fechaInicio']):false;
+$fechaFinalizacion = isset($_POST['fechaFinalizacion'])?SanitizeVars::DATE($_POST['fechaFinalizacion']):false;
 
+//die($id.'-'.$anioLectivo.'-'.$evento.'-'.$fechaInicio.'-'.$fechaFinalizacion);
 
 /**********************************************************************************************************************************************************************/
 /**********************************************************************************************************************************************************************/
@@ -40,30 +44,28 @@ $sql = $sqlCantidadFilas = "";
 if($action == 'listar'){
 	$tables = " calendarioacademico c, evento e ";
 	$campos = " c.id, c.AnioLectivo, e.descripcion, c.fechaInicioEvento, c.fechaFinalEvento, e.codigo ";
-	if ($codigo) $andX[] = 'e.codigo = ' . $codigo;
+	//if ($codigo) $andX[] = 'e.codigo = ' . $codigo;
+	if ($id) $andX[] = 'c.id = ' . $id;
 	if ($anioLectivo) $andX[] = 'c.AnioLectivo = ' . $anioLectivo;
+	if ($evento) $andX[] = "(e.descripcion like '%" . $evento ."%' or e.codigo=$evento)";
+	if ($fechaInicio) $andX[] = "c.fechaInicioEvento like '" . $fechaInicio . "'";
+	if ($fechaFinalizacion) $andX[] = "c.fechaFinalEvento like '" . $fechaFinalizacion . "'";
 
 	if (count($andX)>0) $where = ' WHERE (' . implode(" and ",$andX) . ') ';
 	else $where = '';
     
-	$where = $where . " ORDER BY c.AnioLectivo desc, c.fechaInicioEvento desc ";
+	$where = $where . " ORDER BY c.fechaInicioEvento DESC ";
     $sql = "";
 
 	if ($busqueda) 
 	{
-		/*$campos_nuevos = "  x.id, x.dni, x.apellido, x.nombre, x.telefono, x.telefono_caracteristica, x.telefono_numero, x.email ";
+		$campos_nuevos = "  x.id, x.AnioLectivo, x.descripcion, x.fechaInicioEvento, x.fechaFinalEvento, x.codigo ";
 		$subConsultaFiltros = "SELECT $campos FROM  $tables $where";
 		//die($subConsultaFiltros);
 		$sqlCantidadFilas =  "SELECT count(*) AS numrows FROM  ($subConsultaFiltros) x
-							  WHERE (x.apellido like '%$busqueda%' or 
-									 x.nombre like '%$busqueda%' or 
-									 x.dni like '%$busqueda%' or
-									 x.email like '%$busqueda%')";
+							  WHERE (x.descripcion like '%$busqueda%' or x.codigo=$busqueda)";
 		$sqlFinal =  "SELECT $campos_nuevos FROM  ($subConsultaFiltros) x 
-		              WHERE (x.apellido like '%$busqueda%' or 
-							 x.nombre like '%$busqueda%' or 
-							 x.dni like '%$busqueda%' or
-							 x.email like '%$busqueda%')";*/
+		              WHERE (x.descripcion like '%$busqueda%' or x.codigo=$busqueda)";
 		//die($sqlFinal);
 	} else {
 		$sqlCantidadFilas = "SELECT count(*) AS numrows FROM $tables $where "; 
@@ -91,7 +93,7 @@ if($action == 'listar'){
 	//*********************************************************** */
 	//****************  PONER LOS NOMBRES DE LOS CAMPOS ********* */
 	//*********************************************************** */
-	$labelCampo1 = "Id";$labelCampo2 = "Anio"; $labelCampo3 = "Evento"; $labelCampo4 = "F.Inicio"; $labelCampo5 = "F.Finalizacion";
+	$labelCampo1 = "ID";$labelCampo2 = "AÑO"; $labelCampo3 = "EVENTO"; $labelCampo4 = "F.INICIO"; $labelCampo5 = "F.FINALIZACION";
 	$campo1 = "Id";$campo2 = "Anio"; $campo3 = "Evento"; $campo4 = "FechaInicio"; $campo5 = "FechaFinalizacion";
 	//*********************************************************** */
 	//*****
@@ -128,21 +130,21 @@ if($action == 'listar'){
             <th class="text-center" width="5%"><small><b><input type="checkbox" class="" id="seleccionar_todos"></b></small></th>
             <th width="5%" class="text-center text-primary" colspan=3><small><b>ACCIONES</b><small></th>
 			<th class="text-center text-primary" width="5%"><small><b><?=$labelCampo1?></b></small></th>
-            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo2?></b></small></th>
+            <th class="text-center text-primary" width="8%"><small><b><?=$labelCampo2?></b></small></th>
             <th class="text-center text-primary" width="35%"><small><b><?=$labelCampo3?></b></small></th>
-            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo4?></b></small></th>
-            <th class="text-center text-primary" width="15%"><small><b><?=$labelCampo5?></b></small></th>
+            <th class="text-center text-primary" width="12%"><small><b><?=$labelCampo4?></b></small></th>
+            <th class="text-center text-primary" width="12%"><small><b><?=$labelCampo5?></b></small></th>
           </tr>
           <tr>
             <th class="text-right" colspan=4>
-                <button class="btn btn-primary" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
-                <button class="btn btn-primary" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
+                <button class="btn btn-primary btn-sm" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
+                <button class="btn btn-primary btn-sm" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
               </th>
-            <th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo1?>" value=""></b></small></th>
-			<th class="text-center" width="15%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo2?>" value=""></b></small></th>
-            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo3?>" value=""></b></small></th>
-            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo4?>" value=""></b></small></th>
-            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo5?>" value=""></b></small></th>
+            <th class="text-center" width="7%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo1?>" value="<?=$id?>"></b></small></th>
+			<th class="text-center" width="8%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo2?>" value="<?=$anioLectivo?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo3?>" value="<?=$evento?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo4?>" value="<?=$fechaInicio?>"></b></small></th>
+            <th class="text-center" width="9%"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo5?>" value="<?=$fechaFinalizacion?>"></b></small></th>
           </tr>
         </thead>
 		<tbody>
@@ -155,7 +157,7 @@ if ($numrows>0){
 				$indice = $pagina + $c;
 				$rowIdCampo1 = $row['id'];
 				$rowCampo2 = $row['AnioLectivo'];
-				$rowCampo3 = $row['descripcion'].'('.$row['codigo'].')';
+				$rowCampo3 = $row['descripcion'].' ('.$row['codigo'].')';
 				$rowCampo4 = $row['fechaInicioEvento'];
 				$rowCampo5 = $row['fechaFinalEvento'];
 ?>						
@@ -175,11 +177,11 @@ if ($numrows>0){
                         </div>
                                     </div>
                   </td>
-				  <td align="left"><small><?=$rowIdCampo1;?><small></td>
-                  <td align="left"><small><?=$rowCampo2;?><small></td>
+				  <td align="center"><small><?=$rowIdCampo1;?><small></td>
+                  <td align="center"><small><?=$rowCampo2;?><small></td>
                   <td align="left"><small><?=$rowCampo3;?></small></td>
-                  <td align="left"><small><?=$rowCampo4;?></small></td>
-				  <td align="left"><small><?=$rowCampo4;?></small></td>
+                  <td align="center"><small><?=$rowCampo4;?></small></td>
+				  <td align="center"><small><?=$rowCampo5;?></small></td>
                   
               </tr>
 		<?php 
@@ -189,7 +191,7 @@ if ($numrows>0){
         </tbody>
          <tfoot>
              <tr>
-				<td colspan='8'>
+				<td colspan='9'>
 					<?php
 						$inicios=$offset+1;
 						$finales+=$inicios-1;
@@ -206,7 +208,7 @@ if ($numrows>0){
 			} else {
 		?>
 				<tbody>
-				<tr><td colspan="6">
+				<tr><td colspan="9">
 							  <div class="alert alert-exclamation" role="alert">
 									<span style="color: #000000;">
 										<i class="fa fa-info-circle" aria-hidden="true"></i>
