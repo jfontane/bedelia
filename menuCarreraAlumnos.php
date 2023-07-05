@@ -90,23 +90,12 @@ $carrera_nombre = $ARRAY_DATOS_CARRERA['data'][0]['descripcion'];
         background-color: rgb(0, 99, 71);
         color: white;
     }
+    
     .disabledbutton {
           pointer-events: none;
           opacity: 0.5;
       }
 
-    .select2-container {
-          border: 1px solid black;
-          border-radius: 2px;
-          height: 36px !important;
-    }; 
-
-    .select2-container:focus {
-        border-color: rgba(126, 239, 104, 0.8);
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(126, 239, 104, 0.6);
-        outline: 0 none;
-    }
-    
     .input-form {
           border: 1px solid black;
           border-radius: 2px;

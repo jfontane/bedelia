@@ -301,6 +301,15 @@ function entidadObtenerPorId(entidad_id){
     return resultado;
 };
 
+function entidadGuardar() {
+    let accion = $("#inputAccion").val();
+    if (accion=='nuevo') {
+        entidadGuardarNuevo();
+    } else if (accion=='editar') {
+        entidadGuardarEditado();
+    }
+}
+
 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -414,7 +423,7 @@ function entidadCrear(){
 //************************************************* 
 // GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
 //************************************************* 
-  /*function entidadGuardarNuevo(){
+  function entidadGuardarNuevo(){
     let accion = $("#inputAccion").val();
     let apellido = $("#inputApellido").val();
     let nombres = $("#inputNombre").val();
@@ -466,7 +475,7 @@ function entidadCrear(){
             </span>    
         </div>`);
     };
-}*/
+}
 
 
 
@@ -563,7 +572,7 @@ function entidadEditar(entidad_id){
 //************************************************* 
 // GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
 //************************************************* 
-function entidadGuardar(){
+function entidadGuardarEditado(){
     let accion = $("#inputAccion").val();
     let apellido = $("#inputApellido").val();
     let nombres = $("#inputNombre").val();
@@ -576,7 +585,7 @@ function entidadGuardar(){
     let fecha_nacimiento = $("#inputFechaNacimiento").val();
     let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
     let url = "funciones/"+entidad_nombre+"Guardar.php";
-    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
+    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && localidad_id!="") {
         $.post(url,parametros, function(data) {
             if (data.codigo==100) {
                     $("#resultado_accion").html(`
@@ -636,7 +645,7 @@ function entidadGuardar(){
 //************************************************************************************************ 
 //************************************************************************************************ 
 
-function vincularCarrera(entidad_id) {
+function vincularCarrera() {
     let arreglo="";
     let parametros = "";
     let url = "html/"+entidad_nombre+".html";
@@ -657,7 +666,6 @@ function vincularCarrera(entidad_id) {
             $('#alumno_ver').addClass('d-none');
             $('#telefono_viejo').addClass('d-none');
             $('#alumno_asignar_carrera').removeClass('d-none');
-            $("#inputId").val(entidad_id);
             //******************************************************************** 
             //******************************************************************** 
             $('#inputCarrera').select2({
@@ -682,42 +690,6 @@ function vincularCarrera(entidad_id) {
             });
 
       });    
-
-}
-
-
-function guardarVinculo() {
-    let alumno_id = $("#inputId").val();
-    let carrera_id = $("#inputCarrera").val();
-    let parametro = {"alumno_id":alumno_id,"carrera_id":carrera_id};
-    $.post("./funciones/alumnoVincularCarrera.php",parametro,function(data){
-        if (data.codigo==100) {
-                    $("#resultado_accion").html(`
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
-                                                
-                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                    &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>   
-                                            </div>`);
-            } else {
-                    $("#resultado_accion").html(`
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-                                                <span style="color: #000000;">
-                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                    &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>   
-                                                </span>    
-                                            </div>`);
-            };
-            $("#inputId").val("");
-            $("#inputCarrera").val("");
-            load(1);
-    },"json");
-
 
 }
 

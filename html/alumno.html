@@ -8,7 +8,7 @@
     <div class="form-row">  
       <div class="form-group col-md-6">
         <strong>Documento</strong>
-        <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+        <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
       </div>
     </div>
     
@@ -160,6 +160,40 @@
   
   </form>
   
+  </div>
+  </div>
+</div>
+
+
+<div class="img form visible" id="alumno_asignar_carrera">
+  <div class="jumbotron jumbotron-fluid rounded form2">
+    <div class="container justifu+y-content-center">
+      <h1 class="display-4">Vincular Alumno a Carrera</h1>
+      <hr>
+  <form id="form">
+
+    <div class="form-row">
+        <div class="form-group col-md-6"> 
+              <strong>Carrera</strong>
+              <input id="inputId" inputmode="numeric" type="hidden">
+              <select id="inputCarrera" class="form-control select2 select2-localidad select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+            </select> 
+        </div>
+    </div>
+
+    <div class="form-row">
+       <div class="form-group col-md-6">
+         <button id="btnVerGuardar" type="button" class="btn btn-primary btn-block" onclick="guardarVinculo()">Guardar</button>
+       </div>
+     </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <button type="button" class="btn btn-secondary btn-block" onclick="load(1)">Volver</button>
+      </div>
+    </div>
+  
+  </form>
   </div>
   </div>
 </div>

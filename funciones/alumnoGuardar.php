@@ -12,11 +12,14 @@ $apellido = (isset($_POST['apellido']) && $_POST['apellido']!=NULL)?SanitizeVars
 $nombres = (isset($_POST['nombres']) && $_POST['nombres']!=NULL)?SanitizeVars::UTF8($_POST['nombres']):false;
 $dni = (isset($_POST['dni']) && $_POST['dni']!=NULL)?SanitizeVars::INT($_POST['dni']):false;
 $domicilio = (isset($_POST['domicilio']) && $_POST['domicilio']!=NULL)?SanitizeVars::STRING($_POST['domicilio']):false;
-$telefono_caracteristica = (isset($_POST['telefono_caracteristica']) && $_POST['telefono_caracteristica']!=NULL)?SanitizeVars::INT($_POST['telefono_caracteristica']):false;
-$telefono_numero = (isset($_POST['telefono_numero']) && $_POST['telefono_numero']!=NULL)?SanitizeVars::INT($_POST['telefono_numero']):false;
+$telefono_caracteristica = (isset($_POST['telefono_caracteristica']))?SanitizeVars::INT($_POST['telefono_caracteristica']):false;
+$telefono_numero = (isset($_POST['telefono_numero']))?SanitizeVars::INT($_POST['telefono_numero']):false;
 $email = (isset($_POST['email']) && $_POST['email']!=NULL)?SanitizeVars::EMAIL($_POST['email']):false;
 $localidad_id = (isset($_POST['localidad_id']) && $_POST['localidad_id']!=NULL)?SanitizeVars::INT($_POST['localidad_id']):false;
 $fecha_nacimiento = (isset($_POST['fecha_nacimiento']) && $_POST['fecha_nacimiento']!=NULL)?"'".SanitizeVars::DATE($_POST['fecha_nacimiento'])."'":'NULL';
+
+
+//var_dump($_POST);die;
 //die($accion.'-'.$apellido.'-'.$nombres.'-'.$dni.'-'.$domicilio.'-'.$telefono_caracteristica.'-'.$telefono_numero.'-'.$email.'-'.$localidad_id.'-'.$fecha_nacimiento);
 
 $array_resultados = array();
@@ -56,22 +59,44 @@ if ($accion=='editar') {
       }
 } else if ($accion=='nuevo') {
       $sql_persona = "INSERT persona(dni,apellido,nombre,fechaNacimiento,nacionalidad,idLocalidad,domicilio,email,telefono_caracteristica,telefono_numero) VALUES
-                       ('$dni','$apellido','$nombres','$fecha_nacimiento','Argentina',$localidad_id,'$domicilio','$email','$telefono_caracteristica','$telefono_numero')";
-      
+                       ('$dni','$apellido','$nombres',$fecha_nacimiento,'Argentina',$localidad_id,'$domicilio','$email','$telefono_caracteristica','$telefono_numero')";
       $resultado_1 = mysqli_query($conex,$sql_persona);
-      $filas_afectadas_1 = mysqli_affected_rows($conex);
-      $sql_profesor = "INSERT alumno(dni,apellido,nombre) VALUES('$dni','$apellido','$nombres')";
-      $resultado_2 = mysqli_query($conex,$sql_profesor);
-      $filas_afectadas_2 = mysqli_affected_rows($conex);    
-      //die( $sql_persona.'**'.$sql_profesor);
-      if ($filas_afectadas_1>0 && $filas_afectadas_2>0) {
-            $array_resultados['codigo'] = 100;
-            $array_resultados['mensaje'] = "El $entidad <strong>$apellido, $nombres</strong> fue creado Exitosamente.";
-      } else {
-            $errorNro =  mysqli_errno($conex);
-            $array_resultados['codigo'] = 12;
-            $array_resultados['mensaje'] = "Hubo un Error en la creación del $entidad. ";
-      }  
+      $bandError = false;
+      if (mysqli_errno($conex)=='1062') {
+            $sql_persona = "UPDATE persona 
+                            SET apellido = '$apellido',
+                                nombre = '$nombres',
+                                fechaNacimiento = $fecha_nacimiento,
+                                nacionalidad = 'Argentina',
+                                idLocalidad = $localidad_id,
+                                domicilio = '$domicilio',
+                                email = '$email',
+                                telefono_caracteristica = '$telefono_caracteristica',
+                                telefono_numero = '$telefono_numero'
+                            WHERE dni = $dni";
+            $resultado_1 = mysqli_query($conex,$sql_persona);                
+            if (mysqli_errno($conex)) {
+                  $array_resultados['codigo'] = 9;
+                  $array_resultados['mensaje'] = "El $entidad con <strong>$dni</strong> produjo un error.";  
+                  $bandError = true;
+            }
+      };
+      
+      if (!$bandError) {
+            $sql_alumno = "INSERT alumno(dni,apellido,nombre) VALUES('$dni','$apellido','$nombres')";
+            $resultado_2 = mysqli_query($conex,$sql_alumno);
+            if (mysqli_errno($conex)=='1062') {
+                  $array_resultados['codigo'] = 10;
+                  $array_resultados['mensaje'] = "El $entidad con <strong>$dni</strong> ya se encuentra registrado.";
+            } else if (mysqli_errno($conex)=='0') {
+                  $array_resultados['codigo'] = 100;
+                  $array_resultados['mensaje'] = "El $entidad <strong>$apellido, $nombres</strong> fue creado Exitosamente.";
+            } else {
+                  $array_resultados['codigo'] = 11;
+                  $array_resultados['mensaje'] = "El $entidad con <strong>$dni</strong> no pudo ser registrado."; 
+            }
+      }
+      
 };
 
 echo json_encode($array_resultados);
