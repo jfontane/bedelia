@@ -81,6 +81,9 @@ if ($accion=='editar') {
                   $bandError = true;
             }
       };
+
+      $sql_usuario = "INSERT usuario(dni,idtipo,pass) VALUES('$dni',1,'".md5($dni)."')";
+      $resultado = mysqli_query($conex,$sql_usuario);
       
       if (!$bandError) {
             $sql_alumno = "INSERT alumno(dni,apellido,nombre) VALUES('$dni','$apellido','$nombres')";
