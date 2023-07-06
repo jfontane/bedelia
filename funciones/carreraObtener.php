@@ -10,7 +10,7 @@ $json = [];
 if($search) {
         $sql = "SELECT c.id, c.descripcion, c.codigo
                 FROM carrera c
-                WHERE (c.codigo like '%$search%' or c.descripcion like '%$search%')";       
+                WHERE (c.codigo like '%$search%' or c.descripcion like '%$search%') and c.habilitada = 'Si'";       
         //die($sql);         
         $resultado = mysqli_query($conex,$sql);
         if (mysqli_num_rows($resultado)>0) {
