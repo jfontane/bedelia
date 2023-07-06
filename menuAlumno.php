@@ -337,7 +337,12 @@ function entidadVer(entidad_id){
           $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
           $("#spn_documento").html(datos_entidad.datos[0].dni);
           $("#spn_domicilio").html(datos_entidad.datos[0].direccion);
-          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          if (datos_entidad.datos[0].telefono_caracteristica!=null && datos_entidad.datos[0].telefono_numero!=null) {
+                let wsp = `<a href="https://api.whatsapp.com/send/?phone=549`+datos_entidad.datos[0].telefono_caracteristica+datos_entidad.datos[0].telefono_numero+`&text=Hola&type=phone_number&app_absent=0" target="_blank">
+                                    <img src="../public/img/icons/whatsapp.png" width="20">
+                            </a>`;
+                $("#spn_celular").html(wsp+' ('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          }
           $("#spn_email").html(datos_entidad.datos[0].email);
           $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
           $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
@@ -482,6 +487,7 @@ function entidadCrear(){
 // NOS PERMITE EDITAR UNA ENTIDAD                   
 //************************************************* 
 function entidadEditar(entidad_id){
+    alert('si'+entidad_id)
       let datos_entidad = "";
       let url = "html/"+entidad_nombre+".html";
       let url_obtener_entidad = "funciones/localidadObtener.php";
@@ -546,13 +552,16 @@ function entidadEditar(entidad_id){
                     cache: true
                 }
             });
+            
             var data = {
                 id: datos_entidad.datos[0].localidad_id,
                 text: datos_entidad.datos[0].localidad_nombre + ' (Pcia. ' + datos_entidad.datos[0].provincia_nombre + ')'
             };
+            
             var newOption = new Option(data.text, data.id, false, false);
             $('#inputLocalidad').append(newOption).trigger('change');
             $("#inputLocalidad option[value="+ datos_entidad.datos[0].localidad_id +"]").attr("selected",true);
+
       });
 }
  
