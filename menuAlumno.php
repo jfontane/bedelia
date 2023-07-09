@@ -448,6 +448,7 @@ function entidadEditar(entidad_id){
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
+            $("#inputId").val(entidad_id);
             $("#inputApellido").val(datos_entidad.datos[0].apellido);
             $("#inputNombre").val(datos_entidad.datos[0].nombre);
             $("#inputDocumento").attr('disabled',true)

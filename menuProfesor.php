@@ -286,20 +286,18 @@ function load(page) {
         });
   };
  
-  //******************************************* 
-  // QUITA EL FILTRO DEL LISTADO DE ENTIDADES   
-  //******************************************* 
-  function quitarFiltro() {
-        $("#inputBusquedaRapida").val(""); 
-        $("#inputFiltroNombres").val("");
-        $("#inputFiltroDni").val("");
-        $("#inputFiltroTelefono").val("");
-        $("#inputFiltroEmail").val("");
-        load(1);  
-  };
+//******************************************* 
+// QUITA EL FILTRO DEL LISTADO DE ENTIDADES   
+//******************************************* 
+function quitarFiltro() {
+    $("#inputBusquedaRapida").val(""); 
+    $("#inputFiltroNombres").val("");
+    $("#inputFiltroDni").val("");
+    $("#inputFiltroTelefono").val("");
+    $("#inputFiltroEmail").val("");
+    load(1);  
+};
   
-
-
 
 //************************************************** 
 // NOS PERMITE BUSCAR UNA ENTIDAD POR ID       
@@ -529,6 +527,7 @@ function entidadEditar(entidad_id){
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
+            $("#inputId").val(entidad_id);
             $("#inputApellido").val(datos_entidad.datos[0].apellido);
             $("#inputNombre").val(datos_entidad.datos[0].nombre);
             $("#inputDocumento").attr('disabled',true)
