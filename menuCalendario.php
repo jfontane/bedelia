@@ -298,7 +298,7 @@ function entidadVer(entidad_id){
           $("#spn_evento").html(datos_entidad.datos[0].descripcion+' ('+datos_entidad.datos[0].codigo+')');
           $("#spn_fecha_inicio").html(datos_entidad.datos[0].fechaInicioEvento);
           $("#spn_fecha_finalizacion").html(datos_entidad.datos[0].fechaFinalEvento);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
+          $("#inputId").val(entidad_id);
           
            //******************************************************************** 
            //******************************************************************** 
@@ -336,19 +336,17 @@ function entidadCrear(){
             $('#calendario_ver').addClass('d-none');
             //******************************************************************** 
             //******************************************************************** 
-            $("#inputAltaFechaInicio").datepicker({
+            $("#inputFechaInicio").datepicker({
                 dateFormat: 'dd/mm/yy',
-                maxDate: new Date()
                 //startDate: '-3d'
             });
-            $("#inputAltaFechaFinalizacion").datepicker({
+            $("#inputFechaFinalizacion").datepicker({
                 dateFormat: 'dd/mm/yy',
-                maxDate: new Date()
                 //startDate: '-3d'
             });
             $("#inputAccion").val('nuevo');
             
-            $('#inputAltaEvento').select2({
+            $('#inputEvento').select2({
                     theme: "bootstrap",
                     placeholder: "Buscar",
                     ajax: {
@@ -372,63 +370,6 @@ function entidadCrear(){
       });
 }
   
-//************************************************* 
-// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS  falta     
-//************************************************* 
-  function entidadGuardarNuevo(){
-    let accion = $("#inputAccion").val();
-    let apellido = $("#inputApellido").val();
-    let nombres = $("#inputNombre").val();
-    let dni = $("#inputDocumento").val();
-    let domicilio = $("#inputDomicilio").val();
-    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
-    let telefono_numero = $("#inputNumeroTelefono").val();
-    let email = $("#inputEmail").val();
-    let localidad_id = $("#inputLocalidad").val();
-    let fecha_nacimiento = $("#inputFechaNacimiento").val();
-    let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
-    let url = "funciones/"+entidad_nombre+"Guardar.php";
-    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
-            $.post(url,parametros, function(data) {
-                if (data.codigo==100) {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                } else {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                }
-            },"json"); 
-            load(1);
-    } else {
-        $("#resultado_accion").html(`
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-            <span style="color: #000000;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>   
-            </span>    
-        </div>`);
-    };
-}
-
 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -453,7 +394,6 @@ function entidadEditar(entidad_id){
       $("#breadcrumb").slideDown("slow").html(breadcrumb);   
       datos_entidad = entidadObtenerPorId(entidad_id);
 
-
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
@@ -462,32 +402,30 @@ function entidadEditar(entidad_id){
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
-            $("#inputAltaAnio").val(datos_entidad.datos[0].AnioLectivo);
-            //$("#inputAltaEvento").val(datos_entidad.datos[0].evento);
-            //$("#inputAltaFechaInicio").val(datos_entidad.datos[0].fechaInicioEvento);
-            //$("#inputAltaFechaFinalizacion").val(datos_entidad.datos[0].fechaFinalEvento);
+            $("#inputAnio").val(datos_entidad.datos[0].AnioLectivo);
+            $("#inputId").val(entidad_id);
 
-            $("#inputAltaFechaInicio").datepicker({
+            $("#inputFechaInicio").datepicker({
                 dateFormat: 'dd/mm/yy',
             });
             if (datos_entidad.datos[0].fechaInicioEvento!=null) {
                 let anio = (datos_entidad.datos[0].fechaInicioEvento).substr(0,4);
                 let mes = (datos_entidad.datos[0].fechaInicioEvento).substr(5,2);
                 let dia = (datos_entidad.datos[0].fechaInicioEvento).substr(8,2);
-                $("#inputAltaFechaInicio").datepicker('setDate',dia+'/'+mes+'/'+anio);
+                $("#inputFechaInicio").datepicker('setDate',dia+'/'+mes+'/'+anio);
             }
 
-            $("#inputAltaFechaFinalizacion").datepicker({
+            $("#inputFechaFinalizacion").datepicker({
                 dateFormat: 'dd/mm/yy',
             });
             if (datos_entidad.datos[0].fechaFinalEvento!=null) {
                 let anio = (datos_entidad.datos[0].fechaFinalEvento).substr(0,4);
                 let mes = (datos_entidad.datos[0].fechaFinalEvento).substr(5,2);
                 let dia = (datos_entidad.datos[0].fechaFinalEvento).substr(8,2);
-                $("#inputAltaFechaFinalizacion").datepicker('setDate',dia+'/'+mes+'/'+anio);
+                $("#inputFechaFinalizacion").datepicker('setDate',dia+'/'+mes+'/'+anio);
             }
 
-            $('#inputAltaEvento').select2({
+            $('#inputEvento').select2({
                     theme: "bootstrap",
                     placeholder: "Buscar",
                     ajax: {
@@ -513,148 +451,185 @@ function entidadEditar(entidad_id){
                 text: datos_entidad.datos[0].descripcion + ' (' + datos_entidad.datos[0].codigo + ')'
             };
             var newOption = new Option(data.text, data.id, false, false);
-            $('#inputAltaEvento').append(newOption).trigger('change');
-            $("#inputAltaEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
+            $('#inputEvento').append(newOption).trigger('change');
+            $("#inputEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
       });
 }
 
 
-
-function calendarioEditar(idCalendario) {
-    let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Editar Evento del Calendario</h2>`;
-    let bread = `<nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#" onclick="">Home</a></li>
-                      <li class="breadcrumb-item"><a href="#" onclick="cargarModulos()">Calendario</a></li>
-                      <li class="breadcrumb-item">Editar Evento</li>
-                    </ol>
-                  </nav>`;
-    let calendario_id = idCalendario;
-    let anio_lectivo;
-    let fecha_inicio;
-    let fecha_finalizacion;
-    let evento_id;       
-    $("#filtro").html("");       
-    $("#breadcrumb").html(bread);
-    $("#titulo").html(titulo);
-
-    let datos_calendario = getCalendarioPorId(calendario_id);
-    if (datos_calendario.codigo == 100) {
-        anio_lectivo = datos_calendario.data[0].AnioLectivo;
-        fecha_inicio = datos_calendario.data[0].fechaInicioEvento;
-        fecha_finalizacion = datos_calendario.data[0].fechaFinalEvento;
-        evento_id = datos_calendario.data[0].idEvento;
-    };
-    $.get("./html/calendarioEditar.html",function(datos) {
-         $("#principal").html(datos);
-         $("#inputEditarAnio").val(anio_lectivo);
-         $("#inputEditarFechaInicio").val(fecha_inicio);
-         $("#inputEditarFechaFinalizacion").val(fecha_finalizacion);
-         $("#inputEditarFechaInicio").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputEditarFechaFinalizacion").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputEditarIdCalendario").val(calendario_id);
-         $.post("./funciones/getAllEvento.php",function(datosEventos) {
-              if (datosEventos.codigo == 100) {
-                    let obj = datosEventos.data; 
-                    obj.forEach(evento => {
-                            $("#inputEditarEvento").append($('<option/>', {
-                                text: ' ('+evento.codigo+') '+evento.descripcion,
-                                value: evento.id,
-                            }));
-                    });
-                    $("#inputEditarEvento option[value="+ evento_id +"]").attr("selected",true);
-                    $('#inputEditarEvento').select2({
-                        theme: "bootstrap4",
-                    });
-              };
-
-          },"json")
-    });
-};
-
-function calendarioEditarGuardar() {
-    let anio_lectivo = $("#inputEditarAnio").val();
-    let evento = $('#inputEditarEvento').val();
-    let fecha_inicio = $("#inputEditarFechaInicio").val();
-    let fecha_finalizacion = $("#inputEditarFechaFinalizacion").val();
-    let calendario = $("#inputEditarIdCalendario").val();
-    let parametros = {"anio":anio_lectivo,"evento":evento,"fecha_inicio":fecha_inicio,"fecha_finalizacion":fecha_finalizacion,"calendario":calendario};
-
-    $.post("./funciones/updCalendario.php",parametros,function(datos){
-        if (datos.codigo == 100) {
-            cargarModulos();
-            $("#resultado_accion").html();
-            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        } else {
-            
-            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        }
-    },"json");
-
-    
-}
-
-
-function calendarioAltaGuardar() {
-    let anio_lectivo = $("#inputAltaAnio").val();
-    let evento = $('#inputAltaEvento').val();
-    let fecha_inicio = $("#inputAltaFechaInicio").val();
-    let fecha_finalizacion = $("#inputAltaFechaFinalizacion").val();
-    let parametros = {"anio":anio_lectivo,"evento":evento,"fecha_inicio":fecha_inicio,"fecha_finalizacion":fecha_finalizacion};
-    $.post("./funciones/setCalendario.php",parametros,function(datos){
-        if (datos.codigo == 100) {
-            cargarModulos();
-            $("#resultado_accion").html();
-            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        } else {
-            
-            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        }
-    },"json");
-   
-}
-
-
-function calendarioEliminar(idCalendario) {
-    if (confirm("Va a Eliminar un Evento del Calendario, desea hacerlo?.")) {
-        let parametros = {"calendario":idCalendario};
-        $.post("./funciones/delCalendario.php",parametros,function(datos){
-            if (datos.codigo == 100) {
-                cargarModulos();
-                $("#resultado_accion").html();
-                $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                            `+datos.data+`</span></i>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button></div></div>`);
+//************************************************************************************************ 
+//************************************************************************************************ 
+//******* GRABA LA ENTIDAD QUE SE CREA (NUEVA) O LA QUE SE EDITA EN LA BASE DE DATOS *************
+//************************************************************************************************ 
+//************************************************************************************************ 
+function entidadGuardar(){
+    let accion = $("#inputAccion").val();
+    let id = $("#inputId").val();
+    let anio = $("#inputAnio").val();
+    let evento = $("#inputEvento").val();
+    let fecha_inicio = $("#inputFechaInicio").val();
+    let fecha_finalizacion = $("#inputFechaFinalizacion").val();
+    let parametros = {"accion":accion, "id":id, "anio":anio, "evento":evento, "fecha_inicio":fecha_inicio, "fecha_finalizacion":fecha_finalizacion};
+    let url = "funciones/"+entidad_nombre+"Guardar.php";
+    console.log(parametros);
+    if (accion!="" && anio!="" && evento!=="" && fecha_inicio!="" && fecha_finalizacion!="") {
+        $.post(url,parametros, function(data) {
+            if (data.codigo==100) {
+                    $("#resultado_accion").html(`
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
+                                                
+                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                    &nbsp;<strong>Atención:</strong> `+data.mensaje+`
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>   
+                                            </div>`);
             } else {
-                $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                            `+datos.data+`</span></i>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button></div></div>`);
-            }
-        },"json");
-    }
-   
+                    $("#resultado_accion").html(`
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+                                                <span style="color: #000000;">
+                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                    &nbsp;<strong>Atención:</strong> `+data.mensaje+`
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>   
+                                                </span>    
+                                            </div>`);
+            };
+            $("#inputId").val("");
+            $("#inputAnio").val("");
+            $("#inputEvento").val("");
+            $("#inputFechaInicio").val("");
+            $("#inputFechaFinalizacion").val("");
+            $("#inputAccion").val("");
+        },"json"); 
+        load(1);
+    } else {
+        $("#resultado_accion").html(`
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+            <span style="color: #000000;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>   
+            </span>    
+        </div>`);
+    }    
 }
 
+
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************ ELIMINACION DEL REGISTRO DEL CALENDARIO   ***************************** 
+//************************************************************************************************ 
+//************************************************************************************************ 
+
+
+//***************************************************************** 
+// MANEJA LA SELECCION / DESELECCION DE TODOS LOS CHECKBOX          
+//***************************************************************** 
+$("body").on("click","#seleccionar_todos", function() {
+    if( $(this).is(':checked') ){
+          // Hacer algo si el checkbox ha sido seleccionado
+          $('.check').prop('checked',true);
+      } else {
+          // Hacer algo si el checkbox ha sido deseleccionado
+          $('.check').prop('checked',false);
+      }
+  });
+  
+ 
+  //******************************************************************************************** 
+  // VERFICICA SI HAY ENTIDADES SELECCIONADOS/CHECKBOX Y PIDE CONFIRMACION PARA SU ELIMINACION   
+  //******************************************************************************************** 
+  function entidadEliminarSeleccionados(){
+      let arreglo="";
+      let cantidad_seleccionados = 0;
+      $('.check:checked').each(
+                  function() {
+                      arreglo += ','+$(this).val();
+                      cantidad_seleccionados++;
+                  }
+      );
+      if (cantidad_seleccionados>0) {
+              $("#confirmarEliminarTodosModal").modal("show");
+      } else {
+              $("#sinElementosModal").modal("show");
+              $("#resultado_accion").html(`
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+                                              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                  &nbsp;<strong>Atención:</strong> No hay Registros de `+entidad_titulo2+` seleccionados.
+                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </button>   
+                                          </div>
+              `);
+      };
+  }
+  
+
+  //*************************************************************************** 
+  // ELIMINA TODOS LAS ENTIDADES CUYOS CHECKBOX ESTAN SELECCIONADOS             
+  //*************************************************************************** 
+function entidadEliminarSeleccionadosConfirmar(){
+      let arreglo="";
+      let parametros = "";
+      let url = "funciones/"+entidad_nombre+"Eliminar.php";
+      let cantidad_seleccionados = 0;
+      $('.check:checked').each(
+                  function() {
+                      arreglo += ','+$(this).val();
+                  }
+      );
+      arreglo = arreglo.substr(1,arreglo.length-1);
+      console.log(arreglo)
+      parametros = {"id":arreglo};
+      $.post(url, parametros, function (data) {
+              $("#resultado_accion").html(`
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
+                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                    &nbsp;<strong>Atención:</strong> `+data.mensaje+`
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>   
+                            </div>
+              `);
+              load(1);
+      },"json");
+  };
+  
+  //******************************************************* 
+  // CONFIRMA LA ELIMINACION DE LA ENTIDAD DESDE EL MODAL   
+  //******************************************************* 
+  $("body").on("shown.bs.modal","#confirmarModal", function(e) {
+       let button = $(e.relatedTarget); // BUTTON QUE DISPARO EL MODAL
+       let id=button.data("id");
+      $("#inputEliminarId").val(id);
+  })
+  
+  //************************************************
+  // NOS PERMITE ELIMINAR UNA ENTIDAD ESPECIFICA     
+  //************************************************ 
+  function entidadEliminarSeleccionado(entidad_id){
+        let arreglo="";
+        let parametros = "";
+        let url = "funciones/"+entidad_nombre+"Eliminar.php";
+        parametros = {"id":entidad_id};
+                $.post(url, parametros, function (data) {
+                        $("#resultado_accion").html(`
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
+                                                
+                                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                    &nbsp;<strong>Atención:</strong> `+data.mensaje+`
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>   
+                                </div>
+                        `);
+                        load(1);
+                },"json");
+  };
 
 
 </script>

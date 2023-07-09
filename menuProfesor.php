@@ -360,10 +360,15 @@ function entidadVer(entidad_id){
           $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
           $("#spn_documento").html(datos_entidad.datos[0].dni);
           $("#spn_domicilio").html(datos_entidad.datos[0].domicilio);
-          $("#spn_celular").html('('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          $("#inputId").val(entidad_id);
+          if (datos_entidad.datos[0].telefono_caracteristica!=null && datos_entidad.datos[0].telefono_numero!=null) {
+                let wsp = `<a href="https://api.whatsapp.com/send/?phone=549`+datos_entidad.datos[0].telefono_caracteristica+datos_entidad.datos[0].telefono_numero+`&text=Hola&type=phone_number&app_absent=0" target="_blank">
+                                    <img src="../public/img/icons/whatsapp.png" width="20">
+                            </a>`;
+                $("#spn_celular").html(wsp+' ('+datos_entidad.datos[0].telefono_caracteristica+') '+datos_entidad.datos[0].telefono_numero);
+          }
           $("#spn_email").html(datos_entidad.datos[0].email);
           $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
           
            //******************************************************************** 
            //******************************************************************** 

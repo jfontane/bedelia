@@ -8,14 +8,16 @@
       <div class="form-row">  
         <div class="form-group col-md-6">
           <strong>Año</strong>
-          <input id="inputAltaAnio" inputmode="numeric" placeholder="Año" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+          <input id="inputAnio" inputmode="numeric" placeholder="Año" type="text" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+          <input id="inputId" inputmode="numeric" type="hidden" class="form-control" minlength="8" maxlength="8" required autocomplete="off">
+          <input id="inputAccion" type="hidden" class="form-control" required>
         </div>
       </div>
       
       <div class="form-row">  
         <div class="form-group col-md-6">
           <strong>Evento</strong>
-          <select id="inputAltaEvento" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+          <select id="inputEvento" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
           </select> 
         </div>
       </div>
@@ -23,14 +25,14 @@
       <div class="form-row">  
         <div class="form-group col-md-6">
           <strong>Fecha Inicio</strong>
-          <input type="text" class="form-control" id="inputAltaFechaInicio" placeholder="dd/mm/aaaa" required autocomplete="off">
+          <input type="text" class="form-control" id="inputFechaInicio" placeholder="dd/mm/aaaa" required autocomplete="off">
         </div>
       </div>
 
       <div class="form-row">  
         <div class="form-group col-md-6">
           <strong>Fecha Finalizacion</strong>
-          <input type="text" class="form-control" id="inputAltaFechaFinalizacion" placeholder="dd/mm/aaaa" required autocomplete="off">
+          <input type="text" class="form-control" id="inputFechaFinalizacion" placeholder="dd/mm/aaaa" required autocomplete="off">
         </div>
       </div>
       
@@ -92,7 +94,7 @@
     
       <div class="form-row">
         <div class="form-group col-md-6">
-          <button id="btnVerEditar" type="button" class="btn btn-primary btn-block">Editar</button>
+          <button id="btnVerEditar" type="button" class="btn btn-primary btn-block" onclick="entidadEditar($('#inputId').val())">Editar</button>
         </div>
       </div>
     

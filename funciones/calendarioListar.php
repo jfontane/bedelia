@@ -47,7 +47,7 @@ if($action == 'listar'){
 	//if ($codigo) $andX[] = 'e.codigo = ' . $codigo;
 	if ($id) $andX[] = 'c.id = ' . $id;
 	if ($anioLectivo) $andX[] = 'c.AnioLectivo = ' . $anioLectivo;
-	if ($evento) $andX[] = "(e.descripcion like '%" . $evento ."%' or e.codigo=$evento)";
+	if ($evento) $andX[] = "(e.descripcion like '%" . $evento ."%' or e.codigo='$evento')";
 	if ($fechaInicio) $andX[] = "c.fechaInicioEvento like '" . $fechaInicio . "'";
 	if ($fechaFinalizacion) $andX[] = "c.fechaFinalEvento like '" . $fechaFinalizacion . "'";
 
@@ -63,7 +63,7 @@ if($action == 'listar'){
 		$subConsultaFiltros = "SELECT $campos FROM  $tables $where";
 		//die($subConsultaFiltros);
 		$sqlCantidadFilas =  "SELECT count(*) AS numrows FROM  ($subConsultaFiltros) x
-							  WHERE (x.descripcion like '%$busqueda%' or x.codigo=$busqueda)";
+							  WHERE (x.descripcion like '%$busqueda%' or x.codigo='$busqueda')";
 		$sqlFinal =  "SELECT $campos_nuevos FROM  ($subConsultaFiltros) x 
 		              WHERE (x.descripcion like '%$busqueda%' or x.codigo=$busqueda)";
 		//die($sqlFinal);

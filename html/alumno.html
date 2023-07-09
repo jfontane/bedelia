@@ -8,6 +8,7 @@
     <div class="form-row">  
       <div class="form-group col-md-6">
         <strong>Documento</strong>
+        <input id="inputId" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
         <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
       </div>
     </div>
@@ -104,57 +105,57 @@
       
     <div class="form-row">  
       <div class="form-group col-md-6">
-        <strong>Apellido y Nombre: </strong> <span id="spn_nombres">Fontanellaz, Javier</span>
+        <strong>Apellido y Nombre: </strong> <span id="spn_nombres"></span>
       </div>
     </div>
   
     <div class="form-row">  
       <div class="form-group col-md-6">
-        <strong>Fecha Nacimiento: </strong><span id="spn_fecha_nacimiento">01/02/1976</span>
+        <strong>Fecha Nacimiento: </strong><span id="spn_fecha_nacimiento"></span>
       </div>
     </div>
   
     <div class="form-row">  
       <div class="form-group col-md-6">
-        <strong>Documento: </strong><span id="spn_documento">24912834</span>
-      </div>
-    </div>
-  
-  
-    <div class="form-row">  
-      <div class="form-group col-md-6">
-        <strong>Domicilio: </strong><span id="spn_domicilio">Espora 2278</span>
-      </div>
-    </div>
-  
-    <div class="form-row">  
-      <div class="form-group col-md-6">
-        <strong>Celular: </strong><span id="spn_celular">(342) 5163923</span>
-      </div>
-    </div>
-  
-    <div class="form-row">  
-      <div class="form-group col-md-6">
-        <strong>Email: </strong><span id="spn_email">jfontanellaz@gmail.com</span>
+        <strong>Documento: </strong><span id="spn_documento"></span>
       </div>
     </div>
   
   
     <div class="form-row">  
       <div class="form-group col-md-6">
-        <strong>Localidad: </strong><span id="spn_localidad">San Cristobal | Pcia. Santa Fe | CP: 3000</span>
+        <strong>Domicilio: </strong><span id="spn_domicilio"></span>
+      </div>
+    </div>
+  
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Celular: </strong><span id="spn_celular"></span>
+      </div>
+    </div>
+  
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Email: </strong><span id="spn_email"></span>
+      </div>
+    </div>
+  
+  
+    <div class="form-row">  
+      <div class="form-group col-md-6">
+        <strong>Localidad: </strong><span id="spn_localidad"></span>
       </div>
     </div>
   
     <div class="form-row">
       <div class="form-group col-md-6">
-        <button id="btnVerEditar" type="button" class="btn btn-primary btn-block">Editar</button>
+        <button id="btnVerEditar" type="button" class="btn btn-primary btn-block" onclick="entidadEditar($('#inputId').val())">Editar</button>
       </div>
     </div>
   
     <div class="form-row">
       <div class="form-group col-md-6">
-        <button type="button" class="btn btn-primary btn-block" onclick="load(1)">Volver</button>
+        <button type="button" class="btn btn-secondary btn-block" onclick="load(1)">Volver</button>
       </div>
     </div>
   

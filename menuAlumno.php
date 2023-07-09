@@ -94,7 +94,6 @@ require_once('seguridad.php');
  <header>
     <?php include("componente_navbar.php"); ?>
   </header>
-
 <article>
     <div id="breadcrumb">
       <nav aria-label="breadcrumb" role="navigation">
@@ -337,6 +336,8 @@ function entidadVer(entidad_id){
           $("#spn_fecha_nacimiento").html(datos_entidad.datos[0].fecha_nacimiento);
           $("#spn_documento").html(datos_entidad.datos[0].dni);
           $("#spn_domicilio").html(datos_entidad.datos[0].direccion);
+          $("#inputId").val(entidad_id);
+          
           if (datos_entidad.datos[0].telefono_caracteristica!=null && datos_entidad.datos[0].telefono_numero!=null) {
                 let wsp = `<a href="https://api.whatsapp.com/send/?phone=549`+datos_entidad.datos[0].telefono_caracteristica+datos_entidad.datos[0].telefono_numero+`&text=Hola&type=phone_number&app_absent=0" target="_blank">
                                     <img src="../public/img/icons/whatsapp.png" width="20">
@@ -345,7 +346,6 @@ function entidadVer(entidad_id){
           }
           $("#spn_email").html(datos_entidad.datos[0].email);
           $("#spn_localidad").html(datos_entidad.datos[0].localidad_nombre + ' | Pcia. ' + datos_entidad.datos[0].provincia_nombre + ' | CP. '+datos_entidad.datos[0].codigo_postal);
-          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
           
            //******************************************************************** 
            //******************************************************************** 
@@ -415,67 +415,6 @@ function entidadCrear(){
 
       });
 }
-  
-//************************************************* 
-// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
-//************************************************* 
-  /*function entidadGuardarNuevo(){
-    let accion = $("#inputAccion").val();
-    let apellido = $("#inputApellido").val();
-    let nombres = $("#inputNombre").val();
-    let dni = $("#inputDocumento").val();
-    let domicilio = $("#inputDomicilio").val();
-    let telefono_caracteristica = $("#inputTelefonoCaracteristica").val();
-    let telefono_numero = $("#inputTelefonoNumero").val();
-    let email = $("#inputEmail").val();
-    let localidad_id = $("#inputLocalidad").val();
-    let fecha_nacimiento = $("#inputFechaNacimiento").val();
-    let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
-    let url = "funciones/"+entidad_nombre+"Guardar.php";
-    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
-            $.post(url,parametros, function(data) {
-                if (data.codigo==100) {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                } else {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                }
-            },"json"); 
-            load(1);
-    } else {
-        $("#resultado_accion").html(`
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-            <span style="color: #000000;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>   
-            </span>    
-        </div>`);
-    };
-}*/
-
-
-
-
 
 //************************************************************************************************ 
 //************************************************************************************************ 
@@ -487,7 +426,6 @@ function entidadCrear(){
 // NOS PERMITE EDITAR UNA ENTIDAD                   
 //************************************************* 
 function entidadEditar(entidad_id){
-    alert('si'+entidad_id)
       let datos_entidad = "";
       let url = "html/"+entidad_nombre+".html";
       let url_obtener_entidad = "funciones/localidadObtener.php";
@@ -564,14 +502,13 @@ function entidadEditar(entidad_id){
 
       });
 }
- 
 
 
-
-
-//************************************************* 
-// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS       
-//************************************************* 
+//************************************************************************************************ 
+//************************************************************************************************ 
+//******* GRABA LA ENTIDAD QUE SE CREA (NUEVA) O LA QUE SE EDITA EN LA BASE DE DATOS *************
+//************************************************************************************************ 
+//************************************************************************************************ 
 function entidadGuardar(){
     let accion = $("#inputAccion").val();
     let apellido = $("#inputApellido").val();

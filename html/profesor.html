@@ -9,6 +9,7 @@
       <div class="form-group col-md-6">
         <strong>Documento</strong>
         <input id="inputDocumento" inputmode="numeric" placeholder="Documento" type="text" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
+        <input id="inputId" inputmode="numeric" type="hidden" class="form-control" minlength="8" maxlength="8" onkeypress="return valideKeySoloNumeros(event);" required autocomplete="off">
       </div>
     </div>
     
@@ -148,7 +149,7 @@
   
     <div class="form-row">
       <div class="form-group col-md-6">
-        <button id="btnVerEditar" type="button" class="btn btn-primary btn-block">Editar</button>
+        <button id="btnVerEditar" type="button" class="btn btn-primary btn-block" onclick="entidadEditar($('#inputId').val())">Editar</button>
       </div>
     </div>
   
