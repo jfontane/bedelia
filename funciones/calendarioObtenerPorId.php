@@ -8,7 +8,7 @@ $id = ( isset($_POST['id']) )?SanitizeVars::INT($_POST['id']):false;
 
 $array_resultados = array();
 if ($id) {
-    $sql = "SELECT c.id, c.AnioLectivo, c.fechaInicioEvento, c.fechaFinalEvento, c.idEvento, e.descripcion, e.codigo
+    $sql = "SELECT c.id, c.AnioLectivo, c.fechaInicioEvento, c.fechaFinalEvento, c.idEvento, c.idPeriodoCuatrimestreActivo, e.descripcion, e.codigo
             FROM calendarioacademico c, evento e
             WHERE (c.idEvento = e.id) and c.id=$id"; 
     //die($sql);        

@@ -403,6 +403,9 @@ function entidadEditar(entidad_id){
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
             $("#inputAnio").val(datos_entidad.datos[0].AnioLectivo);
+            //$("#inputCuatrimestre").val(datos_entidad.datos[0].AnioLectivo);
+            //$('#inputCuatrimestre option[value="'+datos_entidad.datos[0].idPeriodoCuatrimestreActivo+'"]').attr("selected", "selected");
+
             $("#inputId").val(entidad_id);
 
             $("#inputFechaInicio").datepicker({
@@ -447,12 +450,12 @@ function entidadEditar(entidad_id){
             });
 
             var data = {
-                id: datos_entidad.datos[0].id,
+                id: datos_entidad.datos[0].idEvento,
                 text: datos_entidad.datos[0].descripcion + ' (' + datos_entidad.datos[0].codigo + ')'
             };
             var newOption = new Option(data.text, data.id, false, false);
             $('#inputEvento').append(newOption).trigger('change');
-            $("#inputEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
+            $("#inputEvento option[value="+ datos_entidad.datos[0].idEvento +"]").attr("selected",true);
       });
 }
 

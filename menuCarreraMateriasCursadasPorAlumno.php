@@ -243,7 +243,8 @@ function cursadoEditar(val){
     let cursado_id = arr[4];
     let nota = Math.round(arr[5]);
     let estado = arr[6];
-    let FechaVencimientoRegularidad = arr[7];
+    let FechaVencimientoRegularidad = arr[7].substr(0,10);
+
     let breadcrumble = `<nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>

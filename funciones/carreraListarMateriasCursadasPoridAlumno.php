@@ -75,7 +75,7 @@ if($action == 'listar' && $idCarrera && ArrayHash::check($hash, array($MY_SECRET
 			$accion_eliminar = '<a href="#" onclick="carreraEliminar('.$row['id'].')" title="Eliminar"><img src="../public/img/icons/delete_icon.png" width="17"></a>';
 			$fecha_expiracion_materia = "------";
 			if ($row['estado_final']=='Libre' || $row['estado_final']=='Regularizo') {
-				$fecha_expiracion_materia = '<strong>'.$row['FechaVencimientoRegularidad'].'</strong>';
+				$fecha_expiracion_materia = '<strong>'.substr($row['FechaVencimientoRegularidad'],0,10).'</strong>';
 				//die($fecha_expiracion_materia);
 			};
 

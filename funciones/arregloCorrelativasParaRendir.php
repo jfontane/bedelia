@@ -10,9 +10,9 @@ function arma_arreglos_regulares_aprobadas($idAlumno,$conex)
         $_SESSION['ARRAY_CARRERAS']=array();
 
         $sqlAlumnoCarrera = "select b.id, b.descripcion 
-                           from alumno_estudia_carrera a, carrera b
-                           where a.idAlumno={$idAlumno} and 
-                                 a.idCarrera=b.id";
+                             from alumno_estudia_carrera a, carrera b
+                             where a.idAlumno = {$idAlumno} and 
+                                   a.idCarrera = b.id";
         $resultadoSqlAlumnoCarrera = mysqli_query($conex, $sqlAlumnoCarrera);
            
         

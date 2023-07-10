@@ -3,8 +3,6 @@ set_include_path('../../conexion'.PATH_SEPARATOR.'../../lib');
 //include_once 'seguridadNivel2.php';
 include_once 'conexion.php';
 include_once 'Sanitize.class.php';
-ini_set("default_charset", "UTF-8");
-mb_internal_encoding("UTF-8");
 
 $entidad = "Alumno";
 

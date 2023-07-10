@@ -5,7 +5,7 @@ set_include_path('../../lib/'.PATH_SEPARATOR.'../../conexion/');
 include_once 'conexion.php';
 include_once 'Sanitize.class.php';
 include_once 'pagination.php';
-//include_once 'ArrayHash.class.php';
+include_once 'ArrayHash.class.php';
 
 //die(unserialize('a:1:{i:0;s:8:"empleado";}')[0]);
 
@@ -154,7 +154,8 @@ if ($numrows>0){
 	while ($row=mysqli_fetch_assoc($query)) {
 				$c++;
 				$indice = $pagina + $c;
-				$rowIdCampo1 = $row['id'];
+				$rowIdCampo1 = $row['id']; 
+				$hashId = ArrayHash::encode(array($MY_SECRET=>$rowIdCampo1));
 				$rowCampo2 = $row['codigo'];
 				$rowCampo3 = $row['descripcion'];
 				$rowCampo4 = $row['habilitada'];
@@ -169,7 +170,7 @@ if ($numrows>0){
                           Acciones
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                          <a class=" dropdown-item small" href="#" onclick="entidadVer('<?=$rowIdCampo1?>')"><i class="fa fa-address-card-o"></i>&nbsp;Ver</a>
+                          <a class=" dropdown-item small" href="menuCarreraAlumnos.php?id=<?=$rowIdCampo1?>&hash=<?=$hashId?>" onclick=""><i class="fa fa-address-card-o"></i>&nbsp;Alumnos</a>
                           <a class=" dropdown-item small" href="#" onclick="entidadEditar('<?=$rowIdCampo1?>')"><i class="fa fa-edit"></i>&nbsp;Editar</a>
                           <a class=" dropdown-item small" href="#" data-toggle="modal" data-target="#confirmarModal" data-id="<?=$rowIdCampo1?>"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
                           <a class=" dropdown-item small disabledbutton" href="#" onclick="enviarEmail('<?=$rowIdCampo1?>')"><i class="fa fa-envelope"></i>&nbsp;Enviar Email</a>

@@ -9,6 +9,8 @@ include_once 'getFnCarreraPorId.php';
 $carrera_id = isset($_REQUEST['id'])?SanitizeVars::INT($_REQUEST['id']):FALSE;
 $hash = isset($_REQUEST['hash'])?SanitizeVars::STRING($_REQUEST['hash']):FALSE;
 
+//var_dump($_REQUEST);die;
+
 if(!$carrera_id || !ArrayHash::check($hash, array($MY_SECRET=>$carrera_id))){
     header("location: menuCarrera.php");
 };

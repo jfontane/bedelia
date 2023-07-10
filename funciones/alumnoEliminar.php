@@ -69,23 +69,23 @@ if ($entidades_a_eliminar) {
                   die('alumno');
             }; 
 
+            $errorNro =  mysqli_errno($conex);
+
+
             $sql_persona = "DELETE FROM persona
                     WHERE dni=".$fila['dni']."";
             $ok6 = mysqli_query($conex,$sql_persona);     
+
             /*if(!$ok6){
                   die('persona');
             };*/ 
             
             //die($sql_persona);
             /** SE INICIA LA TRANSACCION **/
-           
-
-            
-           
             
             
             //PRENGUNTAMOS SI HUBO ERROR
-            $errorNro =  mysqli_errno($conex);
+            
             if(!$ok5){
                   db_rollback($conex);
                   break;
