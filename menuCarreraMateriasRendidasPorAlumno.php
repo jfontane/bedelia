@@ -29,7 +29,6 @@ $alumno_nombre = $ARRAY_DATOS_AlUMNO['data'][0]['apellido'].', '.$ARRAY_DATOS_Al
 
 ?>
 
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -120,34 +119,38 @@ $alumno_nombre = $ARRAY_DATOS_AlUMNO['data'][0]['apellido'].', '.$ARRAY_DATOS_Al
 
  
  <!-- NAVBAR -->
- <header>
+<header>
     <?php include("componente_navbar.php"); ?>
-  </header>
+</header>
 
-  <article>
+<article>
     <div id="breadcrumb">
       <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
               <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
               <li class="breadcrumb-item" aria-current="page"><a href="menuCarrera.php">Carreras</a></li>
-              <li class="breadcrumb-item active" aria-current="page"><a href="menuCarreraAlumnos.php?id=<?=$idCarrera?>&hash=<?=$hashCarrera?>"><?=$carrera_nombre;?></a></li>
-              <li class="breadcrumb-item active" aria-current="page"><strong>Mat.Rendidas de: </strong><?=$alumno_nombre;?></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="menuCarreraAlumnos.php?id=<?=$idCarrera?>&hash=<?=$hashCarrera?>"><?=$carrera_nombre?></a></li>
+              <li class="breadcrumb-item active" aria-current="page"><?=$alumno_nombre?></li>
           </ol>
       </nav>
     </div>
-  </article>
+</article>
 
-  <article class="container">
+
+<article class="container-fluid">
     <div id="titulo"></div>
-  </article>
+</article>
+  
+<article  class="container">
+    <section id="principal">
+    </section>  
+    <section id="resultado_accion">
+    </section>         
+</article>
 
-  <article class="container">
-       <section>
-            <div class="row" id="filtro"></div><!-- Cierra Row-->
-            <div class="row" id="resultado"></div><!-- Cierra Row-->
-            <div class="row" id="resultado_accion"></div><!-- Cierra Row-->
-        </section>
-  </article>
+<span id="modalEliminar">
+
+</span>  
 
   
 
@@ -161,240 +164,379 @@ $alumno_nombre = $ARRAY_DATOS_AlUMNO['data'][0]['apellido'].', '.$ARRAY_DATOS_Al
 <script src="./js/funciones.js"></script>
 <script>
 
+//************************************************************************************************ */
+//************************************************************************************************ */
+//*********************************** LISTADO DE ENTIDADES *************************************** */
+//************************************************************************************************ */
+//************************************************************************************************ */
+let entidad_nombre = "materiasAprobadas";
+let entidad_titulo1 = "CARRERA";
+let entidad_titulo2 = "Carrera";
+let campo1 = "Id";
+let campo2 = "Codigo";
+let campo3 = "Descripcion";
+let campo4 = "Habilitada";
+
 $(function () {
-    let alumno, carrera;
-    let datos_alumno = "<?=$alumno_nombre?>";
-    let datos_carrera = "<?=$carrera_nombre?>";
-    cargarModulos();
-    let titulo1 = "<h4><i><strong><u>CARRERA:</u></strong> "+datos_carrera+ "</i></h4>";
-    let titulo2 = "<h4><i><strong><u>ALUMNO:</u></strong> "+datos_alumno+ "</i></h4><h5>Materias Rendidas</h5>";
-    $("#titulo").html(titulo1+titulo2);
+    $.get("./html/modalEliminar.html",function(data){
+      $("#modalEliminar").html(data);
+    })
+    load(1);
 });
-
-function cargarModulos() {
-    //loadFiltros();
-  	load(1);
-};
-
-function cargarDatosAlumno() {
-   var datos = {"alumno_id":<?=$idAlumno?>};
-   var datos_alumno;
-   $.ajax({
-      url:"./funciones/getAlumnoPorId.php",
-      type:"POST",
-      data: datos,
-      dataType : 'json',
-      async: false,
-      success: function(datos){
-         datos_alumno = datos;
-      }
-});
-return datos_alumno;
-}
-
-function cargarDatosCarrera() {
-   var datos = {"carrera_id":<?=$idCarrera?>};
-   var datos_carrera;
-   $.ajax({
-      url:"./funciones/getCarreraPorId.php",
-      type:"POST",
-      data: datos,
-      dataType : 'json',
-      async: false,
-      success: function(datos){
-         datos_carrera = datos;
-      }
-});
-return datos_carrera;
-}
-
-
-// CARGA EL LISTADO DE EVENTOS
+  
+//****************************************** */
+// CARGA EL LISTADO DE TODOS LAS ENTIDADES   */
+//****************************************** */
 function load(page) {
+
+      /*let codigo = $("#inputFiltroCodigo").val();
+      let descripcion = $("#inputFiltroDescripcion").val();
+      let habilitada = $("#inputFiltroHabilitada").val();
+    
+      let busqueda = $("#inputBusquedaRapida").val();
       let per_page = 10;
-      let parametros = {"action":"listar", "page":page, "per_page":per_page, "alumno_id":<?=$idAlumno;?> ,"carrera_id":<?=$idCarrera;?>, "hash":"<?=$hash;?>" };
-      $.ajax({
-          url: './funciones/carreraListarMateriasRendidasPoridAlumno.php',
-          data: parametros,
-          method: 'POST',
-          beforeSend: function () {
-            $("#resultado").html("<img src='../assets/img/load_icon.gif' width='50' >");  
-          },
-          success: function (data) {
-              $("#resultado").fadeIn(100).html(data);
-              $("#tabla_calendario>tfoot").prepend(`<tr>
-                                                      <td colspan="7">
-                                                          <button class="btn btn-primary" onclick="carreraAgregar()">Nuevo</button>
-                                                      </td>
-                                                  </tr>`);
-          }
+      let parametros = {"action": "listar","page": page,"per_page": per_page, "codigo":codigo, "descripcion":descripcion, "habilitada":habilitada,"busqueda_rapida":busqueda};
+
+      */
+      let per_page = 10;
+      let parametros = {"action": "listar","page": page,"per_page": per_page, "carrera_id":<?=$idCarrera?>, "alumno_id":<?=$idAlumno?>, "hash":'<?=$hash?>' };
+      let titulo = "<h1><i><u>Carreras</u></i></h1><h2>Listado</h2>";
+      $("#titulo").html(titulo);
+      $.post('funciones/carreraListarMateriasRendidasAlumno.php', parametros, function (data) {
+              $("#principal").fadeIn(100).html(data);}
+      );
+};
+
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************************* GESTION DE  FILTROS  ************************************* 
+//************************************************************************************************ 
+//************************************************************************************************ 
+
+//********************************************* 
+// APLICA EL FILTRO AL LISTADO DE ENTIDADES     
+//********************************************* 
+
+function aplicarFiltro() {
+    let codigo = $("#inputFiltroCodigo").val();
+      let descripcion = $("#inputFiltroDescripcion").val();
+      let habilitada = $("#inputFiltroHabilitada").val();
+    
+      let busqueda = $("#inputBusquedaRapida").val();
+      let per_page = 10;
+      let parametros = {"action": "listar","page": 1,"per_page": per_page, "codigo":codigo, "descripcion":descripcion, "habilitada":habilitada,"busqueda_rapida":busqueda};
+      let titulo = "<h1><i><u>Carreras</u></i></h1><h2>Listado</h2>";
+      $("#titulo").html(titulo);
+      $.post('funciones/'+entidad_nombre+'Listar.php', parametros, function (data) {
+              $("#principal").fadeIn(100).html(data);}
+      );
+  };
+
+//******************************************* 
+// APLICA EL FILTRO AL LISTADO DE ENTIDADES   
+//******************************************* 
+function aplicarBusquedaRapida() {
+    let id = $("#inputFiltroId").val();
+    let anio = $("#inputFiltroAnio").val();
+    let evento = $("#inputFiltroEvento").val();
+    let fechaInicio = $("#inputFiltroFechaInicio").val();
+    let fechaFinalizacion = $("#inputFiltroFechaFinalizacion").val();
+    let busqueda = $("#inputBusquedaRapida").val();
+    let per_page = 10;
+    let parametros = {"action": "listar","page": 1,"per_page": per_page, "id":id, "anio":anio, "evento":evento, "fechaInicio":fechaInicio, "fechaFinalizacion":fechaFinalizacion,"busqueda_rapida":busqueda};
+    let titulo = "<h1><i><u>"+entidad_titulo1+"</u></i></h1>";
+    $("#titulo").html(titulo);
+        $.ajax({
+            url: 'funciones/'+entidad_nombre+'Listar.php',
+            data: parametros,
+            method: 'POST',
+            success: function (data) {
+                $("#principal").slideDown("slow").html(data);
+            }
+        });       
+  };
+ 
+//******************************************* 
+// QUITA EL FILTRO DEL LISTADO DE ENTIDADES   
+//******************************************* 
+function quitarFiltro() {
+        $("#inputBusquedaRapida").val(""); 
+        $("#inputFiltroDescripcion").val("");
+        $("#inputFiltroCodigo").val("");
+        $("#inputFiltroHabilitada").val("");
+
+        load(1);  
+};
+
+//************************************************** 
+// NOS PERMITE BUSCAR UNA ENTIDAD POR ID       
+//************************************************** 
+function entidadObtenerPorId(entidad_id){
+    let url = "funciones/"+entidad_nombre+"ObtenerPorId.php";
+    let resultado;
+    
+    $.ajaxSetup({
+        async: false
       });
+    $.post(url, {"id":entidad_id}, function (data) {
+          resultado = data;
+    },"json")
+    return resultado;
 };
 
 
-//EDITAR
-function rendidasEditar(val){
-    let arr = val.split("&");
-    let alumno_id = arr[0];
-    let materia_id = arr[1];
-    let materia_nombre = arr[2];
-    let calendario_id = arr[3];
-    let llamado = arr[4];
-    let nota = Math.round(arr[5]);
-    let estado = arr[6];
-    let condicion = arr[7];
-    let breadcrumble = `<nav aria-label="breadcrumb" role="navigation">
+//************************************************************************************************ 
+//************************************************************************************************ 
+//*********************************** VER DATOS DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+function entidadVer(entidad_id){
+    let datos_entidad = "";
+    let url = "html/"+entidad_nombre+".html";
+    let url_obtener_entidad = "funciones/eventoObtener.php";
+    let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="menuCarrera.php">Carreras</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="menuCarreraAlumnos.php?id=<?=$idCarrera?>&hash=<?=$hashCarrera?>"><?=$carrera_nombre;?></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href='menuCarreraMateriasRendidasPorAlumno.php?alumno_id=<?=$idAlumno?>&carrera_id=<?=$idCarrera?>&hash=<?=$hash?>'><strong>Mat.Rendidas de:</strong> <?=$alumno_nombre;?></a></li>
-                                <li class="breadcrumb-item active" aria-current="page">`+materia_nombre+`(`+materia_id+`)</li>
+                                <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Ver</li>
                             </ol>
                         </nav>`;
-    $("#breadcrumb").html(breadcrumble);                    
-    //console.info(arr);
-    $.get("html/materiaRendidaPorAlumnoEditar.html",function(data){
-        let titulo;
-        let datos_alumno = "<?=$alumno_nombre?>";
-        let datos_carrera = "<?=$carrera_nombre?>";
-        let titulo1 = "<h4><i><strong><u>CARRERA:</u></strong> "+datos_carrera+ "</i></h4>";
-        let titulo2 = "<h4><i><strong><u>ALUMNO:</u></strong> "+datos_alumno+ "</i></h4><h5><u>Materia:</u> <strong>"+materia_nombre+" ("+materia_id+") -> Editar</strong></h5>";
-        $("#titulo").html(titulo1+titulo2);
+    $("#breadcrumb").slideDown("slow").html(breadcrumb);  
 
-        $("#titulo").html(titulo);
-        $("#resultado").fadeIn(100).html(data);
-        $("#inputEditarIdAlumno").val(alumno_id);
-        $("#inputEditarIdMateria").val(materia_id);
-        $("#inputEditarIdCalendario").val(calendario_id);
-        $("#inputEditarLlamado").val(llamado);
-
-        $("#inputEditarCondicion option[value="+ condicion +"]").attr("selected",true);
-        $("#inputEditarNota option[value="+ nota +"]").attr("selected",true);
-        $("#inputEditarEstado option[value="+ estado +"]").attr("selected",true);
+    datos_entidad = entidadObtenerPorId(entidad_id);
+    $.get(url,function(data) {
+          $("#resultado_accion").html("");
+          $("#principal").slideDown("slow").html(data);
+          $('#calendario_ver').removeClass('d-none');
+          $('#calendario_editar').addClass('d-none');
+          //******************************************************************** 
+          //**************************** CAMBIAR ******************************* 
+          $("#spn_id").html(datos_entidad.datos[0].id);
+          $("#spn_anio").html(datos_entidad.datos[0].AnioLectivo);
+          $("#spn_evento").html(datos_entidad.datos[0].descripcion+' ('+datos_entidad.datos[0].codigo+')');
+          $("#spn_fecha_inicio").html(datos_entidad.datos[0].fechaInicioEvento);
+          $("#spn_fecha_finalizacion").html(datos_entidad.datos[0].fechaFinalEvento);
+          $('#btnVerEditar').attr('onclick', 'entidadEditar('+entidad_id+')');
+          
+           //******************************************************************** 
+           //******************************************************************** 
     });
 }
 
-function rendidaEditarGuardar() {
-    let materia_id = $("#inputEditarIdMateria").val();
-    let alumno_id = $("#inputEditarIdAlumno").val();
-    let calendario_id = $("#inputEditarIdCalendario").val();
-    let llamado = $("#inputEditarLlamado").val();
-    let condicion = $("#inputEditarCondicion").val();
-    let nota = $("#inputEditarNota").val();
-    let estado_final = $("#inputEditarEstado").val();
-    let parametros = {"materia_id":materia_id,"alumno_id":alumno_id,"calendario_id":calendario_id,"llamado":llamado,"condicion":condicion,"nota":nota,"estado_final":estado_final};
-    let breadcrumble = `<nav aria-label="breadcrumb" role="navigation">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-                                <li class="breadcrumb-item" aria-current="page"><a href="menuCarrera.php">Carreras</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="menuCarreraAlumnos.php?id=<?=$idCarrera?>&hash=<?=$hashCarrera?>"><?=$carrera_nombre;?></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><strong>Mat.Rendidas de:</strong> <?=$alumno_nombre;?></li>
-                            </ol>
-                        </nav>`;
-    //console.info(parametros);
-    $.post("./funciones/setModificarMateriaRendidaAlumno.php",parametros,function(datos){
-        if (datos.codigo == 100) {
-            cargarModulos();
-            $("#breadcrumb").html(breadcrumble); 
-            $("#resultado_accion").html();
-            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        } else {
-            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
-                                           `+datos.data+`</span></i>
-                                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                           <span aria-hidden="true">&times;</span>
-                                         </button></div></div>`);
-        }
-    },"json");
 
-}
+//************************************************************************************************ 
+//************************************************************************************************ 
+//*********************************** CREACION DE UNA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
 
-/*
-$("body").on("click","#botonFiltro",function(e) {
-      e.preventDefault();
-      let anio_lectivo = $("#inputFiltroAnioLectivo").val();
-      let evento = $("#inputFiltroEvento").val();
-      console.info(anio_lectivo+'-'+evento);
-      let per_page = 10;
-      let parametros = {"action": "listar","page": 1,"per_page": per_page,"anio":anio_lectivo,"codigo":evento};
-      $("#titulo").html(titulo);
-      $.ajax({
-          url: 'funciones/calendarioListar.php',
-          data: parametros,
-          method: 'POST',
-          success: function (data) {
-              $("#resultado").html(data);
-              $("#tabla_calendario>tfoot").prepend(`<tr>
-                                                      <td colspan="5">
-                                                          <button class="btn btn-primary" onclick="calendarioAgregar()">Nuevo</button>
-                                                      </td>
-                                                  </tr>`);
-          }
+//************************************************ 
+// NOS PERMITE CREAR UNA ENTIDAD                   
+//************************************************ 
+function entidadCrear(){
+      let arreglo="";
+      let parametros = "";
+      let url = "html/calendario.html";
+      let url_select2_obtener_eventos = "funciones/eventoObtener.php";// Esto puede cambiar
+      let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                              <ol class="breadcrumb">
+                                  <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                  <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                  <li class="breadcrumb-item active" aria-current="page">Nuevo</li>
+                              </ol>
+                          </nav>`;
+      $("#breadcrumb").slideDown("slow").html(breadcrumb);                    
+      
+      $.get(url,function(data) {
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
+            $('#calendario_editar').removeClass('d-none');
+            $('#calendario_ver').addClass('d-none');
+            //******************************************************************** 
+            //******************************************************************** 
+            $("#inputAltaFechaInicio").datepicker({
+                dateFormat: 'dd/mm/yy',
+                maxDate: new Date()
+                //startDate: '-3d'
+            });
+            $("#inputAltaFechaFinalizacion").datepicker({
+                dateFormat: 'dd/mm/yy',
+                maxDate: new Date()
+                //startDate: '-3d'
+            });
+            $("#inputAccion").val('nuevo');
+            
+            $('#inputAltaEvento').select2({
+                    theme: "bootstrap",
+                    placeholder: "Buscar",
+                    ajax: {
+                        url: url_select2_obtener_eventos,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (data) {
+                            return {
+                                searchTerm: data.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results:response
+                            };
+                        },
+                        cache: true
+                    }
+            });
+
       });
-
-}) 
-
-
-function loadFiltros() {
-    $.get("./html/calendarioFiltro.html",function(datos) {
-        $("#filtro").html(datos);
-        $.post("./funciones/getAllEvento.php",function(datos_evento){
-            if (datos_evento.codigo == 100) {
-                datos_evento.data.forEach(evento => {
-                      $("#inputFiltroEvento").append($('<option/>', {
-                            text: '('+evento.codigo+') '+evento.descripcion,
-                            value: evento.codigo,
-                      }));
-                });
-                $('#inputFiltroEvento').select2({
-                    theme: "bootstrap4",
-                });
-            } else {
-                console.log("error codigo");
-            }
-        },"json");
-    });
-}    
-
-
-
-function calendarioAgregar() {
-    let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Agregar Evento al Calendario</h2>`;
-    let bread = `<nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#" onclick="">Home</a></li>
-                      <li class="breadcrumb-item"><a href="#" onclick="cargarModulos()">Calendario</a></li>
-                      <li class="breadcrumb-item">Agregar Evento </li>
-                    </ol>
-                  </nav>`;
-    $("#filtro").html("");
-    $("#breadcrumb").html(bread);
-    $("#titulo").html(titulo);
-    $.get("./html/calendarioAlta.html",function(datos) {
-         $("#resultado").html(datos);
-         $("#inputAltaFechaInicio").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputAltaFechaFinalizacion").datepicker({dateFormat: "yy-mm-dd"});
-         $.post("./funciones/getAllEvento.php",function(datosEventos) {
-              if (datosEventos.codigo == 100) {
-                  let obj = datosEventos.data; 
-                  obj.forEach(evento => {
-                        $("#inputAltaEvento").append($('<option/>', {
-                              text: ' ('+evento.codigo+') '+evento.descripcion,
-                              value: evento.id,
-                        }));
-                  });
-                  $('#inputAltaEvento').select2({
-                        theme: "bootstrap4",
-                  });
-              }
-         },"json")
-    });
 }
+  
+//************************************************* 
+// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS  falta     
+//************************************************* 
+  function entidadGuardarNuevo(){
+    let accion = $("#inputAccion").val();
+    let apellido = $("#inputApellido").val();
+    let nombres = $("#inputNombre").val();
+    let dni = $("#inputDocumento").val();
+    let domicilio = $("#inputDomicilio").val();
+    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
+    let telefono_numero = $("#inputNumeroTelefono").val();
+    let email = $("#inputEmail").val();
+    let localidad_id = $("#inputLocalidad").val();
+    let fecha_nacimiento = $("#inputFechaNacimiento").val();
+    let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
+    let url = "funciones/"+entidad_nombre+"Guardar.php";
+    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
+            $.post(url,parametros, function(data) {
+                if (data.codigo==100) {
+                        $("#resultado_accion").html(`
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
+                                                    <span style="color: #000000;">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>   
+                                                    </span>    
+                                                </div>`);
+                } else {
+                        $("#resultado_accion").html(`
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+                                                    <span style="color: #000000;">
+                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>   
+                                                    </span>    
+                                                </div>`);
+                }
+            },"json"); 
+            load(1);
+    } else {
+        $("#resultado_accion").html(`
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
+            <span style="color: #000000;">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>   
+            </span>    
+        </div>`);
+    };
+}
+
+
+//************************************************************************************************ 
+//************************************************************************************************ 
+//************************************* EDICION DE LA ENTIDAD ************************************ 
+//************************************************************************************************ 
+//************************************************************************************************ 
+
+//************************************************* 
+// NOS PERMITE EDITAR UNA ENTIDAD                   
+//************************************************* 
+function entidadEditar(entidad_id){
+      let datos_entidad = "";
+      let url = "html/"+entidad_nombre+".html";
+      let url_select2_obtener_eventos = "funciones/eventoObtener.php";
+      let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
+                              <ol class="breadcrumb">
+                                  <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
+                                  <li class="breadcrumb-item" aria-current="page"><a href="#" onclick="load(1)">`+entidad_titulo2+`</></a></li>
+                                  <li class="breadcrumb-item active" aria-current="page">Editar</li>
+                              </ol>
+                          </nav>`;
+      $("#breadcrumb").slideDown("slow").html(breadcrumb);   
+      datos_entidad = entidadObtenerPorId(entidad_id);
+
+
+      $.get(url,function(data) {
+            $("#resultado_accion").html("");
+            $("#principal").slideDown("slow").html(data);
+            $('#calendario_editar').removeClass('d-none');
+            $('#calendario_ver').addClass('d-none');
+            //******************************************************************** 
+            //**************************** CAMBIAR ******************************* 
+            $("#inputAccion").val('editar');
+            $("#inputAltaAnio").val(datos_entidad.datos[0].AnioLectivo);
+            //$("#inputAltaEvento").val(datos_entidad.datos[0].evento);
+            //$("#inputAltaFechaInicio").val(datos_entidad.datos[0].fechaInicioEvento);
+            //$("#inputAltaFechaFinalizacion").val(datos_entidad.datos[0].fechaFinalEvento);
+
+            $("#inputAltaFechaInicio").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            if (datos_entidad.datos[0].fechaInicioEvento!=null) {
+                let anio = (datos_entidad.datos[0].fechaInicioEvento).substr(0,4);
+                let mes = (datos_entidad.datos[0].fechaInicioEvento).substr(5,2);
+                let dia = (datos_entidad.datos[0].fechaInicioEvento).substr(8,2);
+                $("#inputAltaFechaInicio").datepicker('setDate',dia+'/'+mes+'/'+anio);
+            }
+
+            $("#inputAltaFechaFinalizacion").datepicker({
+                dateFormat: 'dd/mm/yy',
+            });
+            if (datos_entidad.datos[0].fechaFinalEvento!=null) {
+                let anio = (datos_entidad.datos[0].fechaFinalEvento).substr(0,4);
+                let mes = (datos_entidad.datos[0].fechaFinalEvento).substr(5,2);
+                let dia = (datos_entidad.datos[0].fechaFinalEvento).substr(8,2);
+                $("#inputAltaFechaFinalizacion").datepicker('setDate',dia+'/'+mes+'/'+anio);
+            }
+
+            $('#inputAltaEvento').select2({
+                    theme: "bootstrap",
+                    placeholder: "Buscar",
+                    ajax: {
+                        url: url_select2_obtener_eventos,
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (data) {
+                            return {
+                                searchTerm: data.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results:response
+                            };
+                        },
+                        cache: true
+                    }
+            });
+
+            var data = {
+                id: datos_entidad.datos[0].id,
+                text: datos_entidad.datos[0].descripcion + ' (' + datos_entidad.datos[0].codigo + ')'
+            };
+            var newOption = new Option(data.text, data.id, false, false);
+            $('#inputAltaEvento').append(newOption).trigger('change');
+            $("#inputAltaEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
+      });
+}
+
+
 
 function calendarioEditar(idCalendario) {
     let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Editar Evento del Calendario</h2>`;
@@ -422,7 +564,7 @@ function calendarioEditar(idCalendario) {
         evento_id = datos_calendario.data[0].idEvento;
     };
     $.get("./html/calendarioEditar.html",function(datos) {
-         $("#resultado").html(datos);
+         $("#principal").html(datos);
          $("#inputEditarAnio").val(anio_lectivo);
          $("#inputEditarFechaInicio").val(fecha_inicio);
          $("#inputEditarFechaFinalizacion").val(fecha_finalizacion);
@@ -460,14 +602,14 @@ function calendarioEditarGuardar() {
         if (datos.codigo == 100) {
             cargarModulos();
             $("#resultado_accion").html();
-            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                            `+datos.data+`</span></i>
                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                            <span aria-hidden="true">&times;</span>
                                          </button></div></div>`);
         } else {
             
-            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                            `+datos.data+`</span></i>
                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                            <span aria-hidden="true">&times;</span>
@@ -489,14 +631,14 @@ function calendarioAltaGuardar() {
         if (datos.codigo == 100) {
             cargarModulos();
             $("#resultado_accion").html();
-            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+            $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                            `+datos.data+`</span></i>
                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                            <span aria-hidden="true">&times;</span>
                                          </button></div></div>`);
         } else {
             
-            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+            $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                            `+datos.data+`</span></i>
                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                            <span aria-hidden="true">&times;</span>
@@ -514,13 +656,13 @@ function calendarioEliminar(idCalendario) {
             if (datos.codigo == 100) {
                 cargarModulos();
                 $("#resultado_accion").html();
-                $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+                $("#resultado_accion").append(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/ok_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                             `+datos.data+`</span></i>
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button></div></div>`);
             } else {
-                $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
+                $("#resultado_accion").html(`<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><div class="alert alert-warning alert-dismissible fade show" role="alert"><img src="../public/assets/img/icons/error_icon.png" width="22">&nbsp;<i><span style="color: #000000;">
                                             `+datos.data+`</span></i>
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -531,7 +673,7 @@ function calendarioEliminar(idCalendario) {
    
 }
 
-*/
+
 
 </script>
 

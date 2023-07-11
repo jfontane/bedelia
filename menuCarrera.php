@@ -100,7 +100,7 @@ require_once('seguridad.php');
       <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
               <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Calendario Académico</li>
+              <li class="breadcrumb-item active" aria-current="page">Carreras</li>
           </ol>
       </nav>
     </div>
