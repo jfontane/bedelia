@@ -268,7 +268,6 @@ function rendidasEditar(val){
         $("#inputEditarIdMateria").val(materia_id);
         $("#inputEditarIdCalendario").val(calendario_id);
         $("#inputEditarLlamado").val(llamado);
-
         $("#inputEditarCondicion option[value="+ condicion +"]").attr("selected",true);
         $("#inputEditarNota option[value="+ nota +"]").attr("selected",true);
         $("#inputEditarEstado option[value="+ estado +"]").attr("selected",true);

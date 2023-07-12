@@ -272,7 +272,7 @@ function quitarFiltro() {
 // NOS PERMITE BUSCAR UNA ENTIDAD POR ID       
 //************************************************** 
 function entidadObtenerPorId(entidad_id){
-    let url = "funciones/"+entidad_nombre+"ObtenerPorId.php";
+    let url = "funciones/alumnoRindeMateriaObtenerPorId.php";
     let resultado;
     
     $.ajaxSetup({
@@ -390,64 +390,6 @@ function entidadCrear(){
       });
 }
   
-//************************************************* 
-// GRABA LA ENTIDAD NUEVO EN LA BASE DE DATOS  falta     
-//************************************************* 
-  function entidadGuardarNuevo(){
-    let accion = $("#inputAccion").val();
-    let apellido = $("#inputApellido").val();
-    let nombres = $("#inputNombre").val();
-    let dni = $("#inputDocumento").val();
-    let domicilio = $("#inputDomicilio").val();
-    let telefono_caracteristica = $("#inputCaracteristicaTelefono").val();
-    let telefono_numero = $("#inputNumeroTelefono").val();
-    let email = $("#inputEmail").val();
-    let localidad_id = $("#inputLocalidad").val();
-    let fecha_nacimiento = $("#inputFechaNacimiento").val();
-    let parametros = {"accion":accion, "apellido":apellido, "nombres":nombres, "dni":dni, "domicilio":domicilio, "telefono_caracteristica":telefono_caracteristica, "telefono_numero":telefono_numero ,"email":email, "localidad_id":localidad_id, "fecha_nacimiento":fecha_nacimiento};
-    let url = "funciones/"+entidad_nombre+"Guardar.php";
-    if (accion!="" && apellido!="" && nombres!=="" && dni!="" && domicilio!=""  && telefono_caracteristica!="" && telefono_numero!="" && email!="" && localidad_id!="" && fecha_nacimiento!="") {
-            $.post(url,parametros, function(data) {
-                if (data.codigo==100) {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-success">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                } else {
-                        $("#resultado_accion").html(`
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-                                                    <span style="color: #000000;">
-                                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                                        &nbsp;<strong>Atenci&oacute;n:</strong> `+data.mensaje+`
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>   
-                                                    </span>    
-                                                </div>`);
-                }
-            },"json"); 
-            load(1);
-    } else {
-        $("#resultado_accion").html(`
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-danger">
-            <span style="color: #000000;">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                &nbsp;<strong>Atenci&oacute;n:</strong> Debe completar todos los datos.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>   
-            </span>    
-        </div>`);
-    };
-}
-
-
 //************************************************************************************************ 
 //************************************************************************************************ 
 //************************************* EDICION DE LA ENTIDAD ************************************ 
@@ -459,8 +401,8 @@ function entidadCrear(){
 //************************************************* 
 function entidadEditar(entidad_id){
       let datos_entidad = "";
-      let url = "html/"+entidad_nombre+".html";
-      let url_select2_obtener_eventos = "funciones/eventoObtener.php";
+      let url = "html/alumnoMateriaRendida.html";
+      let url_select2_obtener_calendario = "funciones/calendarioObtener.php";
       let breadcrumb = `<nav aria-label="breadcrumb" role="navigation">
                               <ol class="breadcrumb">
                                   <li class="breadcrumb-item" aria-current="page"><a href="home.php">Home</a></li>
@@ -470,8 +412,7 @@ function entidadEditar(entidad_id){
                           </nav>`;
       $("#breadcrumb").slideDown("slow").html(breadcrumb);   
       datos_entidad = entidadObtenerPorId(entidad_id);
-
-
+      console.log(datos_entidad.datos)  
       $.get(url,function(data) {
             $("#resultado_accion").html("");
             $("#principal").slideDown("slow").html(data);
@@ -480,36 +421,28 @@ function entidadEditar(entidad_id){
             //******************************************************************** 
             //**************************** CAMBIAR ******************************* 
             $("#inputAccion").val('editar');
-            $("#inputAltaAnio").val(datos_entidad.datos[0].AnioLectivo);
+            $("#inputAlumno").val(datos_entidad.datos[0].dni+' - '+datos_entidad.datos[0].apellido+', '+datos_entidad.datos[0].nombre+' ('+datos_entidad.datos[0].idAlumno+')');
+            $("#inputAlumnoId").val(datos_entidad.datos[0].idAlumno);
+            $("#inputMateria").val(datos_entidad.datos[0].materia_nombre);
+            $("#inputMateriaId").val(datos_entidad.datos[0].idMateria);
+
+            //$("#inputCalendario").val(datos_entidad.datos[0].descripcion+' ('+datos_entidad.datos[0].codigo+')' );
+            $("#inputLlamado").val(datos_entidad.datos[0].llamado);
+            $("#inputCondicion").val(datos_entidad.datos[0].condicion);
+            $("#inputNota").val(datos_entidad.datos[0].nota);
+            $("#inputEstado").val(datos_entidad.datos[0].estado);
+
+            //$("#inputNota option[value="+ nota +"]").attr("selected",true);
+            //$("#inputEstado option[value="+ estado +"]").attr("selected",true);
             //$("#inputAltaEvento").val(datos_entidad.datos[0].evento);
             //$("#inputAltaFechaInicio").val(datos_entidad.datos[0].fechaInicioEvento);
             //$("#inputAltaFechaFinalizacion").val(datos_entidad.datos[0].fechaFinalEvento);
 
-            $("#inputAltaFechaInicio").datepicker({
-                dateFormat: 'dd/mm/yy',
-            });
-            if (datos_entidad.datos[0].fechaInicioEvento!=null) {
-                let anio = (datos_entidad.datos[0].fechaInicioEvento).substr(0,4);
-                let mes = (datos_entidad.datos[0].fechaInicioEvento).substr(5,2);
-                let dia = (datos_entidad.datos[0].fechaInicioEvento).substr(8,2);
-                $("#inputAltaFechaInicio").datepicker('setDate',dia+'/'+mes+'/'+anio);
-            }
-
-            $("#inputAltaFechaFinalizacion").datepicker({
-                dateFormat: 'dd/mm/yy',
-            });
-            if (datos_entidad.datos[0].fechaFinalEvento!=null) {
-                let anio = (datos_entidad.datos[0].fechaFinalEvento).substr(0,4);
-                let mes = (datos_entidad.datos[0].fechaFinalEvento).substr(5,2);
-                let dia = (datos_entidad.datos[0].fechaFinalEvento).substr(8,2);
-                $("#inputAltaFechaFinalizacion").datepicker('setDate',dia+'/'+mes+'/'+anio);
-            }
-
-            $('#inputAltaEvento').select2({
+            $('#inputCalendario').select2({
                     theme: "bootstrap",
                     placeholder: "Buscar",
                     ajax: {
-                        url: url_select2_obtener_eventos,
+                        url: url_select2_obtener_calendario,
                         dataType: 'json',
                         delay: 250,
                         data: function (data) {
@@ -526,69 +459,16 @@ function entidadEditar(entidad_id){
                     }
             });
 
-            var data = {
-                id: datos_entidad.datos[0].id,
-                text: datos_entidad.datos[0].descripcion + ' (' + datos_entidad.datos[0].codigo + ')'
+            var item = {
+                id: datos_entidad.datos[0].idCalendario,
+                text: datos_entidad.datos[0].AnioLectivo+' - '+datos_entidad.datos[0].descripcion+' ('+datos_entidad.datos[0].codigo+')'
             };
-            var newOption = new Option(data.text, data.id, false, false);
-            $('#inputAltaEvento').append(newOption).trigger('change');
-            $("#inputAltaEvento option[value="+ datos_entidad.datos[0].id +"]").attr("selected",true);
+            var newOption = new Option(item.text, item.id, false, false);
+            $('#inputCalendario').append(newOption).trigger('change');
+            $("#inputCalendario option[value="+ datos_entidad.datos[0].idCalendario +"]").attr("selected",true);
       });
 }
 
-
-
-function calendarioEditar(idCalendario) {
-    let titulo = `<h1><i><u>Calendario de Eventos</u></i></h1><h2>Editar Evento del Calendario</h2>`;
-    let bread = `<nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="#" onclick="">Home</a></li>
-                      <li class="breadcrumb-item"><a href="#" onclick="cargarModulos()">Calendario</a></li>
-                      <li class="breadcrumb-item">Editar Evento</li>
-                    </ol>
-                  </nav>`;
-    let calendario_id = idCalendario;
-    let anio_lectivo;
-    let fecha_inicio;
-    let fecha_finalizacion;
-    let evento_id;       
-    $("#filtro").html("");       
-    $("#breadcrumb").html(bread);
-    $("#titulo").html(titulo);
-
-    let datos_calendario = getCalendarioPorId(calendario_id);
-    if (datos_calendario.codigo == 100) {
-        anio_lectivo = datos_calendario.data[0].AnioLectivo;
-        fecha_inicio = datos_calendario.data[0].fechaInicioEvento;
-        fecha_finalizacion = datos_calendario.data[0].fechaFinalEvento;
-        evento_id = datos_calendario.data[0].idEvento;
-    };
-    $.get("./html/calendarioEditar.html",function(datos) {
-         $("#principal").html(datos);
-         $("#inputEditarAnio").val(anio_lectivo);
-         $("#inputEditarFechaInicio").val(fecha_inicio);
-         $("#inputEditarFechaFinalizacion").val(fecha_finalizacion);
-         $("#inputEditarFechaInicio").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputEditarFechaFinalizacion").datepicker({dateFormat: "yy-mm-dd"});
-         $("#inputEditarIdCalendario").val(calendario_id);
-         $.post("./funciones/getAllEvento.php",function(datosEventos) {
-              if (datosEventos.codigo == 100) {
-                    let obj = datosEventos.data; 
-                    obj.forEach(evento => {
-                            $("#inputEditarEvento").append($('<option/>', {
-                                text: ' ('+evento.codigo+') '+evento.descripcion,
-                                value: evento.id,
-                            }));
-                    });
-                    $("#inputEditarEvento option[value="+ evento_id +"]").attr("selected",true);
-                    $('#inputEditarEvento').select2({
-                        theme: "bootstrap4",
-                    });
-              };
-
-          },"json")
-    });
-};
 
 function calendarioEditarGuardar() {
     let anio_lectivo = $("#inputEditarAnio").val();

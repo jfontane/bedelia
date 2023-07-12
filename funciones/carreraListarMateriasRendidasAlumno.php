@@ -129,7 +129,8 @@ if($action == 'listar' && $idCarrera && ArrayHash::check($hash, array($MY_SECRET
           <tr>
             <th class="text-center" width="5%"><small><b><input type="checkbox" class="" id="seleccionar_todos"></b></small></th>
             <th width="5%" class="text-center text-primary" colspan=3><small><b>ACCIONES</b><small></th>
-            <th class="text-center text-primary" width="40%"><small><b><?=$labelCampo2?></b></small></th>
+            <th class="text-center text-primary" width="5%"><small><b><?=$labelCampo1?></b></small></th>
+			<th class="text-center text-primary" width="40%"><small><b><?=$labelCampo2?></b></small></th>
             <th class="text-center text-primary" width="5%"><small><b><?=$labelCampo3?></b></small></th>
             <th class="text-center text-primary" width="5%"><small><b><?=$labelCampo4?></b></small></th>
             <th class="text-center text-primary" width="5%"><small><b><?=$labelCampo5?></b></small></th>
@@ -142,6 +143,7 @@ if($action == 'listar' && $idCarrera && ArrayHash::check($hash, array($MY_SECRET
                 <button class="btn btn-primary btn-sm" onclick="quitarFiltro()" title="Quitar Filtro"><img src="../public/img/icons/filterminus.png" width="22"></button>
                 <button class="btn btn-primary btn-sm" onclick="aplicarFiltro()" title="Aplicar Filtro"><img src="../public/img/icons/filter.png" width="22"></button>
               </th>
+			<th class="text-center"></th>  
 			<th class="text-center"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo2?>" value="<?=$campo1?>"></b></small></th>
             <th class="text-center"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo3?>" value="<?=$campo1?>"></b></small></th>
             <th class="text-center"><small><b><input type="text" class="form-control" id="inputFiltro<?=$campo4?>" value="<?=$campo1?>"></b></small></th>
@@ -195,6 +197,7 @@ if ($numrows>0){
                         </div>
                         </div>
                   </td>
+				  <td align="left"><small><?=$rowIdCampo1;?><small></td>
                   <td align="left"><small><?=$rowCampo2;?><small></td>
                   <td align="left"><small><?=$rowCampo3;?></small></td>
                   <td align="center"><small><?=$rowCampo4;?></small></td>
