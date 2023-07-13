@@ -9,6 +9,21 @@ include_once 'pagination.php';
 
 //die(unserialize('a:1:{i:0;s:8:"empleado";}')[0]);
 
+function capitalizeCadenas($str) {
+    $arr = explode(" ",$str);
+    $cad_final = ""; 
+	$band = (count($arr)>1)?true:false;
+	foreach($arr as $item) {
+		if ($band) $cad_final .= ucfirst($item).' ';
+		else $cad_final = ucfirst($item);
+	}
+	$cad_final = ($band)?substr($cad_final,0,strlen($cad_final)-1):$cad_final;
+    return $cad_final;
+}  
+  
+
+echo "*".capitalizeCadenas('javier Hernan fontanellaz')."*";
+die;
 $rol_usuario = '';
 //$rol_admin = ($_SESSION['user_rol']=='admin' || $_SESSION['user_rol']=='SYSTEM')?'':'disabledbutton';
 
